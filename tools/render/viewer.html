@@ -1,0 +1,118 @@
+<!doctype html>
+<html>
+<head><meta charset="utf-8"><title>loading</title>
+<style>html,body{margin:0;background:#202227;overflow:hidden}</style></head>
+<body>
+<script src="three.min.js"></script>
+<script>
+// Renders a scene.json written by generator/preview.py. Coordinates are Source-style (z up).
+const params = new URLSearchParams(location.search);
+
+function vec3(a) { return new THREE.Vector3(a[0], a[1], a[2]); }
+function color(a) { return new THREE.Color(a[0], a[1], a[2]); }
+
+async function main() {
+  const scene_desc = await (await fetch(params.get("scene"))).json();
+  const W = scene_desc.width, H = scene_desc.height;
+
+  const renderer = new THREE.WebGLRenderer({antialias: true, preserveDrawingBuffer: true});
+  renderer.setPixelRatio(1);
+  renderer.setSize(W, H);
+  renderer.outputColorSpace = THREE.SRGBColorSpace;
+  renderer.toneMapping = THREE.ACESFilmicToneMapping;
+  renderer.toneMappingExposure = 1.05;
+  renderer.shadowMap.enabled = true;
+  renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+  document.body.appendChild(renderer.domElement);
+
+  const scene = new THREE.Scene();
+  scene.background = color(scene_desc.background || [0.13, 0.135, 0.15]);
+
+  const hemi = new THREE.HemisphereLight(0xdfe6ff, 0x3a3530, 0.9);
+  hemi.position.set(0, 0, 1);
+  scene.add(hemi);
+  const key = new THREE.DirectionalLight(0xfff4e6, 2.2);
+  key.position.set(60, 45, 110);
+  key.castShadow = true;
+  key.shadow.mapSize.set(2048, 2048);
+  const sc = key.shadow.camera;
+  sc.left = -60; sc.right = 60; sc.top = 60; sc.bottom = -60; sc.near = 1; sc.far = 400;
+  key.shadow.bias = -0.0004;
+  scene.add(key);
+  scene.add(key.target);
+  const rim = new THREE.DirectionalLight(0xbfd4ff, 0.8);
+  rim.position.set(-70, -40, 60);
+  scene.add(rim);
+
+  if (scene_desc.ground) {
+    const g = scene_desc.ground;
+    const plane = new THREE.Mesh(new THREE.PlaneGeometry(g.size, g.size),
+      new THREE.MeshStandardMaterial({color: color(g.color), roughness: 0.95}));
+    plane.position.set(0, 0, g.z);
+    plane.receiveShadow = true;
+    scene.add(plane);
+  }
+
+  const loader = new THREE.TextureLoader();
+  const tex_cache = {};
+  async function texture(url) {
+    if (!tex_cache[url]) {
+      tex_cache[url] = await loader.loadAsync(url);
+      tex_cache[url].colorSpace = THREE.SRGBColorSpace;
+      tex_cache[url].anisotropy = 8;
+      tex_cache[url].wrapS = tex_cache[url].wrapT = THREE.RepeatWrapping;
+    }
+    return tex_cache[url];
+  }
+
+  for (const m of scene_desc.meshes) {
+    const geo = new THREE.BufferGeometry();
+    geo.setAttribute("position", new THREE.Float32BufferAttribute(m.positions, 3));
+    if (m.normals) geo.setAttribute("normal", new THREE.Float32BufferAttribute(m.normals, 3));
+    if (m.uvs) geo.setAttribute("uv", new THREE.Float32BufferAttribute(m.uvs, 2));
+    geo.setIndex(m.indices);
+    if (!m.normals) geo.computeVertexNormals();
+    const md = m.material || {};
+    const opts = {
+      color: color(md.color || [1, 1, 1]),
+      roughness: md.roughness ?? 0.6,
+      metalness: md.metalness ?? 0.0,
+      side: md.doubleSided ? THREE.DoubleSide : THREE.FrontSide,
+    };
+    if (md.map) opts.map = await texture(md.map);
+    if (md.opacity !== undefined && md.opacity < 1) {
+      opts.transparent = true;
+      opts.opacity = md.opacity;
+      opts.depthWrite = false;
+    }
+    if (md.emissive) opts.emissive = color(md.emissive);
+    const mat = md.physical ? new THREE.MeshPhysicalMaterial(Object.assign(opts, md.physical))
+                            : new THREE.MeshStandardMaterial(opts);
+    const mesh = new THREE.Mesh(geo, mat);
+    mesh.castShadow = !opts.transparent;
+    mesh.receiveShadow = true;
+    mesh.renderOrder = md.renderOrder || 0;
+    scene.add(mesh);
+  }
+
+  const camera = new THREE.PerspectiveCamera(30, W / H, 0.5, 2000);
+  camera.up.set(0, 0, 1);
+
+  window.renderView = (i) => {
+    const v = scene_desc.views[i];
+    camera.fov = v.fov || 30;
+    camera.updateProjectionMatrix();
+    camera.position.copy(vec3(v.eye));
+    camera.lookAt(vec3(v.target));
+    if (v.key) { key.position.copy(vec3(v.key)); }
+    key.target.position.copy(vec3(v.target));
+    renderer.render(scene, camera);
+    return v.out;
+  };
+  window.viewCount = scene_desc.views.length;
+  document.title = "ready";
+}
+main().catch(e => { document.title = "error: " + e; console.error(e); });
+</script>
+</body>
+</html>

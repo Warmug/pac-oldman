@@ -1,0 +1,8 @@
+{
+  "name": "pac-oldman-preview",
+  "private": true,
+  "description": "Headless three.js previews of the outfit (see generator/preview.py)",
+  "dependencies": {
+    "three": "0.160.0"
+  }
+}
