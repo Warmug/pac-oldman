@@ -257,6 +257,101 @@ def fit_cane_belt(fit, model):
     fit.cane_belt = (tuple(np.round(local[:3, 3], 3)), tuple(np.round(mk.matrix_to_source_angle(local[:3, :3]), 2)))
 
 
+CAST_POSES = ("aim_normal_0", "seq0", "walk_0", "walk_0.25", "walk_0.5", "walk_0.75", "run_0", "run_0.5",
+              "crouch_idle", "cwalk_0", "cwalk_0.5", "aim_pistol_0", "aim_ar2_0", "aim_melee_0")
+
+
+_BARY = np.array([(i, j, 6 - i - j) for i in range(7) for j in range(7 - i)], float) / 6   # 28 per triangle
+
+
+def leg_points(model, bone_name, poses, post, min_weight=0.25, extra=None):
+    """Skin surface weighted to `bone_name`, densely sampled over its triangles (the mesh is coarse;
+    sparse points let the per-slab hulls cut corners inside the real surface), expressed in that
+    bone's frame, from every pose in `poses`. extra(mats) can add world-space points per pose."""
+    b = model.bone(bone_name)
+    weights = [np.array([sum(x for bb, x in ws if bb == b) for ws in src["w"]]) for src in model.meshes]
+    out = []
+    for label in poses:
+        mats = model.pose(label, post)
+        inv = np.linalg.inv(mats[b])
+        pts = [extra(mats)] if extra is not None else []
+        for mesh, w in zip(model.skinned(mats), weights):
+            sel = w >= min_weight
+            if not sel.any():
+                continue
+            v = mesh.v
+            f = mesh.f[sel[mesh.f].any(axis=1)]          # every triangle touching the bone's skin
+            tri = v[f]                                   # (n, 3, 3)
+            pts += [v[sel], np.einsum("bk,nkd->nbd", _BARY, tri).reshape(-1, 3)]
+        p = np.vstack(pts)
+        out.append(p @ inv[:3, :3].T + inv[:3, 3])
+    return np.vstack(out)
+
+
+def fit_leg_cast(fit, model, side="L", poses=CAST_POSES, max_ankle=21.0):
+    """Short-leg plaster cast with a cast shoe: plaster tube (calf bone), shoe (foot bone), shoe toe
+    (toe bone). The shoe's collar is sized for ankle bends up to max_ankle degrees from standing
+    (standing, walking, weapon stances); deeper bends (push-off, sprint, crouch) are brief."""
+    import leg_cast as lc
+    post = posture_bone3(fit)
+    calf_n, foot_n, toe_n = (f"ValveBiped.Bip01_{side}_{b}" for b in ("Calf", "Foot", "Toe0"))
+    calf, foot, toe = model.bone(calf_n), model.bone(foot_n), model.bone(toe_n)
+    idle = model.pose(IDLE, post)
+
+    # plaster: from just below the knee in front (3.0 down the calf bone) and lower behind it
+    # (5.0, the back of the knee) down over the ankle joint
+    shin_len = np.linalg.norm(idle[foot][:3, 3] - idle[calf][:3, 3])
+    tube = lc.shin_tube(leg_points(model, calf_n, poses, post), s_front=3.0, s_back=5.0, s_bottom=shin_len + 0.4)
+
+    # shoe: the leather shoe, plus the bottom 1.4 units of the plaster so its collar sits over it
+    rel0 = idle[calf][:3, :3].T @ idle[foot][:3, :3]
+
+    def ankle_bend(mats):
+        d = rel0.T @ (mats[calf][:3, :3].T @ mats[foot][:3, :3])
+        return np.degrees(np.arccos(np.clip((np.trace(d) - 1) / 2, -1, 1)))
+
+    moderate = [p for p in poses if ankle_bend(model.pose(p, post)) <= max_ankle]
+    tube_end = tube.v[tube.v[:, 0] > shin_len - 1.0]
+
+    def tube_end_world(mats):
+        return tube_end @ mats[calf][:3, :3].T + mats[calf][:3, 3]
+
+    foot_pts = np.vstack([leg_points(model, foot_n, poses, post),
+                          leg_points(model, foot_n, moderate, post, min_weight=2.0,   # extra points only
+                                     extra=tube_end_world)])
+    rf, rt = idle[foot][:3, :3], idle[toe][:3, :3]
+    fwd = rf.T @ rt[:, 0]                                    # sole-forward (toe bone x) in the foot frame
+    up = rf.T @ np.array([0, 0, 1.0])
+    up = up - (up @ fwd) * fwd
+    up /= np.linalg.norm(up)
+    side_ax = np.cross(fwd, up)
+    ball = (idle[toe][:3, 3] - idle[foot][:3, 3]) @ rf          # toe bone origin in the foot frame
+    s_ball = ball @ fwd
+    s_heel = (foot_pts @ fwd).min()
+    shoe = lc.closed_loft(foot_pts[(foot_pts @ fwd) < s_ball + 1.4], fwd, up, side_ax, s_heel - 0.2, s_ball + 1.4,
+                          offset=0.45, round_back=0.9, round_front=1.2, bottom_offset=0.55, bottom_dir=-up,
+                          uv_along=lc.SHOE_FOOT_U)
+
+    # the shoe's toe: front of the leather shoe in the toe frame, tucked 1.5 back into the shoe
+    toe_pts = leg_points(model, toe_n, poses, post)
+    t_fwd = np.array([1.0, 0, 0])
+    t_up = rt.T @ np.array([0, 0, 1.0])
+    t_up = t_up - (t_up @ t_fwd) * t_fwd
+    t_up /= np.linalg.norm(t_up)
+    t_side = np.cross(t_fwd, t_up)
+    toe_cap = lc.closed_loft(toe_pts[toe_pts[:, 0] > -1.5], t_fwd, t_up, t_side, -1.5, toe_pts[:, 0].max() + 0.6,
+                             offset=0.45, round_back=0.6, round_front=1.9, bottom_offset=0.55, bottom_dir=-t_up,
+                             n_len=20, uv_along=lc.SHOE_TOE_U)
+    fit.cast_meshes = {"plaster": tube, "shoe": shoe, "toe": toe_cap}
+    fit.cast_bones = {"plaster": pac_name(calf_n), "shoe": pac_name(foot_n), "toe": pac_name(toe_n)}
+    fit.cast_moderate_poses = moderate
+
+
+def pac_name(real):
+    from male08 import pac_bone_name
+    return pac_bone_name(real)
+
+
 def posture_bone3(fit, arms=True, cane=False, smoke=False):
     """The always-on posture as bone3 manipulations {bone: (pos, ang)} (unarmed)."""
     b = {"pelvis": (fit.pelvis_sink, (0, 0, 0)), "spine": ((0, 0, 0), fit.hunch[0]),
@@ -294,6 +389,7 @@ def apply(fit, model):
     fit_cane_belt(fit, model)
     fit.glasses_obj = "props/glasses_m08.obj"
     fit.lenses_obj = "props/lenses_m08.obj"
+    fit_leg_cast(fit, model)
     import solve_poses
     solve_poses.solve(fit, model)
 
@@ -310,3 +406,13 @@ def write_head_assets(fit, props):
     om.paint_mask(os.path.join(props, "o2_mask.png"))
     om.paint_strap(os.path.join(props, "o2_strap.jpg"))
     om.paint_tube(os.path.join(props, "o2_tube.png"))
+    import leg_cast as lc
+    frames = {"plaster": "left calf", "shoe": "left foot", "toe": "left toe"}
+    names = {"plaster": ("cast_plaster.obj", "plaster short-leg cast with stockinette cuff"),
+             "shoe": ("cast_shoe.obj", "post-op cast shoe"), "toe": ("cast_shoe_toe.obj", "post-op cast shoe, toe")}
+    for k, mesh in fit.cast_meshes.items():
+        fname, what = names[k]
+        mesh.write_obj(os.path.join(props, fname),
+                       f"{what} - procedural, CC0\n{frames[k]} bone frame of male_08_shirt_tie, inches")
+    lc.paint(os.path.join(props, "cast_plaster.jpg"), os.path.join(props, "cast_plaster_n.png"))
+    lc.paint_shoe(os.path.join(props, "cast_shoe.jpg"))

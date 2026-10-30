@@ -2,7 +2,7 @@
 	["self"] = {
 		["ClassName"] = "group",
 		["UniqueID"] = "0496be0753e79529920b95e5de09201cd54cf200aaf2426c3d928f20356811a0",
-		["Name"] = "Old man (male_08) - posture, cane, cigarette, glasses, oxygen",
+		["Name"] = "Old man (male_08) - posture, cane, cigarette, glasses, leg cast, oxygen",
 		["OwnerName"] = "self",
 		["EditorExpand"] = true,
 	},
@@ -1720,14 +1720,101 @@
 		[7] = {
 			["self"] = {
 				["ClassName"] = "group",
-				["UniqueID"] = "e4928300dc47c35a356248cd21a37fae2ed11383f903d710d7e0328be0e6a139",
+				["UniqueID"] = "9aa3be644f70223b8aba9e2f51c50a5f3cabb05c57dbbb75c780c3ad9dd02dc0",
+				["Name"] = "leg cast  [pac_event cast]",
+			},
+			["children"] = {
+				[1] = {
+					["self"] = {
+						["ClassName"] = "event",
+						["UniqueID"] = "7bf61fa83089fc3cc30f55bba79ebdc8948f16b3c4dd5ef83d09ebf71c8c1be8",
+						["Name"] = "toggle with: pac_event cast 2",
+						["Event"] = "command",
+						["Arguments"] = "cast@@0@@0",
+						["Operator"] = "equal",
+						["Invert"] = true,
+					},
+					["children"] = {
+					},
+				},
+				[2] = {
+					["self"] = {
+						["ClassName"] = "material_3d",
+						["UniqueID"] = "395c8467ee2bb4c39b56c6a14d017636d6d577653f033a367bb5bcf985cf6232",
+						["Name"] = "cast_plaster",
+						["basetexture"] = "https://raw.githubusercontent.com/Warmug/pac-oldman/main/props/cast_plaster.jpg",
+						["bumpmap"] = "https://raw.githubusercontent.com/Warmug/pac-oldman/main/props/cast_plaster_n.png",
+						["halflambert"] = true,
+					},
+					["children"] = {
+					},
+				},
+				[3] = {
+					["self"] = {
+						["ClassName"] = "material_3d",
+						["UniqueID"] = "c8f2785cb2c985006f099ea6c51d0a94872e2fb6db147ffb28bdbcdd27ed745b",
+						["Name"] = "cast_shoe",
+						["basetexture"] = "https://raw.githubusercontent.com/Warmug/pac-oldman/main/props/cast_shoe.jpg",
+						["bumpmap"] = "https://raw.githubusercontent.com/Warmug/pac-oldman/main/props/flat_n.png",
+					},
+					["children"] = {
+					},
+				},
+				[4] = {
+					["self"] = {
+						["ClassName"] = "model2",
+						["UniqueID"] = "8e6535f6ace3c8ad63cc4c816b0b4b7eb8e781d28f3b3a66bbfc51fad2e6595c",
+						["Name"] = "plaster cast",
+						["Model"] = "https://raw.githubusercontent.com/Warmug/pac-oldman/main/props/cast_plaster.obj",
+						["Bone"] = "left calf",
+						["Material"] = "cast_plaster",
+						["Position"] = Vector(0, 0, 0),
+						["Angles"] = Angle(0, 0, 0),
+					},
+					["children"] = {
+					},
+				},
+				[5] = {
+					["self"] = {
+						["ClassName"] = "model2",
+						["UniqueID"] = "494cba7dadf60728aa1f7d9c6c685eac851cdf2a039c3084bc25c41080c7485c",
+						["Name"] = "cast shoe",
+						["Model"] = "https://raw.githubusercontent.com/Warmug/pac-oldman/main/props/cast_shoe.obj",
+						["Bone"] = "left foot",
+						["Material"] = "cast_shoe",
+						["Position"] = Vector(0, 0, 0),
+						["Angles"] = Angle(0, 0, 0),
+					},
+					["children"] = {
+					},
+				},
+				[6] = {
+					["self"] = {
+						["ClassName"] = "model2",
+						["UniqueID"] = "af767c247038dcf4aaaa7320d0f242ca41ef761f76ffb581fd3098153fd109b2",
+						["Name"] = "cast shoe toe",
+						["Model"] = "https://raw.githubusercontent.com/Warmug/pac-oldman/main/props/cast_shoe_toe.obj",
+						["Bone"] = "left toe",
+						["Material"] = "cast_shoe",
+						["Position"] = Vector(0, 0, 0),
+						["Angles"] = Angle(0, 0, 0),
+					},
+					["children"] = {
+					},
+				},
+			},
+		},
+		[8] = {
+			["self"] = {
+				["ClassName"] = "group",
+				["UniqueID"] = "9acaf15849a0713225c4cca36654ba5270e2dcf12512da74fee66b42616b7072",
 				["Name"] = "oxygen mask  [pac_event mask]",
 			},
 			["children"] = {
 				[1] = {
 					["self"] = {
 						["ClassName"] = "event",
-						["UniqueID"] = "67c717c89719bd0aa0940cf9689a1e3311d516603953e0960e3a08411b3265a4",
+						["UniqueID"] = "9e1c1b16ca75fccaff3f9782e88d173e024907f5f6ba915883204aa94e266107",
 						["Name"] = "toggle with: pac_event mask 2",
 						["Event"] = "command",
 						["Arguments"] = "mask@@0@@0",
@@ -1740,7 +1827,7 @@
 				[2] = {
 					["self"] = {
 						["ClassName"] = "material_3d",
-						["UniqueID"] = "cae8a77c6d4dda1885fdd9cc43d67f0a1cf824fe75cc3e0deb7b933c145f7daa",
+						["UniqueID"] = "55ce591d99bd376848f85fd48c38c37f2e57067b598b294317e5941cb5b680be",
 						["Name"] = "o2_mask_plastic",
 						["basetexture"] = "https://raw.githubusercontent.com/Warmug/pac-oldman/main/props/o2_mask.png",
 						["bumpmap"] = "https://raw.githubusercontent.com/Warmug/pac-oldman/main/props/flat_n.png",
@@ -1758,7 +1845,7 @@
 				[3] = {
 					["self"] = {
 						["ClassName"] = "material_3d",
-						["UniqueID"] = "2616083e23b943c19d09089f21159fb4d6df160001f005b336e0858b50d1a3f6",
+						["UniqueID"] = "050054dc3a7176dd85488647959c8ec76465a7cd2014738eb3fc530ced1c72b1",
 						["Name"] = "o2_mask_strap",
 						["basetexture"] = "https://raw.githubusercontent.com/Warmug/pac-oldman/main/props/o2_strap.jpg",
 						["bumpmap"] = "https://raw.githubusercontent.com/Warmug/pac-oldman/main/props/flat_n.png",
@@ -1773,7 +1860,7 @@
 				[4] = {
 					["self"] = {
 						["ClassName"] = "material_2d",
-						["UniqueID"] = "e4ce7dc3fe3239e5c3ddb5826beaf6874ecfc069fbdbaac7b23309ec302c6ff2",
+						["UniqueID"] = "30d160539df0411e58fcf433ec57981153637978f429255dfedf59f6df32d4b3",
 						["Name"] = "o2_tube",
 						["basetexture"] = "https://raw.githubusercontent.com/Warmug/pac-oldman/main/props/o2_tube.png",
 						["vertexcolor"] = true,
@@ -1786,7 +1873,7 @@
 				[5] = {
 					["self"] = {
 						["ClassName"] = "model2",
-						["UniqueID"] = "e92132498333f4d97ab5dbcab07b2f70962966f255d163fd2603495d1dbf13cc",
+						["UniqueID"] = "75ebbdbc62d7c755b8f096286f17ef7015780bf7f9d4db12fb604b708682916f",
 						["Name"] = "mask shell",
 						["Model"] = "https://raw.githubusercontent.com/Warmug/pac-oldman/main/props/o2_mask.obj",
 						["Bone"] = "head",
@@ -1802,7 +1889,7 @@
 				[6] = {
 					["self"] = {
 						["ClassName"] = "model2",
-						["UniqueID"] = "3eb2fb60a5a9dded2e6c5dc4d52836de707596ea4c4a82aeac338db1ff2aadf4",
+						["UniqueID"] = "1a353a72ec48e331e0bd21380884c853be2b58268ac7147ea844ab82f139cc89",
 						["Name"] = "elastic strap and nose clip",
 						["Model"] = "https://raw.githubusercontent.com/Warmug/pac-oldman/main/props/o2_strap.obj",
 						["Bone"] = "head",
@@ -1816,7 +1903,7 @@
 				[7] = {
 					["self"] = {
 						["ClassName"] = "sprite",
-						["UniqueID"] = "aa61bebba6c7cf24900126ecd583a3f0cf17c694a496fc1dabb587d4c54a60ec",
+						["UniqueID"] = "0178039ec46f044f81831e9cb80de05aa2a6e7e8280a65a5ead1d6421e13b137",
 						["Name"] = "tube clip on his shirt",
 						["Bone"] = "spine 1",
 						["Position"] = Vector(1.7106, 7.3011, 4.9561),
@@ -1831,12 +1918,12 @@
 				[8] = {
 					["self"] = {
 						["ClassName"] = "beam",
-						["UniqueID"] = "d37d6ef8f1630261de14188e8adcd17b9bdc4493aec4405a3be1d1c252177f76",
+						["UniqueID"] = "8064744955202d7bb1c29a2cfcedfd286e656a371e1094b803dfea93d9e9fa15",
 						["Name"] = "tube: mask down to his shirt",
 						["Bone"] = "head",
 						["Position"] = Vector(-0.9993, -7.5823, 0.0129),
 						["Angles"] = Angle(0.095, -140.1, -89.946),
-						["EndPointUID"] = "aa61bebba6c7cf24900126ecd583a3f0cf17c694a496fc1dabb587d4c54a60ec",
+						["EndPointUID"] = "0178039ec46f044f81831e9cb80de05aa2a6e7e8280a65a5ead1d6421e13b137",
 						["Material"] = "o2_tube",
 						["Width"] = 0.42,
 						["Bend"] = 2,
@@ -1854,17 +1941,17 @@
 				},
 			},
 		},
-		[8] = {
+		[9] = {
 			["self"] = {
 				["ClassName"] = "group",
-				["UniqueID"] = "4e678664a3ab9987823aa83d25a3d60dcd91f7b6a758edc02ab50c3a8e8f26e1",
+				["UniqueID"] = "4270e5efd9ebdb1a0543acb02fa3a3b83136063ed880965b0551306238c6eed3",
 				["Name"] = "oxygen tank cart  [pac_event tank]",
 			},
 			["children"] = {
 				[1] = {
 					["self"] = {
 						["ClassName"] = "event",
-						["UniqueID"] = "2ae4b928a5843e227ae921539af393e65b40608dca4214736aa90aaf8b989094",
+						["UniqueID"] = "fbf945d26e8cc35cda409528d4e3a6afbf1255328db4bff5806a58ca62e2be16",
 						["Name"] = "toggle with: pac_event tank 2",
 						["Event"] = "command",
 						["Arguments"] = "tank@@0@@0",
@@ -1877,7 +1964,7 @@
 				[2] = {
 					["self"] = {
 						["ClassName"] = "material_3d",
-						["UniqueID"] = "e628c5a30bdd583c63b8e402198f4d1a875fa40cc72a0ee4d7d34db0181cc61a",
+						["UniqueID"] = "dcec382fa341b7a8a4ce7786c524627591da7db6acabc164230839e24aa71599",
 						["Name"] = "o2_cart",
 						["basetexture"] = "https://raw.githubusercontent.com/Warmug/pac-oldman/main/props/o2_cart.jpg",
 						["bumpmap"] = "https://raw.githubusercontent.com/Warmug/pac-oldman/main/props/flat_n.png",
@@ -1892,7 +1979,7 @@
 				[3] = {
 					["self"] = {
 						["ClassName"] = "jiggle",
-						["UniqueID"] = "3eac81e3515eb7648bb527db250a0ecc6a3a125f73bbad7d1c54fa638d0879cb",
+						["UniqueID"] = "853e105dd66193b40e27f58321c77897251c1b757a3db2c9768f27ad47bdb2ed",
 						["Name"] = "cart rolls along beside him",
 						["Bone"] = "none",
 						["Position"] = Vector(-7, 23, 37.18),
@@ -1908,7 +1995,7 @@
 						[1] = {
 							["self"] = {
 								["ClassName"] = "model2",
-								["UniqueID"] = "5edc5b08175800c3f75d2b155397782d4d2304783cdde832eb4259378fe71c21",
+								["UniqueID"] = "136e66523a271a755f32c34d1d48551abaa65a8e31798843e92669fd6e0903d3",
 								["Name"] = "cylinder and cart",
 								["Model"] = "https://raw.githubusercontent.com/Warmug/pac-oldman/main/props/o2_cart.obj",
 								["Bone"] = "pelvis",
@@ -1922,7 +2009,7 @@
 						[2] = {
 							["self"] = {
 								["ClassName"] = "model2",
-								["UniqueID"] = "bcc59fcf0c63b11dd825ae26b9e7ddaf6a47eff7a69939200c954387d75bf511",
+								["UniqueID"] = "e6788dab105cdc16f9f4097db2d519252d1da7a2402ac97bf47f3f9c80948d61",
 								["Name"] = "wheel left",
 								["Model"] = "https://raw.githubusercontent.com/Warmug/pac-oldman/main/props/o2_wheel.obj",
 								["Bone"] = "pelvis",
@@ -1934,7 +2021,7 @@
 								[1] = {
 									["self"] = {
 										["ClassName"] = "proxy",
-										["UniqueID"] = "88e4914d0ef7312eb2088d8199781ff68e967a5f3978040e46a54a07a595e454",
+										["UniqueID"] = "51cf57019168ec40ee89cb03c13c55cbce6719a4c9a9a04f3431e93163ef5f38",
 										["Name"] = "wheel rolls when he walks",
 										["VariableName"] = "Angles",
 										["Expression"] = "owner_velocity_forward()*ftime()*22.037",
@@ -1950,7 +2037,7 @@
 						[3] = {
 							["self"] = {
 								["ClassName"] = "model2",
-								["UniqueID"] = "7808b446b3cd83f16c03a400fc3952ecf1a71bdfdcd9e450f4214a347c4d2068",
+								["UniqueID"] = "fd5ca4f36371251e1b7fc2f314ed60e6f00d9711332e28ece9b2d0215a1949e6",
 								["Name"] = "wheel right",
 								["Model"] = "https://raw.githubusercontent.com/Warmug/pac-oldman/main/props/o2_wheel.obj",
 								["Bone"] = "pelvis",
@@ -1962,7 +2049,7 @@
 								[1] = {
 									["self"] = {
 										["ClassName"] = "proxy",
-										["UniqueID"] = "e47ae2d8a82ec087cfcfe6e21c2ebb57d2e82d474d2ca552a3e2842e42e5f5fb",
+										["UniqueID"] = "717bf8ddf2a004667ca8eef128bcab025c805f1fcc9abfea39161de2c63042a9",
 										["Name"] = "wheel rolls when he walks",
 										["VariableName"] = "Angles",
 										["Expression"] = "owner_velocity_forward()*ftime()*22.037",
@@ -1978,7 +2065,7 @@
 						[4] = {
 							["self"] = {
 								["ClassName"] = "sprite",
-								["UniqueID"] = "d83e27f74f4d4903ef6c3ae97b6f9feda5be0c574ba846ea3ea4df0fbcc0e056",
+								["UniqueID"] = "22c1d0c6dba469128918278d65aef7ad3082252772fdaf54a7e58b7e8ce50471",
 								["Name"] = "tube connector on the regulator",
 								["Bone"] = "pelvis",
 								["Position"] = Vector(0, -2.9, 26.05),
@@ -1994,17 +2081,17 @@
 				},
 			},
 		},
-		[9] = {
+		[10] = {
 			["self"] = {
 				["ClassName"] = "group",
-				["UniqueID"] = "b55188f7f6b56d380d5ecfbed8b0fc9931c215b1152a5f1bc19e7e09dfcd123f",
+				["UniqueID"] = "b814b5e87cf19e3035083d7849e4f3c10c86ae979bdea2b3f77cde7183510fbc",
 				["Name"] = "oxygen tube to the tank (mask + tank)",
 			},
 			["children"] = {
 				[1] = {
 					["self"] = {
 						["ClassName"] = "event",
-						["UniqueID"] = "8229b5a2cd696daefbf1584649d5987d9f8da0e9799997ae7deb6210bbc4cb6b",
+						["UniqueID"] = "50e3dd0883eb23a87db361194479d1f0186dd70aaf253caf087e39f30c9e78e1",
 						["Name"] = "needs the mask on",
 						["Event"] = "command",
 						["Arguments"] = "mask@@0@@0",
@@ -2017,7 +2104,7 @@
 				[2] = {
 					["self"] = {
 						["ClassName"] = "event",
-						["UniqueID"] = "7ed28076643ed911a7aee7ca6b9233bc00e03ec71e0d68f52e19948e14ad767e",
+						["UniqueID"] = "6b93526ae8b41b820e0f05ad605f61002d55717ab266a612b7b134b3d69972bc",
 						["Name"] = "needs the tank on",
 						["Event"] = "command",
 						["Arguments"] = "tank@@0@@0",
@@ -2030,12 +2117,12 @@
 				[3] = {
 					["self"] = {
 						["ClassName"] = "beam",
-						["UniqueID"] = "aa5ca9621a5742ed76926321328ecfa5691831d17fcc1c34902b439909a790dc",
+						["UniqueID"] = "be7dfd4715516188ad0e3aa2fe5bcb3b2c633c2df4c216beb2cd98cd112a6108",
 						["Name"] = "tube: shirt to the tank",
 						["Bone"] = "spine 1",
 						["Position"] = Vector(1.7106, 7.3011, 4.9561),
 						["Angles"] = Angle(-0.001, 178.354, 90.998),
-						["EndPointUID"] = "d83e27f74f4d4903ef6c3ae97b6f9feda5be0c574ba846ea3ea4df0fbcc0e056",
+						["EndPointUID"] = "22c1d0c6dba469128918278d65aef7ad3082252772fdaf54a7e58b7e8ce50471",
 						["Material"] = "o2_tube",
 						["Width"] = 0.42,
 						["Bend"] = 9,

@@ -4,7 +4,7 @@
     python3 generator/make_outfit.py [--dump path/to/male08_dump.txt]   (default: build/male08/male08_dump.txt)
 
 Writes outfit/old_man_2_male08.txt plus the meshes/textures under props/.
-Toggles: pac_event cane 2 | smoke 2 | glasses 2 | mask 2 | tank 2
+Toggles: pac_event cane 2 | smoke 2 | glasses 2 | mask 2 | tank 2 | cast 2
 """
 import argparse
 import os
@@ -250,6 +250,27 @@ def glasses_group(fit):
     )
 
 
+# --- leg cast -----------------------------------------------------------------------
+
+def cast_group(fit):
+    """Plaster short-leg cast on his left leg (the cane is in his right hand, the side you hold a
+    cane on for a bad left leg) and a post-op cast shoe. Each piece rides its own bone, modelled in
+    that bone's frame, so it follows the animation without the leg or shoe poking through."""
+    bones = getattr(fit, "cast_bones", None)
+    if not bones:
+        return None
+    return group(
+        "leg cast  [pac_event cast]",
+        command_event("toggle with: pac_event cast 2", "cast", True),
+        material_3d("cast_plaster", basetexture=url("props/cast_plaster.jpg"), bumpmap=url("props/cast_plaster_n.png"),
+                    halflambert=True),
+        material_3d("cast_shoe", basetexture=url("props/cast_shoe.jpg"), bumpmap=url("props/flat_n.png")),
+        model("plaster cast", url("props/cast_plaster.obj"), bones["plaster"], "cast_plaster"),
+        model("cast shoe", url("props/cast_shoe.obj"), bones["shoe"], "cast_shoe"),
+        model("cast shoe toe", url("props/cast_shoe_toe.obj"), bones["toe"], "cast_shoe"),
+    )
+
+
 # --- oxygen -------------------------------------------------------------------------
 
 def tube_beam(name, start_bone, start_pos, start_ang, end_part, bend):
@@ -318,8 +339,8 @@ def build(fit):
     always, unarmed, armed = posture(fit)
     mask, tank, tube = oxygen_groups(fit)
     return group(
-        "Old man (male_08) - posture, cane, cigarette, glasses, oxygen",
-        always, unarmed, armed, cane_group(fit), cig_group(fit), glasses_group(fit), mask, tank, tube,
+        "Old man (male_08) - posture, cane, cigarette, glasses, leg cast, oxygen",
+        always, unarmed, armed, cane_group(fit), cig_group(fit), glasses_group(fit), cast_group(fit), mask, tank, tube,
         OwnerName="self", EditorExpand=True,
     )
 

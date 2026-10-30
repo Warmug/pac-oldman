@@ -151,8 +151,8 @@ def face_views(scene, mats, model, prefix=""):
 
 
 def render_main(model, outfit, textures, out):
-    """Everything on (mask, tank, cane, glasses), standing: full body and the mask close up."""
-    everything = {"cane", "glasses", "mask", "tank"}
+    """Everything on (mask, tank, cane, glasses, cast), standing: full body and the mask close up."""
+    everything = {"cane", "glasses", "mask", "tank", "cast"}
     scene, mats, _, _ = posed_scene(model, outfit, textures, "aim_normal_0", sim.State(everything, "normal", time=6.0))
     c = np.array([-1.0, 9.0, 35.0])          # between him and the cart
     scene.view("full_front_left", c + np.array([92, 62, 6]), c, 36)
@@ -183,6 +183,25 @@ def render_smoking(model, outfit, textures, out):
     return paths, titles
 
 
+def render_cast(model, outfit, textures, out):
+    """The leg cast close up: standing from three sides, mid-stride, push-off and crouching."""
+    paths, titles = [], []
+    shots = (("aim_normal_0", 0, False, "standing", (("outer side", (4, 44, 6)), ("front", (42, 12, 8)), ("back", (-38, 16, 12)))),
+             ("walk_0.25", 90, False, "walking", (("outer side", (4, 44, 6)),)),
+             ("walk_0.75", 90, False, "push-off", (("outer side", (4, 44, 6)),)),
+             ("crouch_idle", 0, True, "crouching", (("outer side", (4, 44, 10)),)))
+    for label, speed, crouch, tag, views in shots:
+        st = sim.State({"cane", "cast"}, "normal", speed=speed, time=6.0, crouching=crouch)
+        scene, mats, _, _ = posed_scene(model, outfit, textures, label, st, 700, 700)
+        ankle = mats[model.bone("ValveBiped.Bip01_L_Foot")][:3, 3]
+        c = ankle + np.array([0, 0, 7.5])
+        for vname, off in views:
+            scene.view(f"cast_{label.replace('.', '_')}_{vname.replace(' ', '_')}", c + np.array(off), c, 36)
+            titles.append(f"cast, {tag}: {vname}")
+        paths += scene.render(os.path.join(out, "cast"))
+    return paths, titles
+
+
 def render_armed(model, outfit, textures, out):
     """Weapon out: cane on the belt, cigarette in the mouth, plain weapon posture."""
     paths, titles = [], []
@@ -208,6 +227,8 @@ def main():
     outfit = sim.Outfit(args.outfit)
     textures = BodyTextures(model, os.path.dirname(os.path.abspath(args.dump)))
     print(render_main(model, outfit, textures, args.out))
+    cp, ct = render_cast(model, outfit, textures, args.out)
+    print(contact_sheet(cp, ct, 3, os.path.join(args.out, "sheet_leg_cast.png")))
     sp, st = render_smoking(model, outfit, textures, args.out)
     print(contact_sheet(sp, st, 4, os.path.join(args.out, "sheet_smoking.png")))
     ap_, at = render_armed(model, outfit, textures, args.out)
