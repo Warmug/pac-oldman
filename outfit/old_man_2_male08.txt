@@ -687,7 +687,8 @@
 								["Bone"] = "right hand",
 								["Material"] = "cane_wood",
 								["Position"] = Vector(2.79, -0.133, -0.031),
-								["Angles"] = Angle(9.805, 7.854, -4.986),
+								["Angles"] = Angle(5.202, 10.364, -3.419),
+								["Scale"] = Vector(1, 1, 0.93),
 								["AimPartUID"] = "a9b4db3914792e97e021cd455995e5b0ee88608f3b38be7de7fc189e18285ee2",
 							},
 							["children"] = {
@@ -699,7 +700,7 @@
 								["UniqueID"] = "a9b4db3914792e97e021cd455995e5b0ee88608f3b38be7de7fc189e18285ee2",
 								["Name"] = "keeps the cane upright (the cane aims at this)",
 								["Bone"] = "pelvis",
-								["Position"] = Vector(-26.064, -4.956, 406.726),
+								["Position"] = Vector(-32.448, -6.974, 401.647),
 								["Angles"] = Angle(0, 0, 0),
 								["SpritePath"] = "sprites/light_glow02_add",
 								["Size"] = 0,
@@ -879,7 +880,7 @@
 								["UniqueID"] = "d203cc4da2895e379d16a1726490077620ab0abfe50e89378dbf958b1193b0a4",
 								["Name"] = "cane grip: right upperarm",
 								["Bone"] = "right upperarm",
-								["Angles"] = Angle(0.64, -24.93, 7.94),
+								["Angles"] = Angle(9.55, -9.73, 13.79),
 							},
 							["children"] = {
 							},
@@ -890,7 +891,7 @@
 								["UniqueID"] = "904f029ebd0b38454e1d2eea72700cb006f93229f3b7a9a8e8cc6e0f66b1c57a",
 								["Name"] = "cane grip: right forearm",
 								["Bone"] = "right forearm",
-								["Angles"] = Angle(0, -35.24, 0),
+								["Angles"] = Angle(0, -23.18, 0),
 							},
 							["children"] = {
 							},
@@ -901,7 +902,7 @@
 								["UniqueID"] = "7bd766ac73be76e10c999b4890c67e8cac16497cb6d17fe640792f4a4cc9d939",
 								["Name"] = "cane grip: right hand",
 								["Bone"] = "right hand",
-								["Angles"] = Angle(-52.85, 10.49, 3.94),
+								["Angles"] = Angle(-24.06, -8.08, 7.64),
 							},
 							["children"] = {
 							},
@@ -938,6 +939,7 @@
 								["Material"] = "cane_wood",
 								["Position"] = Vector(-6.844, 2.597, -2.988),
 								["Angles"] = Angle(-8.82, -15.36, -59.11),
+								["Scale"] = Vector(1, 1, 0.93),
 							},
 							["children"] = {
 							},
@@ -1256,7 +1258,7 @@
 										["UniqueID"] = "d1a0ea7b3db117716e69f6abe5774a1701e78b095f7f6a463bef288cd8e9b020",
 										["Name"] = "smoking arm: left upperarm",
 										["Bone"] = "left upperarm",
-										["Angles"] = Angle(13.01, 8.53, -25.27),
+										["Angles"] = Angle(-29.76, -25.61, -23.27),
 									},
 									["children"] = {
 										[1] = {
@@ -1265,7 +1267,7 @@
 												["UniqueID"] = "8676ea8818d9c476879396090afc4238fbd72166e5967d568688be6b6a5eb61a",
 												["Name"] = "take a drag every 13s while standing still",
 												["VariableName"] = "Angles",
-												["Expression"] = "13.01 + (18.78)*(clamp(min((time()%13)/1.0, (3.4-(time()%13))/1.0), 0, 1)*clamp(min((time()%13)/1.0, (3.4-(time()%13))/1.0), 0, 1)*(3-2*clamp(min((time()%13)/1.0, (3.4-(time()%13))/1.0), 0, 1)))*(1 - clamp(owner_velocity_length()/50, 0, 1)), 8.53 + (-80.58)*(clamp(min((time()%13)/1.0, (3.4-(time()%13))/1.0), 0, 1)*clamp(min((time()%13)/1.0, (3.4-(time()%13))/1.0), 0, 1)*(3-2*clamp(min((time()%13)/1.0, (3.4-(time()%13))/1.0), 0, 1)))*(1 - clamp(owner_velocity_length()/50, 0, 1)), -25.27 + (28.08)*(clamp(min((time()%13)/1.0, (3.4-(time()%13))/1.0), 0, 1)*clamp(min((time()%13)/1.0, (3.4-(time()%13))/1.0), 0, 1)*(3-2*clamp(min((time()%13)/1.0, (3.4-(time()%13))/1.0), 0, 1)))*(1 - clamp(owner_velocity_length()/50, 0, 1))",
+												["Expression"] = "-29.76 + (-12.08)*(clamp(min((time()%13)/1.0, (3.4-(time()%13))/1.0), 0, 1)*clamp(min((time()%13)/1.0, (3.4-(time()%13))/1.0), 0, 1)*(3-2*clamp(min((time()%13)/1.0, (3.4-(time()%13))/1.0), 0, 1)))*(1 - clamp(owner_velocity_length()/50, 0, 1)), -25.61 + (-63.21)*(clamp(min((time()%13)/1.0, (3.4-(time()%13))/1.0), 0, 1)*clamp(min((time()%13)/1.0, (3.4-(time()%13))/1.0), 0, 1)*(3-2*clamp(min((time()%13)/1.0, (3.4-(time()%13))/1.0), 0, 1)))*(1 - clamp(owner_velocity_length()/50, 0, 1)), -23.27 + (48.46)*(clamp(min((time()%13)/1.0, (3.4-(time()%13))/1.0), 0, 1)*clamp(min((time()%13)/1.0, (3.4-(time()%13))/1.0), 0, 1)*(3-2*clamp(min((time()%13)/1.0, (3.4-(time()%13))/1.0), 0, 1)))*(1 - clamp(owner_velocity_length()/50, 0, 1))",
 											},
 											["children"] = {
 											},
@@ -1278,7 +1280,7 @@
 										["UniqueID"] = "e116f42e24bbb6ed3cd8dd33297e4efd8e870a61b65f48a0ac9d59f4c72a09d8",
 										["Name"] = "smoking arm: left forearm",
 										["Bone"] = "left forearm",
-										["Angles"] = Angle(0, -88.22, 0),
+										["Angles"] = Angle(0, -87.86, -0.31),
 									},
 									["children"] = {
 										[1] = {
@@ -1287,7 +1289,7 @@
 												["UniqueID"] = "1b75fc815f70f0b7bd1dab3c02ddea4d1ba609b2847857fa601f63fb82dce13e",
 												["Name"] = "take a drag every 13s while standing still",
 												["VariableName"] = "Angles",
-												["Expression"] = "0.00 + (0.00)*(clamp(min((time()%13)/1.0, (3.4-(time()%13))/1.0), 0, 1)*clamp(min((time()%13)/1.0, (3.4-(time()%13))/1.0), 0, 1)*(3-2*clamp(min((time()%13)/1.0, (3.4-(time()%13))/1.0), 0, 1)))*(1 - clamp(owner_velocity_length()/50, 0, 1)), -88.22 + (-17.29)*(clamp(min((time()%13)/1.0, (3.4-(time()%13))/1.0), 0, 1)*clamp(min((time()%13)/1.0, (3.4-(time()%13))/1.0), 0, 1)*(3-2*clamp(min((time()%13)/1.0, (3.4-(time()%13))/1.0), 0, 1)))*(1 - clamp(owner_velocity_length()/50, 0, 1)), 0.00 + (0.00)*(clamp(min((time()%13)/1.0, (3.4-(time()%13))/1.0), 0, 1)*clamp(min((time()%13)/1.0, (3.4-(time()%13))/1.0), 0, 1)*(3-2*clamp(min((time()%13)/1.0, (3.4-(time()%13))/1.0), 0, 1)))*(1 - clamp(owner_velocity_length()/50, 0, 1))",
+												["Expression"] = "0.00 + (0.00)*(clamp(min((time()%13)/1.0, (3.4-(time()%13))/1.0), 0, 1)*clamp(min((time()%13)/1.0, (3.4-(time()%13))/1.0), 0, 1)*(3-2*clamp(min((time()%13)/1.0, (3.4-(time()%13))/1.0), 0, 1)))*(1 - clamp(owner_velocity_length()/50, 0, 1)), -87.86 + (-16.12)*(clamp(min((time()%13)/1.0, (3.4-(time()%13))/1.0), 0, 1)*clamp(min((time()%13)/1.0, (3.4-(time()%13))/1.0), 0, 1)*(3-2*clamp(min((time()%13)/1.0, (3.4-(time()%13))/1.0), 0, 1)))*(1 - clamp(owner_velocity_length()/50, 0, 1)), -0.31 + (-27.45)*(clamp(min((time()%13)/1.0, (3.4-(time()%13))/1.0), 0, 1)*clamp(min((time()%13)/1.0, (3.4-(time()%13))/1.0), 0, 1)*(3-2*clamp(min((time()%13)/1.0, (3.4-(time()%13))/1.0), 0, 1)))*(1 - clamp(owner_velocity_length()/50, 0, 1))",
 											},
 											["children"] = {
 											},
@@ -1300,7 +1302,7 @@
 										["UniqueID"] = "736642695a34ca4a20567f155c41cc0e09791395aeb92ac68487e7e9ec1a5c30",
 										["Name"] = "smoking arm: left hand",
 										["Bone"] = "left hand",
-										["Angles"] = Angle(-38.3, -12.32, -13.34),
+										["Angles"] = Angle(-26.28, -2.55, -23.03),
 									},
 									["children"] = {
 										[1] = {
@@ -1309,7 +1311,7 @@
 												["UniqueID"] = "17f0b278b378dd8b19b78c2957e9796ed464e3cae0ae2d386b9f20b9a5452e89",
 												["Name"] = "take a drag every 13s while standing still",
 												["VariableName"] = "Angles",
-												["Expression"] = "-38.30 + (16.59)*(clamp(min((time()%13)/1.0, (3.4-(time()%13))/1.0), 0, 1)*clamp(min((time()%13)/1.0, (3.4-(time()%13))/1.0), 0, 1)*(3-2*clamp(min((time()%13)/1.0, (3.4-(time()%13))/1.0), 0, 1)))*(1 - clamp(owner_velocity_length()/50, 0, 1)), -12.32 + (17.12)*(clamp(min((time()%13)/1.0, (3.4-(time()%13))/1.0), 0, 1)*clamp(min((time()%13)/1.0, (3.4-(time()%13))/1.0), 0, 1)*(3-2*clamp(min((time()%13)/1.0, (3.4-(time()%13))/1.0), 0, 1)))*(1 - clamp(owner_velocity_length()/50, 0, 1)), -13.34 + (-8.31)*(clamp(min((time()%13)/1.0, (3.4-(time()%13))/1.0), 0, 1)*clamp(min((time()%13)/1.0, (3.4-(time()%13))/1.0), 0, 1)*(3-2*clamp(min((time()%13)/1.0, (3.4-(time()%13))/1.0), 0, 1)))*(1 - clamp(owner_velocity_length()/50, 0, 1))",
+												["Expression"] = "-26.28 + (1.63)*(clamp(min((time()%13)/1.0, (3.4-(time()%13))/1.0), 0, 1)*clamp(min((time()%13)/1.0, (3.4-(time()%13))/1.0), 0, 1)*(3-2*clamp(min((time()%13)/1.0, (3.4-(time()%13))/1.0), 0, 1)))*(1 - clamp(owner_velocity_length()/50, 0, 1)), -2.55 + (1.26)*(clamp(min((time()%13)/1.0, (3.4-(time()%13))/1.0), 0, 1)*clamp(min((time()%13)/1.0, (3.4-(time()%13))/1.0), 0, 1)*(3-2*clamp(min((time()%13)/1.0, (3.4-(time()%13))/1.0), 0, 1)))*(1 - clamp(owner_velocity_length()/50, 0, 1)), -23.03 + (-1.17)*(clamp(min((time()%13)/1.0, (3.4-(time()%13))/1.0), 0, 1)*clamp(min((time()%13)/1.0, (3.4-(time()%13))/1.0), 0, 1)*(3-2*clamp(min((time()%13)/1.0, (3.4-(time()%13))/1.0), 0, 1)))*(1 - clamp(owner_velocity_length()/50, 0, 1))",
 											},
 											["children"] = {
 											},
@@ -1383,7 +1385,7 @@
 										["UniqueID"] = "1f4810b8e58de78e1278f9c4708080db8e702c4fd29a8ae474a230f77794dee8",
 										["Name"] = "smoking arm: left upperarm",
 										["Bone"] = "left upperarm",
-										["Angles"] = Angle(13.01, 8.53, -25.27),
+										["Angles"] = Angle(-29.76, -25.61, -23.27),
 									},
 									["children"] = {
 									},
@@ -1394,7 +1396,7 @@
 										["UniqueID"] = "f61e18546964eac28c426a51ddf2be5355399c0a025f5f2e9609e7a978ed9820",
 										["Name"] = "smoking arm: left forearm",
 										["Bone"] = "left forearm",
-										["Angles"] = Angle(0, -88.22, 0),
+										["Angles"] = Angle(0, -87.86, -0.31),
 									},
 									["children"] = {
 									},
@@ -1405,7 +1407,7 @@
 										["UniqueID"] = "6a4a88f1e7fa189ed2b743f83a22bc2a7caadd4fe4924c6cfd8be7e21bb97cd9",
 										["Name"] = "smoking arm: left hand",
 										["Bone"] = "left hand",
-										["Angles"] = Angle(-38.3, -12.32, -13.34),
+										["Angles"] = Angle(-26.28, -2.55, -23.03),
 									},
 									["children"] = {
 									},
@@ -1677,7 +1679,6 @@
 						["Name"] = "oldman_lens",
 						["basetexture"] = "https://raw.githubusercontent.com/Warmug/pac-oldman/main/props/lens.png",
 						["translucent"] = true,
-						["alpha"] = 0.3,
 						["envmap"] = "env_cubemap",
 						["envmaptint"] = Vector(0.25, 0.25, 0.25),
 					},
@@ -1708,6 +1709,8 @@
 						["Material"] = "oldman_lens",
 						["Position"] = Vector(0, 0, 0),
 						["Angles"] = Angle(0, 0, 0),
+						["Alpha"] = 0.3,
+						["Translucent"] = true,
 					},
 					["children"] = {
 					},
@@ -1742,7 +1745,6 @@
 						["basetexture"] = "https://raw.githubusercontent.com/Warmug/pac-oldman/main/props/o2_mask.png",
 						["bumpmap"] = "https://raw.githubusercontent.com/Warmug/pac-oldman/main/props/flat_n.png",
 						["translucent"] = true,
-						["alpha"] = 0.42,
 						["phong"] = true,
 						["phongboost"] = 8,
 						["phongexponent"] = 60,
@@ -1791,6 +1793,8 @@
 						["Material"] = "o2_mask_plastic",
 						["Position"] = Vector(0, 0, 0),
 						["Angles"] = Angle(0, 0, 0),
+						["Alpha"] = 0.35,
+						["Translucent"] = true,
 					},
 					["children"] = {
 					},

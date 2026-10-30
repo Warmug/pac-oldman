@@ -287,6 +287,10 @@ def apply(fit, model):
     fit_glasses(fit, hd)
     fit_face_props(fit, hd)
     fit_cart_and_tube(fit, model, hd)
+    # the cane is shortened 7% along its shaft: hunched and on bent knees his wrist hangs lower than
+    # the cane's full height, which forced a ~59 degree elbow bend; this gives the ~30 degrees of a
+    # cane fitted to the person
+    fit.cane_scale = 0.93
     fit_cane_belt(fit, model)
     fit.glasses_obj = "props/glasses_m08.obj"
     fit.lenses_obj = "props/lenses_m08.obj"
