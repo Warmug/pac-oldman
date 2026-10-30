@@ -1,22 +1,17 @@
-"""Plaster long-leg cast (upper thigh to ankle) with a post-op cast shoe, fitted to the model's
-leg and shoe.
+"""Plaster long-leg cast, upper thigh to just above the ankle, fitted to the model's leg.
 
-Each piece rides its own bone, so it moves with the animations without the trousers or shoe poking
-through and without the foot sinking into the floor:
+Each piece rides its own bone, so it moves with the animations without the trousers poking through:
 - thigh plaster on the thigh bone, a stockinette cuff rolled over its top edge, which sits higher
   on the outside of the thigh than toward the groin,
 - the knee: a rounded drum around the knee's hinge axis on the calf bone. The animations bend the
   knee up to 115 degrees; turning about its own axis the drum stays put, so no gap opens in front.
   Behind the knee the thigh and shin plaster overlap instead (no lump in the hollow of the knee),
-- shin plaster on the calf bone down over the ankle,
-- cast shoe on the foot bone (dark fabric upper, two Velcro straps, rubber sole) over the foot
-  and the bottom of the plaster, and its toe on the toe bone, tucked in at the ball of the foot.
-The ankle and the ball of the foot bend up to 30 degrees when walking; a shoe flexing there reads
-naturally, a rigid plaster foot would not.
+- shin plaster on the calf bone, ending just above the ankle with the stockinette rolled over the
+  edge, so the foot and shoe move freely below it.
 
-Every piece is lofted from convex hulls of the leg/shoe surface in thin slabs along the piece's
-axis (points taken from many animation poses, so it fits however the joints bend), smoothed and
-pushed out by the cast's thickness.
+Every piece is lofted from convex hulls of the leg's surface in thin slabs along the piece's axis
+(points taken from many animation poses, so it fits however the joints bend), smoothed and pushed
+out by the cast's thickness.
 """
 import numpy as np
 from PIL import Image, ImageFilter
@@ -71,7 +66,7 @@ def section_field(pts, axis, e1, e2, s_values, n_ang, slab, min_pts=6):
         x, y = poly[:, 0], poly[:, 1]
         cross = x * np.roll(y, -1) - np.roll(x, -1) * y
         area = cross.sum() / 2
-        if area < 0.05:                    # a sliver (the very tip of a shoe): treat as missing
+        if area < 0.05:                    # a sliver at the very end of a piece: treat as missing
             continue
         c = np.array([((x + np.roll(x, -1)) * cross).sum(), ((y + np.roll(y, -1)) * cross).sum()]) / (6 * area)
         r = _ray_polygon(c, poly, angles)
@@ -148,10 +143,12 @@ def edge(back, side_pos, front, side_neg):
     return f
 
 
-def plaster_tube(pts, top, bottom, offset=0.75, thickness=0.45, n_ang=48, n_len=44, cuff=True):
+def plaster_tube(pts, top, bottom, offset=0.75, thickness=0.45, n_ang=48, n_len=60, cuff_top=True,
+                 cuff_bottom=False):
     """Plaster around a limb in its bone frame: x runs along the limb, y to the back, z to one side.
-    top(u)/bottom(u) give the ends (u: 0..1 around, 0 = +y). With cuff, a stockinette band is rolled
-    over the top edge; otherwise both ends are plain and open (they sit inside the knee piece)."""
+    top(u)/bottom(u) give the ends (u: 0..1 around, 0 = +y). An end with a cuff has the stockinette
+    rolled over it (inner wall, rounded rim, knitted band); an end without one is plain and open
+    (it sits inside the knee piece)."""
     axis, e1, e2 = np.eye(3)
     u_s = np.linspace(0, 1, 97)
     lo, hi = float(np.min(top(u_s))), float(np.max(bottom(u_s)))
@@ -166,46 +163,59 @@ def plaster_tube(pts, top, bottom, offset=0.75, thickness=0.45, n_ang=48, n_len=
         th = 2 * np.pi * u
         return np.stack([s, c[..., 0] + r * np.cos(th), c[..., 1] + r * np.sin(th)], -1)
 
-    T0 = 0.24 if cuff else 0.0     # profile share of the rim and cuff
+    seg = 0.05                                   # profile share of each cuff sub-segment
+    T0 = 3 * seg if cuff_top else 0.0
+    T1 = 1 - 3 * seg if cuff_bottom else 1.0
+    band, depth = 0.85, 0.9
 
     def fn(u, t):
         st, sb = top(u), bottom(u)
         out = np.zeros(u.shape + (3,))
-        if cuff:
-            # inner wall (0..0.08) -> rolled rim (0.08..0.16) -> cuff band (0.16..0.24)
-            k = t < 0.08
-            tt = t[k] / 0.08
-            out[k] = point(u[k], st[k] + 0.9 * (1 - tt), -thickness)
-            k = (t >= 0.08) & (t < 0.16)
-            a = np.pi * (t[k] - 0.08) / 0.08
+        if cuff_top:                                             # inner wall -> rim -> band
+            k = t < seg
+            out[k] = point(u[k], st[k] + depth * (1 - t[k] / seg), -thickness)
+            k = (t >= seg) & (t < 2 * seg)
+            a = np.pi * (t[k] - seg) / seg
             out[k] = point(u[k], st[k] - np.sin(a) * thickness * 0.55, -thickness / 2 - np.cos(a) * thickness / 2)
-            k = (t >= 0.16) & (t < 0.24)
-            tt = (t[k] - 0.16) / 0.08
-            out[k] = point(u[k], st[k] + 0.85 * tt, 0.12 * np.sin(np.pi * np.minimum(tt * 1.4, 1)))
-        k = t >= T0
-        tt = (t[k] - T0) / (1 - T0)
-        s0 = st[k] + (0.85 if cuff else 0.0)
-        out[k] = point(u[k], s0 + (sb[k] - s0) * tt)
+            k = (t >= 2 * seg) & (t < T0)
+            tt = (t[k] - 2 * seg) / seg
+            out[k] = point(u[k], st[k] + band * tt, 0.12 * np.sin(np.pi * np.minimum(tt * 1.4, 1)))
+        s0 = st + (band if cuff_top else 0.0)
+        s1 = sb - (band if cuff_bottom else 0.0)
+        k = (t >= T0) & (t <= T1)
+        tt = (t[k] - T0) / (T1 - T0)
+        out[k] = point(u[k], s0[k] + (s1[k] - s0[k]) * tt)
+        if cuff_bottom:                                          # band -> rim -> inner wall
+            k = (t > T1) & (t < T1 + seg)
+            tt = (t[k] - T1) / seg
+            out[k] = point(u[k], s1[k] + band * tt, 0.12 * np.sin(np.pi * np.minimum((1 - tt) * 1.4, 1)))
+            k = (t >= T1 + seg) & (t < T1 + 2 * seg)
+            a = np.pi * (t[k] - T1 - seg) / seg
+            out[k] = point(u[k], sb[k] + np.sin(a) * thickness * 0.55, -thickness / 2 + np.cos(a) * thickness / 2)
+            k = t >= T1 + 2 * seg
+            out[k] = point(u[k], sb[k] - depth * (t[k] - T1 - 2 * seg) / seg, -thickness)
         return out
 
     uu, tt = np.meshgrid(np.linspace(0, 1, n_ang + 1), np.linspace(0, 1, n_len + 1), indexing="ij")
     P = fn(uu, tt)
-    if cuff:
-        v = np.where(tt < T0, CUFF_V[0] + (CUFF_V[1] - CUFF_V[0]) * tt / T0,
-                     PLASTER_V[0] + (PLASTER_V[1] - PLASTER_V[0]) * (tt - T0) / (1 - T0))
-    else:
-        v = PLASTER_V[0] + (PLASTER_V[1] - PLASTER_V[0]) * tt
+    cuff_v = lambda x: CUFF_V[0] + (CUFF_V[1] - CUFF_V[0]) * x
+    v = PLASTER_V[0] + (PLASTER_V[1] - PLASTER_V[0]) * np.clip((tt - T0) / (T1 - T0), 0, 1)
+    if cuff_top:
+        v = np.where(tt < T0, cuff_v(tt / T0), v)
+    if cuff_bottom:
+        v = np.where(tt > T1, cuff_v((1 - tt) / (1 - T1)), v)
     UV = np.stack([uu, v], -1)
 
     def centre_of(q):
         c = _interp_rows(s_values, C, q[:, 0])
         return np.stack([q[:, 0], c[:, 0], c[:, 1]], 1)
 
-    # with the cuff, one sheet folds from the inner wall over the rim to the outside, so once the
+    # a cuffed end is one sheet folding from the outside over the rim to the inner wall, so once the
     # outside faces out, the inner wall faces the leg, as it should
     m = _grid(P, UV, centre_of)
     m.field = dict(kind="tube", s_values=s_values, C=C, R=R, angles=angles,
-                   top=(lambda u: top(u) + (0.85 if cuff else 0.0)), bottom=bottom)
+                   top=(lambda u: top(u) + (band if cuff_top else 0.0)),
+                   bottom=(lambda u: bottom(u) - (band if cuff_bottom else 0.0)))
     return m
 
 
@@ -251,56 +261,6 @@ def knee_drum(z, r, arc, taper=(0.0, 0.12), segments=40, power=2.6, n_prof=33):
     return m
 
 
-def closed_loft(pts, axis, e1, e2, s0, s1, offset, round_back, round_front, n_ang=48, n_len=36,
-                bottom_offset=None, bottom_dir=None, uv_along=None):
-    """Closed blob lofted along `axis` from s0 to s1 with rounded ends; e1/e2 span the sections
-    (angle 0 = e1). bottom_offset: different push-out on the side facing bottom_dir (the sole).
-    uv_along=(u0, u1): texture u runs along the axis over that range and v around the section
-    (shoe layout); default: u around, v along the plaster rows."""
-    s_values = np.linspace(s0, s1, 40)
-    C, R, angles = section_field(pts, axis, e1, e2, s_values, n_ang, slab=0.45)
-    C, R = smooth_field(C, R)
-    off = np.full(n_ang, offset)
-    if bottom_offset is not None:
-        dirs = np.stack([np.cos(angles), np.sin(angles)], 1)
-        down = np.array([bottom_dir @ e1, bottom_dir @ e2])
-        down /= np.linalg.norm(down)
-        w = np.clip(dirs @ down, 0, 1) ** 2
-        off = offset * (1 - w) + bottom_offset * w
-    R = R + off[None, :]
-    span = s1 - s0
-
-    def fn(u, t):
-        s = s0 + span * t
-        c = _interp_rows(s_values, C, s)
-        r = _ang_interp(_interp_rows(s_values, R, s), angles, u)
-        # round the ends: radius falls to 0 over round_back / round_front
-        fb = np.clip((s - s0) / round_back, 0, 1)
-        ff = np.clip((s1 - s) / round_front, 0, 1)
-        r = r * np.sqrt(1 - (1 - fb) ** 2) * np.sqrt(1 - (1 - ff) ** 2)
-        th = 2 * np.pi * u
-        a = c[..., 0] + r * np.cos(th)
-        b = c[..., 1] + r * np.sin(th)
-        return s[..., None] * axis + a[..., None] * e1 + b[..., None] * e2
-
-    uu, tt = np.meshgrid(np.linspace(0, 1, n_ang + 1), np.linspace(0, 1, n_len + 1), indexing="ij")
-    P = fn(uu, tt)
-    if uv_along is None:
-        UV = np.stack([uu, PLASTER_V[0] + (PLASTER_V[1] - PLASTER_V[0]) * tt], -1)
-    else:
-        UV = np.stack([uv_along[0] + (uv_along[1] - uv_along[0]) * tt, uu], -1)
-
-    def centre_of(q):
-        sq = q @ axis
-        c = _interp_rows(s_values, C, sq)
-        return sq[:, None] * axis + c[:, :1] * e1 + c[:, 1:] * e2
-
-    m = _grid(P, UV, centre_of)
-    m.field = dict(s_values=s_values, C=C, R=R, angles=angles, axis=axis, e1=e1, e2=e2,
-                   s0=s0, s1=s1, round_back=round_back, round_front=round_front)
-    return m
-
-
 def margin(m, pts):
     """How far inside each point (in the piece's bone frame) is: positive inside, negative out."""
     fd = m.field
@@ -313,23 +273,13 @@ def margin(m, pts):
         in_arc = ((phi - a0) % 1) <= ((a1 - a0) % 1)
         return np.where(in_arc, rz - rad, -np.inf)
     sv, C, R, angles = fd["s_values"], fd["C"], fd["R"], fd["angles"]
-    if fd.get("kind") == "tube":
-        s, a, b = pts[:, 0], pts[:, 1], pts[:, 2]
-    else:
-        s, a, b = pts @ fd["axis"], pts @ fd["e1"], pts @ fd["e2"]
+    s, a, b = pts[:, 0], pts[:, 1], pts[:, 2]
     c = _interp_rows(sv, C, s)
     da, db = a - c[:, 0], b - c[:, 1]
     u = (np.arctan2(db, da) / (2 * np.pi)) % 1
     r = _ang_interp(_interp_rows(sv, R, s), angles, u)
-    if fd.get("kind") == "tube":
-        lo, hi = fd["top"](u), fd["bottom"](u)
-    else:
-        lo, hi = fd["s0"], fd["s1"]
-        fb = np.clip((s - lo) / fd["round_back"], 0, 1)
-        ff = np.clip((hi - s) / fd["round_front"], 0, 1)
-        r = r * np.sqrt(1 - (1 - fb) ** 2) * np.sqrt(1 - (1 - ff) ** 2)
     out = r - np.hypot(da, db)
-    return np.where((s >= lo) & (s <= hi), out, -np.inf)
+    return np.where((s >= fd["top"](u)) & (s <= fd["bottom"](u)), out, -np.inf)
 
 
 # --- texture -------------------------------------------------------------------------------
@@ -371,33 +321,3 @@ def paint(path_jpg, path_normal, size=512, seed=11):
     n /= np.linalg.norm(n, axis=-1, keepdims=True)
     Image.fromarray(((n * 0.5 + 0.5) * 255).astype(np.uint8)).save(path_normal)
 
-
-# shoe texture layout: u runs heel -> toe, v runs around the foot starting on top (angle 0 = up),
-# so the sole is the band around v = 0.5 and straps are bands of u
-SHOE_FOOT_U = (0.0, 0.70)     # the shoe body
-SHOE_TOE_U = (0.70, 1.0)      # its toe piece
-STRAPS_U = ((0.30, 0.40), (0.50, 0.60))
-SOLE_V = (0.36, 0.64)
-
-
-def paint_shoe(path, size=512, seed=5):
-    """Post-op cast shoe: navy mesh fabric, two grey Velcro straps over the instep, black rubber sole."""
-    rng = np.random.default_rng(seed)
-    yy, xx = np.mgrid[0:size, 0:size].astype(float)
-    u, v = xx / size, yy / size
-    fabric = np.array([38.0, 46.0, 66.0])
-    weave = 0.5 + 0.5 * np.sin(2 * np.pi * xx / 5.0) * np.sin(2 * np.pi * yy / 5.0)
-    rgb = fabric[None, None, :] * (0.88 + 0.16 * weave[..., None])
-    for a, b in STRAPS_U:
-        k = (u >= a) & (u < b)
-        hook = 0.9 + 0.1 * (rng.random((size, size)) > 0.5)
-        rgb[k] = (np.array([118.0, 122.0, 128.0])[None, :] * hook[k][:, None])
-        edge = k & ((u - a < 0.008) | (b - u < 0.008))
-        rgb[edge] = [70, 72, 78]
-    k = (v >= SOLE_V[0]) & (v < SOLE_V[1])
-    rgb[k] = np.array([24.0, 24.0, 26.0]) * (0.9 + 0.2 * rng.random((int(k.sum()), 1)))
-    for vv in SOLE_V:                          # welt line where the sole meets the fabric
-        k = np.abs(v - vv) < 0.006
-        rgb[k] = [60, 60, 64]
-    rgb += gaussian_filter(rng.normal(0, 1, (size, size, 1)), (1, 1, 0)) * 3
-    Image.fromarray(np.clip(rgb, 0, 255).astype(np.uint8)).save(path, quality=92)

@@ -296,19 +296,19 @@ def leg_points(model, bone_name, poses, post, min_weight=0.25, extra=None):
     return np.vstack(out)
 
 
-def fit_leg_cast(fit, model, side="L", poses=CAST_POSES, max_ankle=21.0, knee_gap=1.0, knee_overlap=1.5):
-    """Long-leg plaster cast (upper thigh to ankle) with a cast shoe. Pieces: thigh plaster (thigh
-    bone), knee drum + shin plaster (calf bone), shoe (foot bone), shoe toe (toe bone).
+def fit_leg_cast(fit, model, side="L", poses=CAST_POSES, knee_gap=1.0, knee_overlap=1.5, ankle_clear=0.8):
+    """Long-leg plaster cast, upper thigh to just above the ankle. Pieces: thigh plaster (thigh bone),
+    knee drum + shin plaster (calf bone).
 
     The knee: the thigh plaster stops knee_gap above the joint in front and the shin plaster
     knee_gap below it; a drum around the knee's hinge axis covers that front gap at any bend.
     Behind the knee both run knee_overlap past the joint so they overlap.
-    The shoe's collar is sized for ankle bends up to max_ankle degrees from standing (standing,
-    walking, weapon stances); deeper bends (push-off, sprint, crouch) are brief."""
+    The shin plaster ends ankle_clear above the ankle joint, stockinette rolled over the edge, so
+    the foot and shoe move freely below it."""
     import leg_cast as lc
     post = posture_bone3(fit)
-    thigh_n, calf_n, foot_n, toe_n = (f"ValveBiped.Bip01_{side}_{b}" for b in ("Thigh", "Calf", "Foot", "Toe0"))
-    thigh, calf, foot, toe = (model.bone(n) for n in (thigh_n, calf_n, foot_n, toe_n))
+    thigh_n, calf_n, foot_n = (f"ValveBiped.Bip01_{side}_{b}" for b in ("Thigh", "Calf", "Foot"))
+    thigh, calf, foot = (model.bone(n) for n in (thigh_n, calf_n, foot_n))
     idle = model.pose(IDLE, post)
     thigh_len = np.linalg.norm(idle[calf][:3, 3] - idle[thigh][:3, 3])
     shin_len = np.linalg.norm(idle[foot][:3, 3] - idle[calf][:3, 3])
@@ -342,13 +342,14 @@ def fit_leg_cast(fit, model, side="L", poses=CAST_POSES, max_ankle=21.0, knee_ga
         return np.vstack(out)
 
     thigh_pts = side_skin(thigh, upright, lambda tl, cl: cl[:, 0] < knee_gap + 0.5)
-    thigh_cast = lc.plaster_tube(thigh_pts, top, thigh_bottom, cuff=True)
+    thigh_cast = lc.plaster_tube(thigh_pts, top, thigh_bottom, cuff_top=True)
 
     # shin plaster: from knee_gap below the knee joint in front (knee_overlap above it behind) down
-    # over the ankle
+    # to ankle_clear above the ankle joint
     shin_top = lc.edge(-knee_overlap, knee_gap * 0.2, knee_gap, knee_gap * 0.2)
     shin_pts = side_skin(calf, poses, lambda tl, cl: tl[:, 0] > thigh_len - knee_gap - 0.5)
-    shin_cast = lc.plaster_tube(shin_pts, shin_top, lambda u: np.full(np.shape(u), shin_len + 0.4), cuff=False)
+    shin_cast = lc.plaster_tube(shin_pts, shin_top, lambda u: np.full(np.shape(u), shin_len - ankle_clear),
+                                cuff_top=False, cuff_bottom=True)
 
     # knee drum (calf frame, axis z through the knee joint): radius per z slice from the plaster
     # ends it has to swallow and the knee skin between them, from every pose
@@ -410,50 +411,9 @@ def fit_leg_cast(fit, model, side="L", poses=CAST_POSES, max_ankle=21.0, knee_ga
     thigh_piece.field = None
     cap.field = dict(cap.field)
 
-    # shoe: the leather shoe, plus the bottom 1.4 units of the plaster so its collar sits over it
-    rel0 = idle[calf][:3, :3].T @ idle[foot][:3, :3]
-
-    def ankle_bend(mats):
-        d = rel0.T @ (mats[calf][:3, :3].T @ mats[foot][:3, :3])
-        return np.degrees(np.arccos(np.clip((np.trace(d) - 1) / 2, -1, 1)))
-
-    moderate = [p for p in poses if ankle_bend(model.pose(p, post)) <= max_ankle]
-    tube_end = shin_cast.v[shin_cast.v[:, 0] > shin_len - 1.0]
-
-    def tube_end_world(mats):
-        return tube_end @ mats[calf][:3, :3].T + mats[calf][:3, 3]
-
-    foot_pts = np.vstack([leg_points(model, foot_n, poses, post),
-                          leg_points(model, foot_n, moderate, post, min_weight=2.0,   # extra points only
-                                     extra=tube_end_world)])
-    rf, rt = idle[foot][:3, :3], idle[toe][:3, :3]
-    fwd = rf.T @ rt[:, 0]                                    # sole-forward (toe bone x) in the foot frame
-    up = rf.T @ np.array([0, 0, 1.0])
-    up = up - (up @ fwd) * fwd
-    up /= np.linalg.norm(up)
-    side_ax = np.cross(fwd, up)
-    ball = (idle[toe][:3, 3] - idle[foot][:3, 3]) @ rf          # toe bone origin in the foot frame
-    s_ball = ball @ fwd
-    s_heel = (foot_pts @ fwd).min()
-    shoe = lc.closed_loft(foot_pts[(foot_pts @ fwd) < s_ball + 1.4], fwd, up, side_ax, s_heel - 0.2, s_ball + 1.4,
-                          offset=0.45, round_back=0.9, round_front=1.2, bottom_offset=0.55, bottom_dir=-up,
-                          uv_along=lc.SHOE_FOOT_U)
-
-    # the shoe's toe: front of the leather shoe in the toe frame, tucked 1.5 back into the shoe
-    toe_pts = leg_points(model, toe_n, poses, post)
-    t_fwd = np.array([1.0, 0, 0])
-    t_up = rt.T @ np.array([0, 0, 1.0])
-    t_up = t_up - (t_up @ t_fwd) * t_fwd
-    t_up /= np.linalg.norm(t_up)
-    t_side = np.cross(t_fwd, t_up)
-    toe_cap = lc.closed_loft(toe_pts[toe_pts[:, 0] > -1.5], t_fwd, t_up, t_side, -1.5, toe_pts[:, 0].max() + 0.6,
-                             offset=0.45, round_back=0.6, round_front=1.9, bottom_offset=0.55, bottom_dir=-t_up,
-                             n_len=20, uv_along=lc.SHOE_TOE_U)
-    fit.cast_meshes = {"thigh": thigh_piece, "shin": shin_piece, "shoe": shoe, "toe": toe_cap}
-    fit.cast_parts = {"thigh": thigh_cast, "knee": drum, "shin": shin_cast, "shoe": shoe, "toe": toe_cap}
-    fit.cast_bones = {"thigh": pac_name(thigh_n), "shin": pac_name(calf_n), "shoe": pac_name(foot_n),
-                      "toe": pac_name(toe_n)}
-    fit.cast_moderate_poses = moderate
+    fit.cast_meshes = {"thigh": thigh_piece, "shin": shin_piece}
+    fit.cast_parts = {"thigh": thigh_cast, "knee": drum, "shin": shin_cast}
+    fit.cast_bones = {"thigh": pac_name(thigh_n), "shin": pac_name(calf_n)}
 
 
 def pac_name(real):
@@ -517,11 +477,9 @@ def write_head_assets(fit, props):
     om.paint_tube(os.path.join(props, "o2_tube.png"))
     import leg_cast as lc
     names = {"thigh": ("cast_thigh.obj", "plaster long-leg cast, thigh, stockinette cuff"),
-             "shin": ("cast_shin.obj", "plaster long-leg cast, knee and shin"),
-             "shoe": ("cast_shoe.obj", "post-op cast shoe"), "toe": ("cast_shoe_toe.obj", "post-op cast shoe, toe")}
+             "shin": ("cast_shin.obj", "plaster long-leg cast, knee and shin, stockinette cuff at the ankle")}
     for k, mesh in fit.cast_meshes.items():
         fname, what = names[k]
         mesh.write_obj(os.path.join(props, fname),
                        f"{what} - procedural, CC0\n{fit.cast_bones[k]} bone frame of male_08_shirt_tie, inches")
     lc.paint(os.path.join(props, "cast_plaster.jpg"), os.path.join(props, "cast_plaster_n.png"))
-    lc.paint_shoe(os.path.join(props, "cast_shoe.jpg"))
