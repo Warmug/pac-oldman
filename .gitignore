@@ -1,0 +1,4 @@
+node_modules/
+__pycache__/
+tools/render/three.min.js
+build/
