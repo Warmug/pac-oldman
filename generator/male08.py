@@ -56,11 +56,13 @@ class Model:
         self.sequences = []
         self._parse(path)
         if anims is None:
-            guess = os.path.join(os.path.dirname(os.path.abspath(path)), "male08_anims.txt")
+            guess = os.path.join(os.path.dirname(os.path.abspath(path)), "male08_dump3.txt")
             anims = guess if os.path.exists(guess) else None
         if anims:
-            # the second export has the real animation poses (the first one's are all the ragdoll pose)
-            self.poses, self.pose_info = {}, {}
+            # the later export has the real animation poses; the first one's are all the ragdoll
+            # pose, so keep only that one ("seq0", the reference for head-space fitting)
+            self.poses = {"seq0": self.poses["seq0"]}
+            self.pose_info = {"seq0": self.pose_info["seq0"]}
             self._parse(anims, poses_only=True)
         self.anims = anims
         self.index = {n: i for i, n in enumerate(self.names)}

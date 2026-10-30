@@ -64,7 +64,7 @@ class Fit:
 
         self.cart_pos = (0, 0, 0)
         self.cart_ang = (0, 0, 0)
-        self.cart_speed = 8.0
+        self.cart_speed = 7.0   # with strain 0.45: no overshoot at 60-144 fps, trails ~5-7 units when walking
         self.cart_strain = 0.45
         self.barb_pos = tuple(oc.barb_tip())
         self.wheels = [("left", (oc.WHEEL_X, oc.WHEEL_Y, oc.WHEEL_R)), ("right", (oc.WHEEL_X, -oc.WHEEL_Y, oc.WHEEL_R))]

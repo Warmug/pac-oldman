@@ -15,6 +15,7 @@ import oxygen_mask as om
 from geom import RayCaster
 
 IDLE = "aim_normal_0"
+REF = "seq0"      # reference (ragdoll) pose from the first export; head-space fitting uses it
 HEAD = "ValveBiped.Bip01_Head1"
 
 
@@ -50,7 +51,7 @@ def angles_from_axes(fwd, up_hint):
 class HeadData:
     """Head-space mesh, face frame and landmarks."""
 
-    def __init__(self, model, pose=IDLE):
+    def __init__(self, model, pose=REF):
         mats = model.pose(pose)
         self.head_world = mats[model.bone(HEAD)]
         inv = np.linalg.inv(self.head_world)
@@ -73,10 +74,11 @@ class HeadData:
         (self.eye_l, self.eye_r_rad), (self.eye_r, _) = eyes["l"], eyes["r"]
         self.eye_radius = self.eye_r_rad
 
-        # forward = where the model's "eyes" attachment looks, up = world up in this stance
-        label = pose if pose in model.attachments else next(iter(model.attachments))
+        # forward = where the model's "eyes" attachment looks (attachments were recorded in the
+        # reference pose, so use that pose's head rotation), up = world up in the same pose
+        label = REF if REF in model.attachments else next(iter(model.attachments))
         _, _, eye_ang = model.attachments[label]["eyes"]
-        R = self.head_world[:3, :3]
+        R = model.pose(REF)[model.bone(HEAD)][:3, :3]
         F = R.T @ mk.source_angle_matrix(*eye_ang)[:, 0]
         U = R.T @ np.array([0.0, 0.0, 1.0])
         U = U - (U @ F) * F
@@ -253,7 +255,7 @@ def posture_bone3(fit, arms=True, cane=False, smoke=False):
 
 def apply(fit, model):
     fit.model = model
-    fit.head = hd = HeadData(model)
+    fit.head = hd = HeadData(model, REF)
     fit_mask(fit, hd)
     fit_glasses(fit, hd)
     fit_face_props(fit, hd)

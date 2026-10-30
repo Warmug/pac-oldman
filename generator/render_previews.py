@@ -22,12 +22,15 @@ OUTFIT = os.path.join(REPO, "outfit", "old_man_2_male08.txt")
 
 
 class BodyTextures:
+    """Textures decoded from the exporter (tex_<material>.png next to the dump)."""
+
     def __init__(self, model, dump_dir):
         self.map = {}
-        for i, m in enumerate(model.materials, 1):
-            jpg = os.path.join(dump_dir, f"male08_tex_{i}.jpg")
-            if os.path.exists(jpg):
-                self.map[os.path.basename(m["path"]).lower()] = jpg
+        for m in model.meshes:
+            name = os.path.basename(m["material"]).lower()
+            png = os.path.join(dump_dir, f"tex_{name}.png")
+            if os.path.exists(png):
+                self.map[name] = png
 
     def get(self, material):
         return self.map.get(os.path.basename(material).lower())
