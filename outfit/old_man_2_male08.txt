@@ -1763,10 +1763,10 @@
 				[4] = {
 					["self"] = {
 						["ClassName"] = "model2",
-						["UniqueID"] = "8e6535f6ace3c8ad63cc4c816b0b4b7eb8e781d28f3b3a66bbfc51fad2e6595c",
-						["Name"] = "plaster cast",
-						["Model"] = "https://raw.githubusercontent.com/Warmug/pac-oldman/main/props/cast_plaster.obj",
-						["Bone"] = "left calf",
+						["UniqueID"] = "54fb54fbb8d8b47d8381eccd12d5408817fc46630d171b0c8c911cafeb7c7c0d",
+						["Name"] = "plaster: thigh",
+						["Model"] = "https://raw.githubusercontent.com/Warmug/pac-oldman/main/props/cast_thigh.obj",
+						["Bone"] = "left thigh",
 						["Material"] = "cast_plaster",
 						["Position"] = Vector(0, 0, 0),
 						["Angles"] = Angle(0, 0, 0),
@@ -1777,7 +1777,21 @@
 				[5] = {
 					["self"] = {
 						["ClassName"] = "model2",
-						["UniqueID"] = "494cba7dadf60728aa1f7d9c6c685eac851cdf2a039c3084bc25c41080c7485c",
+						["UniqueID"] = "5452dd7184308abf54fc5e9f2e4ba6e51405c9947dca67c25e8d1115e0974c46",
+						["Name"] = "plaster: knee and shin",
+						["Model"] = "https://raw.githubusercontent.com/Warmug/pac-oldman/main/props/cast_shin.obj",
+						["Bone"] = "left calf",
+						["Material"] = "cast_plaster",
+						["Position"] = Vector(0, 0, 0),
+						["Angles"] = Angle(0, 0, 0),
+					},
+					["children"] = {
+					},
+				},
+				[6] = {
+					["self"] = {
+						["ClassName"] = "model2",
+						["UniqueID"] = "95663e19c97c8fcd1e7442d61935bba920b841290da3ef40d413ad7d2cffca9e",
 						["Name"] = "cast shoe",
 						["Model"] = "https://raw.githubusercontent.com/Warmug/pac-oldman/main/props/cast_shoe.obj",
 						["Bone"] = "left foot",
@@ -1788,10 +1802,10 @@
 					["children"] = {
 					},
 				},
-				[6] = {
+				[7] = {
 					["self"] = {
 						["ClassName"] = "model2",
-						["UniqueID"] = "af767c247038dcf4aaaa7320d0f242ca41ef761f76ffb581fd3098153fd109b2",
+						["UniqueID"] = "abf29a2bc2669c92ff89f80c1796e111322e217a448570e69b7d77260fa66cc4",
 						["Name"] = "cast shoe toe",
 						["Model"] = "https://raw.githubusercontent.com/Warmug/pac-oldman/main/props/cast_shoe_toe.obj",
 						["Bone"] = "left toe",
