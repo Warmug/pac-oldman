@@ -119,7 +119,7 @@ def rim_contour(face, m):
             (m["w_cheek"] + 0.05, vm - 0.45), (1.55, vb + 0.45), (0.75, vb + 0.06)]
     right = [(-u, v) for u, v in reversed(half[1:])]
     pts = half + [(0.0, vb)] + right
-    return catmull_rom_closed(pts, 10)
+    return catmull_rom_closed(pts, 7)
 
 
 def build_mask(face, m):
@@ -141,7 +141,7 @@ def build_mask(face, m):
         p = (1 - s) ** 2 * r + 2 * (1 - s) * s * c + s * s * apex
         return p
 
-    nu, nv = len(rim), 22
+    nu, nv = len(rim), 16
     outer = mk.surface(lambda u, s: shell_fn(u, s), nu, nv, MASK_SHELL, flip=False, smooth_angle=70)
     # orientation: make sure outer faces point away from the face
     centre = face.to_head(0.0, m["v_apex"], m["d_apex"] - 1.0)
@@ -200,11 +200,12 @@ def strap_path(face, m, start, end):
     if a1 < a0:
         a1 += 2 * np.pi
     pts = [start]
+    mid = (m["strap_v_front"] + m["strap_v_back"]) / 2
+    dip = max(0.0, mid - m["strap_v_ear"])
     for a in np.linspace(a0, a1, 64)[1:-1]:
         back = (1 - np.cos(a)) / 2          # 0 at the front, 1 at the back of the head
-        v = m["strap_v_front"] * (1 - back) + m["strap_v_back"] * back
-        if abs(np.sin(a)) > 0.6:
-            v = min(v, m["strap_v_ear"])
+        # smooth dip under the ears (sides of the head), no kinks
+        v = m["strap_v_front"] * (1 - back) + m["strap_v_back"] * back - dip * np.sin(a) ** 2
         direction = face.F * np.cos(a) + face.L * np.sin(a)
         origin = centre + face.U * (v - m["strap_axis_v"])
         hit = m["cast_out"](origin, direction)
@@ -235,6 +236,8 @@ def _band_on_surface(path, normal_at, width, thick, rect, lift=0.0):
     t = np.gradient(p, axis=0)
     t /= np.linalg.norm(t, axis=1, keepdims=True)
     n = np.array([normal_at(q) for q in p])
+    for _ in range(4):   # skin normals jump at ears and creases; a band can't twist that fast
+        n[1:-1] = 0.25 * n[:-2] + 0.5 * n[1:-1] + 0.25 * n[2:]
     n = n - t * np.einsum("ij,ij->i", n, t)[:, None]
     n /= np.linalg.norm(n, axis=1, keepdims=True)
     s = np.cross(t, n)

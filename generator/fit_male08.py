@@ -87,6 +87,9 @@ class HeadData:
             self.eye_l, self.eye_r = self.eye_r, self.eye_l
         self.origin = (self.eye_l + self.eye_r) / 2
         self.F, self.U, self.L = F, U, L
+        att = model.attachments[label].get("mouth")
+        inv = np.linalg.inv(self.head_world)
+        self.mouth_attachment = None if att is None else inv[:3, :3] @ att[1] + inv[:3, 3]
         self.face = om.Face(self.origin, F, U, L, self.surface, self.normal, {})
         self._landmarks()
 
@@ -116,16 +119,20 @@ class HeadData:
         self.lower_lip_v = vv[lips[0]] if lips else self.upper_lip_v - 0.5
         between = (vv < self.upper_lip_v) & (vv > self.lower_lip_v)
         self.mouth_v = vv[between][np.argmin(dd[between])] if between.any() else (self.upper_lip_v + self.lower_lip_v) / 2
+        if self.mouth_attachment is not None:
+            # the model's own "mouth" attachment marks the lip line; average with the profile dip
+            self.mouth_v = float((self.mouth_v + self.coords(self.mouth_attachment)[1]) / 2)
         chin_zone = (vv < self.lower_lip_v - 0.35) & (vv > self.lower_lip_v - 2.2)
         self.chin_v = vv[chin_zone][np.argmax(dd[chin_zone])]
         self.chin_d = dd[chin_zone].max()
         # where the jaw turns under: depth falls well behind the chin
         under = vv[(vv < self.chin_v) & (dd < self.chin_d - 1.2)]
         self.chin_bottom_v = under[0] if len(under) else self.chin_v - 0.8
-        hv = self.v[np.linalg.norm(self.v - self.origin, axis=1) < 9]
-        q = hv - self.origin
-        self.centre_d = float(np.median(q @ self.F)) - 0.6
-        self.centre_v = float(np.median(q @ self.U))
+        # front/back of the skull at nose height give the head's centre depth
+        front = (self.surface(0.0, -1.0) - self.origin) @ self.F
+        back = (self.cast_out(self.point(0.0, -1.0, 0.0), -self.F) - self.origin) @ self.F
+        self.centre_d = float((front + back) / 2)
+        self.back_d = float(back)
 
     def coords(self, p):
         q = np.asarray(p) - self.origin
@@ -152,11 +159,11 @@ class HeadData:
 
 def fit_mask(fit, hd):
     m = dict(
-        v_top=-0.42, v_mouth=hd.mouth_v, v_bottom=hd.chin_v - 0.15, w_cheek=1.95, rim_lift=0.11,
+        v_top=-0.45, v_mouth=hd.mouth_v, v_bottom=hd.chin_v - 0.05, w_cheek=1.95, rim_lift=0.11,
         v_apex=(hd.nose_v + hd.mouth_v) / 2, d_apex=hd.nose_d + 1.0, dome_round=0.85, thickness=0.07,
         port_u=0.5, port_s=0.5, port_forward=0.5, clip_span=0.075,
         strap_axis_v=hd.nose_v, strap_axis_d=hd.centre_d,
-        strap_v_front=hd.mouth_v + 0.45, strap_v_back=hd.nose_v - 0.55, strap_v_ear=hd.nose_v - 0.75,
+        strap_v_front=hd.mouth_v + 0.5, strap_v_back=hd.mouth_v + 0.35, strap_v_ear=hd.mouth_v - 0.15,
         strap_lift=0.05, strap_width=0.42,
         cast_out=hd.cast_out, head_normal=hd.rc.nearest_vertex_normal,
     )
@@ -186,7 +193,7 @@ def fit_face_props(fit, hd):
     """Cigarette between the lips (left corner) and where the exhaled smoke comes out."""
     corner = hd.surface(0.62, hd.mouth_v)
     filt = corner - hd.F * 0.1
-    d = hd.F * 0.82 - hd.U * 0.42 + hd.L * 0.38
+    d = hd.F * 0.92 - hd.U * 0.34 + hd.L * 0.26
     d /= np.linalg.norm(d)
     origin = filt + d * 0.45
     fit.cig_mouth = (tuple(origin), angles_from_axes(d, hd.U))

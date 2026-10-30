@@ -43,7 +43,7 @@ def angle_matrix(p, y, r):
 
 
 class Model:
-    def __init__(self, path=DEFAULT_DUMP):
+    def __init__(self, path=DEFAULT_DUMP, anims=None):
         self.path = path
         self.names, self.parents = [], []
         self.bind = {}
@@ -55,10 +55,18 @@ class Model:
         self.flexes = []
         self.sequences = []
         self._parse(path)
+        if anims is None:
+            guess = os.path.join(os.path.dirname(os.path.abspath(path)), "male08_anims.txt")
+            anims = guess if os.path.exists(guess) else None
+        if anims:
+            # the second export has the real animation poses (the first one's are all the ragdoll pose)
+            self.poses, self.pose_info = {}, {}
+            self._parse(anims, poses_only=True)
+        self.anims = anims
         self.index = {n: i for i, n in enumerate(self.names)}
         self.pac_index = {pac_bone_name(n): i for i, n in enumerate(self.names)}
 
-    def _parse(self, path):
+    def _parse(self, path, poses_only=False):
         mesh = None
         pose = None
         for line in open(path, encoding="utf-8", errors="replace"):
@@ -66,6 +74,8 @@ class Model:
             if not parts:
                 continue
             tag = parts[0]
+            if poses_only and tag not in ("pose", "pm"):
+                continue
             if tag == "b":
                 self.names.append(" ".join(parts[3:]))
                 self.parents.append(int(parts[2]))
@@ -181,7 +191,8 @@ class Model:
                 v[k] = (acc @ vh[k])[:3]
                 n[k] = acc[:3, :3] @ m["n"][k]
             n /= np.maximum(np.linalg.norm(n, axis=1, keepdims=True), 1e-9)
-            mesh = mk.Mesh(v, m["f"], m["uv"], n)
+            # Source triangles are clockwise-front; meshkit (OBJ) is counter-clockwise-front
+            mesh = mk.Mesh(v, m["f"][:, ::-1], m["uv"], n)
             mesh.material = m["material"]
             out.append(mesh)
         return out
