@@ -73,24 +73,22 @@ class HeadData:
         (self.eye_l, self.eye_r_rad), (self.eye_r, _) = eyes["l"], eyes["r"]
         self.eye_radius = self.eye_r_rad
 
-        L = self.eye_l - self.eye_r
-        L /= np.linalg.norm(L)
-        X = self.head_world[:3, :3].T @ np.array([0.0, 0.0, 1.0])   # world up seen from the head (idle stance)
-        U = X - (X @ L) * L
+        # forward = where the model's "eyes" attachment looks, up = world up in this stance
+        label = pose if pose in model.attachments else next(iter(model.attachments))
+        _, _, eye_ang = model.attachments[label]["eyes"]
+        R = self.head_world[:3, :3]
+        F = R.T @ mk.source_angle_matrix(*eye_ang)[:, 0]
+        U = R.T @ np.array([0.0, 0.0, 1.0])
+        U = U - (U @ F) * F
         U /= np.linalg.norm(U)
-        F = np.cross(L, U)
-        self.origin = (self.eye_l + self.eye_r) / 2
-        if self._probe_forward(F) < self._probe_forward(-F):
-            # eyeball naming is mirrored on this model; the nose decides
-            F, L = -F, -L
+        F /= np.linalg.norm(F)
+        L = np.cross(U, F)
+        if (self.eye_l - self.eye_r) @ L < 0:
             self.eye_l, self.eye_r = self.eye_r, self.eye_l
+        self.origin = (self.eye_l + self.eye_r) / 2
         self.F, self.U, self.L = F, U, L
         self.face = om.Face(self.origin, F, U, L, self.surface, self.normal, {})
         self._landmarks()
-
-    def _probe_forward(self, F):
-        p, _ = self.rc.first(self.origin - self.U * 1.0 + F * 15, -F)
-        return -1e9 if p is None else (p - self.origin) @ F
 
     def surface(self, u, v):
         o = self.origin + self.L * u + self.U * v + self.F * 15
