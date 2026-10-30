@@ -5,24 +5,26 @@
 	rendered frame, so the engine actually re-evaluates the bones) and reads its
 	textures back through a render target.
 
-	Writes into garrysmod/data/:
-		male08_anims.txt   bone matrices: idle per holdtype at many aim pitches, walk, run, crouch
-		male08_tex.txt     the model's textures as base64 RGB
+	Writes ONE file: garrysmod/data/male08_dump2.txt (bone matrices for idle per holdtype at
+	many aim pitches, walk, run, crouch, plus the model's textures as base64 RGB).
 
-	Run it in SINGLE-PLAYER:
-		sv_allowcslua 1
-		lua_openscript_cl dump_male08_anims.lua
-	then CLOSE the console (press ~) so the game keeps rendering, wait about 10 seconds
-	and open it again: the last line should say "all done".
+	Run it in SINGLE-PLAYER by pasting this one line into the console:
+		sv_allowcslua 1; lua_run_cl http.Fetch("<raw url of this file>", function(b) RunString(b, "dump2") end)
+	then close the console. A message pops up on screen when it is finished.
 ]]
 
 local MODEL = "models/player/Suits/male_08_shirt_tie.mdl"
-local OUT = "male08_anims.txt"
-local TEX_OUT = "male08_tex.txt"
+local OUT = "male08_dump2.txt"
 local HOOK = "male08_dump_anims"
 
 local function P(fmt, ...)
 	MsgC(Color(120, 220, 120), "[male08 dump] ", Color(230, 230, 230), string.format(fmt, ...), "\n")
+end
+
+local function Notify(text)
+	P("%s", text)
+	if notification then notification.AddLegacy(text, NOTIFY_GENERIC, 15) end
+	if chat then chat.AddText(Color(120, 220, 120), "[male08 export] ", color_white, text) end
 end
 
 local function num(n, decimals)
@@ -128,7 +130,7 @@ do
 	end
 end
 
-local tex_lines = {"male08tex 1"}
+local tex_lines = {}
 
 local function read_texture(t)
 	local rt = GetRenderTarget("male08dump_rt_" .. t.w .. "x" .. t.h, t.w, t.h)
@@ -158,10 +160,10 @@ end
 
 local function finish_textures()
 	hook.Remove("PostRender", HOOK)
-	local data = table.concat(tex_lines, "\n") .. "\n"
-	file.Write(TEX_OUT, data)
-	P("wrote garrysmod/data/%s (%d KB, %d textures)", TEX_OUT, math.ceil(#data / 1024), (#tex_lines - 1) / 2)
-	P("all done - attach male08_anims.txt and male08_tex.txt from garrysmod/data")
+	for _, line in ipairs(tex_lines) do L(line) end
+	local data = table.concat(lines, "\n") .. "\n"
+	file.Write(OUT, data)
+	Notify(string.format("done! attach garrysmod/data/%s (%d KB) - same folder as male08_dump.txt", OUT, math.ceil(#data / 1024)))
 end
 
 local function start_textures()
@@ -192,12 +194,7 @@ local function finish_poses()
 	hook.Remove("PostDrawOpaqueRenderables", HOOK)
 	ent:Remove()
 	L("distinct " .. distinct)
-	local data = table.concat(lines, "\n") .. "\n"
-	file.Write(OUT, data)
-	P("wrote garrysmod/data/%s (%d KB, %d poses, %d distinct)", OUT, math.ceil(#data / 1024), #jobs, distinct)
-	if distinct < #jobs / 2 then
-		P("WARNING: most poses came out identical - tell Claude")
-	end
+	P("%d poses recorded, %d distinct", #jobs, distinct)
 	start_textures()
 end
 
@@ -234,4 +231,4 @@ hook.Add("PostDrawOpaqueRenderables", HOOK, function(depth, sky)
 	if i % 20 == 0 then P("pose %d/%d", i, #jobs) end
 end)
 
-P("recording %d poses and %d textures - close the console now and wait a few seconds", #jobs, #tex_jobs)
+Notify(string.format("recording %d poses and %d textures, takes a few seconds...", #jobs, #tex_jobs))
