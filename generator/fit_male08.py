@@ -7,6 +7,7 @@ exactly the frame pac uses for Position/Angles of parts on the "head" bone.
 import os
 
 import numpy as np
+from scipy.ndimage import gaussian_filter1d
 
 import glasses as gl
 import meshkit as mk
@@ -257,6 +258,169 @@ def fit_cane_belt(fit, model):
     fit.cane_belt = (tuple(np.round(local[:3, 3], 3)), tuple(np.round(mk.matrix_to_source_angle(local[:3, :3]), 2)))
 
 
+CAST_POSES = ("aim_normal_0", "seq0", "walk_0", "walk_0.25", "walk_0.5", "walk_0.75", "run_0", "run_0.5",
+              "crouch_idle", "cwalk_0", "cwalk_0.5", "aim_pistol_0", "aim_ar2_0", "aim_melee_0")
+
+
+_BARY = np.array([(i, j, 6 - i - j) for i in range(7) for j in range(7 - i)], float) / 6   # 28 per triangle
+
+
+def skin_samples(model, mats, bones, min_weight, weights=None):
+    """World-space skin, densely sampled over every triangle touching a vertex whose weights on
+    `bones` add up to min_weight (the mesh is coarse; sparse points let hulls cut corners)."""
+    if weights is None:
+        weights = [np.array([sum(x for bb, x in ws if bb in bones) for ws in src["w"]]) for src in model.meshes]
+    pts = []
+    for mesh, w in zip(model.skinned(mats), weights):
+        sel = w >= min_weight
+        if not sel.any():
+            continue
+        f = mesh.f[sel[mesh.f].any(axis=1)]
+        pts += [mesh.v[sel], np.einsum("bk,nkd->nbd", _BARY, mesh.v[f]).reshape(-1, 3)]
+    return np.vstack(pts) if pts else np.zeros((0, 3))
+
+
+def leg_points(model, bone_name, poses, post, min_weight=0.25, extra=None):
+    """Skin weighted to `bone_name` (see skin_samples), in that bone's frame, from every pose in
+    `poses`. extra(mats) can add world-space points per pose."""
+    b = model.bone(bone_name)
+    weights = [np.array([sum(x for bb, x in ws if bb == b) for ws in src["w"]]) for src in model.meshes]
+    out = []
+    for label in poses:
+        mats = model.pose(label, post)
+        inv = np.linalg.inv(mats[b])
+        pts = [extra(mats)] if extra is not None else []
+        pts.append(skin_samples(model, mats, {b}, min_weight, weights))
+        p = np.vstack(pts)
+        out.append(p @ inv[:3, :3].T + inv[:3, 3])
+    return np.vstack(out)
+
+
+def fit_leg_cast(fit, model, side="L", poses=CAST_POSES, knee_gap=1.0, knee_overlap=1.5, ankle_clear=0.8):
+    """Long-leg plaster cast, upper thigh to just above the ankle. Pieces: thigh plaster (thigh bone),
+    knee drum + shin plaster (calf bone).
+
+    The knee: the thigh plaster stops knee_gap above the joint in front and the shin plaster
+    knee_gap below it; a drum around the knee's hinge axis covers that front gap at any bend.
+    Behind the knee both run knee_overlap past the joint so they overlap.
+    The shin plaster ends ankle_clear above the ankle joint, stockinette rolled over the edge, so
+    the foot and shoe move freely below it."""
+    import leg_cast as lc
+    post = posture_bone3(fit)
+    thigh_n, calf_n, foot_n = (f"ValveBiped.Bip01_{side}_{b}" for b in ("Thigh", "Calf", "Foot"))
+    thigh, calf, foot = (model.bone(n) for n in (thigh_n, calf_n, foot_n))
+    idle = model.pose(IDLE, post)
+    thigh_len = np.linalg.norm(idle[calf][:3, 3] - idle[thigh][:3, 3])
+    shin_len = np.linalg.norm(idle[foot][:3, 3] - idle[calf][:3, 3])
+
+    # which way is "outside the thigh" in the thigh frame (+z or -z): away from the pelvis
+    out_world = idle[thigh][:3, 3] - idle[model.bone("ValveBiped.Bip01_Pelvis")][:3, 3]
+    lateral = 1.0 if (idle[thigh][:3, :3].T @ out_world)[2] > 0 else -1.0
+
+    # thigh plaster: top edge 5 below the hip joint outside, 6 in front, 7.5 behind, 8 toward the
+    # groin; bottom edge knee_gap above the knee joint in front, knee_overlap below it behind.
+    # The hip swings the buttock and groin skin a lot in a crouch, so the thigh fit leaves crouches out.
+    upright = [p for p in poses if not p.startswith("c")]
+    tops = dict(back=7.5, outside=5.0, front=6.0, inside=8.0)
+    top = lc.edge(tops["back"], tops["outside"] if lateral > 0 else tops["inside"], tops["front"],
+                  tops["inside"] if lateral > 0 else tops["outside"])
+    thigh_bottom = lc.edge(thigh_len + knee_overlap, thigh_len - knee_gap * 0.2, thigh_len - knee_gap,
+                           thigh_len - knee_gap * 0.2)
+    def side_skin(bone, poses_, keep):
+        """Skin weighted to `bone`, in its frame, from each pose, where keep(thigh-frame, calf-frame)
+        holds. Skin near the knee is weighted to both bones; bending the knee swings the shin side of
+        it behind the thigh (and the thigh side in front of the shin), so each plaster piece only
+        takes skin from its own side of the knee."""
+        w = [np.array([sum(x for bb, x in ws if bb == bone) for ws in src["w"]]) for src in model.meshes]
+        out = []
+        for label in poses_:
+            mats = model.pose(label, post)
+            pw = skin_samples(model, mats, None, 0.25, w)
+            tl = (pw - mats[thigh][:3, 3]) @ mats[thigh][:3, :3]
+            cl = (pw - mats[calf][:3, 3]) @ mats[calf][:3, :3]
+            out.append((tl if bone == thigh else cl)[keep(tl, cl)])
+        return np.vstack(out)
+
+    thigh_pts = side_skin(thigh, upright, lambda tl, cl: cl[:, 0] < knee_gap + 0.5)
+    thigh_cast = lc.plaster_tube(thigh_pts, top, thigh_bottom, cuff_top=True)
+
+    # shin plaster: from knee_gap below the knee joint in front (knee_overlap above it behind) down
+    # to ankle_clear above the ankle joint
+    shin_top = lc.edge(-knee_overlap, knee_gap * 0.2, knee_gap, knee_gap * 0.2)
+    shin_pts = side_skin(calf, poses, lambda tl, cl: tl[:, 0] > thigh_len - knee_gap - 0.5)
+    shin_cast = lc.plaster_tube(shin_pts, shin_top, lambda u: np.full(np.shape(u), shin_len - ankle_clear),
+                                cuff_top=False, cuff_bottom=True)
+
+    # knee drum (calf frame, axis z through the knee joint): radius per z slice from the plaster
+    # ends it has to swallow and the knee skin between them, from every pose
+    to_calf = np.linalg.inv(idle[calf]) @ idle[thigh]
+    thigh_end = thigh_cast.v[thigh_cast.v[:, 0] > thigh_len - knee_gap - 0.6]
+    thigh_end = thigh_end @ to_calf[:3, :3].T + to_calf[:3, 3]
+    shin_start = shin_cast.v[shin_cast.v[:, 0] < knee_gap + 0.6]
+    # knee skin between the plaster ends, from every pose: below the thigh plaster's front end and
+    # above the shin plaster's front end, judged in each bone's own frame for that pose
+    gap = []
+    leg_w = [np.array([sum(x for bb, x in ws if bb in (thigh, calf)) for ws in src["w"]]) for src in model.meshes]
+    for label in poses:
+        mats = model.pose(label, post)
+        pw = skin_samples(model, mats, None, 0.1, leg_w)
+        tl = (pw - mats[thigh][:3, 3]) @ mats[thigh][:3, :3]
+        cl = (pw - mats[calf][:3, 3]) @ mats[calf][:3, :3]
+        gap.append(cl[(tl[:, 0] > thigh_len - knee_gap - 0.3) & (cl[:, 0] < knee_gap + 0.3)])
+    gap = np.vstack(gap)
+    rings = [(np.hypot(p[:, 0], p[:, 1]), p[:, 2], pad) for p, pad in
+             ((thigh_end, 0.12), (shin_start, 0.12), (gap, 0.7))]
+    if os.environ.get("CAST_DEBUG"):
+        zs_ = np.concatenate([z for _, z, _ in rings])
+        for z0 in np.linspace(zs_.min(), zs_.max(), 13):
+            row = []
+            for rad, z, pad in rings:
+                sel = np.abs(z - z0) < 0.3
+                row.append(f"{(rad[sel].max() + pad) if sel.any() else 0:5.2f}")
+            print(f"  z {z0:5.2f}: thigh_end/shin_start/gap need {' '.join(row)}")
+        for name, (rad, z, pad) in zip(("thigh_end", "shin_start", "gap"), rings):
+            k = rad.argmax()
+            src = (thigh_end, shin_start, gap)[["thigh_end", "shin_start", "gap"].index(name)]
+            print(f"  {name}: max r {rad.max():.2f} at calf-frame {np.round(src[k], 2)}  z range {z.min():.1f}..{z.max():.1f}")
+    zs = np.concatenate([z for _, z, _ in rings])
+    zgrid = np.linspace(zs.min(), zs.max(), 25)
+    rz = np.zeros(len(zgrid))
+    for rad, z, pad in rings:
+        for k, z0 in enumerate(zgrid):
+            sel = np.abs(z - z0) < 0.3
+            if sel.any():
+                rz[k] = max(rz[k], rad[sel].max() + pad)
+    # front arc, in turns from the shin direction (+x) toward the back (+y): 0.37 (up and back) to 0.81
+    # (front, below the knee). Bending the knee by b turns the thigh's front edge from ~0.72 to
+    # 0.72 - b/360, so this covers bends up to ~125 degrees (the crouch is 115); a light taper at
+    # the start keeps that edge within 0.2 of the thigh plaster when he stands.
+    drum = lc.knee_drum(zgrid, rz, arc=(0.37, 0.81), taper=(0.06, 0.12))
+    shin_piece = mk.concat([drum, shin_cast])
+    shin_piece.smooth(65)
+    shin_piece.field = None
+    fit.cast_knee = drum
+
+    # the thigh plaster's front edge sits at ~0.61 of a turn when standing; a deep crouch (115
+    # degrees) carries it to ~0.29, past where the knee drum starts. A slightly smaller cap on the
+    # thigh, around the same hinge, spanning just ahead of that edge, fills it: at every other bend
+    # it lies tucked under the knee drum.
+    cap = lc.knee_drum(zgrid, rz * 0.97, arc=(0.585, 0.70), taper=(0.08, 0.08), segments=16)
+    cap_thigh = cap.transformed(np.linalg.inv(to_calf))
+    thigh_piece = mk.concat([thigh_cast, cap_thigh])
+    thigh_piece.smooth(65)
+    thigh_piece.field = None
+    cap.field = dict(cap.field)
+
+    fit.cast_meshes = {"thigh": thigh_piece, "shin": shin_piece}
+    fit.cast_parts = {"thigh": thigh_cast, "knee": drum, "shin": shin_cast}
+    fit.cast_bones = {"thigh": pac_name(thigh_n), "shin": pac_name(calf_n)}
+
+
+def pac_name(real):
+    from male08 import pac_bone_name
+    return pac_bone_name(real)
+
+
 def posture_bone3(fit, arms=True, cane=False, smoke=False):
     """The always-on posture as bone3 manipulations {bone: (pos, ang)} (unarmed)."""
     b = {"pelvis": (fit.pelvis_sink, (0, 0, 0)), "spine": ((0, 0, 0), fit.hunch[0]),
@@ -287,9 +451,14 @@ def apply(fit, model):
     fit_glasses(fit, hd)
     fit_face_props(fit, hd)
     fit_cart_and_tube(fit, model, hd)
+    # the cane is shortened 7% along its shaft: hunched and on bent knees his wrist hangs lower than
+    # the cane's full height, which forced a ~59 degree elbow bend; this gives the ~30 degrees of a
+    # cane fitted to the person
+    fit.cane_scale = 0.93
     fit_cane_belt(fit, model)
     fit.glasses_obj = "props/glasses_m08.obj"
     fit.lenses_obj = "props/lenses_m08.obj"
+    fit_leg_cast(fit, model)
     import solve_poses
     solve_poses.solve(fit, model)
 
@@ -306,3 +475,11 @@ def write_head_assets(fit, props):
     om.paint_mask(os.path.join(props, "o2_mask.png"))
     om.paint_strap(os.path.join(props, "o2_strap.jpg"))
     om.paint_tube(os.path.join(props, "o2_tube.png"))
+    import leg_cast as lc
+    names = {"thigh": ("cast_thigh.obj", "plaster long-leg cast, thigh, stockinette cuff"),
+             "shin": ("cast_shin.obj", "plaster long-leg cast, knee and shin, stockinette cuff at the ankle")}
+    for k, mesh in fit.cast_meshes.items():
+        fname, what = names[k]
+        mesh.write_obj(os.path.join(props, fname),
+                       f"{what} - procedural, CC0\n{fit.cast_bones[k]} bone frame of male_08_shirt_tie, inches")
+    lc.paint(os.path.join(props, "cast_plaster.jpg"), os.path.join(props, "cast_plaster_n.png"))

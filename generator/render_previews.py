@@ -66,7 +66,7 @@ def material_style(me):
     if lp and os.path.exists(lp):
         style["map"] = lp
     if me.get("translucent"):
-        style["opacity"] = max(0.22, float(me.get("alpha", 1.0)) * 0.9)
+        style["opacity"] = 0.999          # blend with the texture's alpha; the part's Alpha scales it
         style["roughness"] = 0.12
         style["renderOrder"] = 2
     if me.get("phong"):
@@ -82,7 +82,14 @@ def add_outfit(scene, outfit, model, mats, ev, place):
             if not path or not os.path.exists(path):
                 continue
             mesh = obj_mesh(path)
-            scene.add(mesh, place.world(uid), name=me.get("Name", ""), **material_style(outfit.material(me.get("Material"))))
+            style = material_style(outfit.material(me.get("Material")))
+            alpha = float(me.get("Alpha", 1.0))
+            if alpha < 1:
+                # pac draws the model with render.SetBlend(Alpha), which replaces the material's $alpha
+                style["opacity"] = alpha
+                style["renderOrder"] = 2
+            scale = np.array(sim.vec(me.get("Scale")) if me.get("Scale") else (1.0, 1.0, 1.0)) * float(me.get("Size", 1.0))
+            scene.add(mesh, place.world(uid) @ np.diag([*scale, 1.0]), name=me.get("Name", ""), **style)
         elif cls == "beam":
             end_uid = me.get("EndPointUID")
             if end_uid not in ev["nodes"]:
@@ -144,8 +151,8 @@ def face_views(scene, mats, model, prefix=""):
 
 
 def render_main(model, outfit, textures, out):
-    """Everything on (mask, tank, cane, glasses), standing: full body and the mask close up."""
-    everything = {"cane", "glasses", "mask", "tank"}
+    """Everything on (mask, tank, cane, glasses, cast), standing: full body and the mask close up."""
+    everything = {"cane", "glasses", "mask", "tank", "cast"}
     scene, mats, _, _ = posed_scene(model, outfit, textures, "aim_normal_0", sim.State(everything, "normal", time=6.0))
     c = np.array([-1.0, 9.0, 35.0])          # between him and the cart
     scene.view("full_front_left", c + np.array([92, 62, 6]), c, 36)
@@ -160,17 +167,38 @@ def render_main(model, outfit, textures, out):
 
 
 def render_smoking(model, outfit, textures, out):
-    """Mask off, cigarette on: the drag (filter at the lips) and the resting hold."""
+    """Mask off, cigarette on: the arm resting, on its way up, and at the drag (filter at the lips)."""
     paths, titles = [], []
-    for t, tag in ((1.8, "drag"), (8.0, "hold")):
+    for t, tag in ((8.0, "resting"), (0.45, "raising"), (0.75, "almost"), (1.8, "drag")):
         st = sim.State({"smoke", "glasses", "cane"}, "normal", time=t)
         scene, mats, _, _ = posed_scene(model, outfit, textures, "aim_normal_0", st, 700, 700)
         face_c, fwd, left = face_views(scene, mats, model, f"{tag}_")
-        del scene.desc["views"][1:]
-        chest = face_c - np.array([0, 0, 8.0])
-        scene.view(f"{tag}_upper_body", chest + fwd * 38 + left * 26 + np.array([0, 0, 4]), chest, 34)
+        del scene.desc["views"]
+        scene.desc["views"] = []
+        chest = face_c - np.array([0, 0, 9.0])
+        scene.view(f"smoke_{tag}_front_left", chest + fwd * 40 + left * 26 + np.array([0, 0, 2]), chest, 36)
+        scene.view(f"smoke_{tag}_left_side", chest + left * 46 + fwd * 4 + np.array([0, 0, 2]), chest, 36)
         paths += scene.render(os.path.join(out, "smoking"))
-        titles += [f"smoking: {tag} (face)", f"smoking: {tag}"]
+        titles += [f"smoking, {tag}: front left", f"smoking, {tag}: left side"]
+    return paths, titles
+
+
+def render_cast(model, outfit, textures, out):
+    """The long-leg cast: standing from three sides, mid-stride, sprinting (knee bent ~90) and crouching."""
+    paths, titles = [], []
+    side, front, back = (6, 70, 4), (68, 18, 6), (-64, 24, 10)
+    shots = (("aim_normal_0", 0, False, "standing", (("outer side", side), ("front", front), ("back", back))),
+             ("walk_0.25", 90, False, "walking", (("outer side", side),)),
+             ("run_0", 200, False, "sprinting", (("outer side", side),)),
+             ("crouch_idle", 0, True, "crouching", (("outer side", (6, 60, 8)), ("front", (58, 20, 10)))))
+    for label, speed, crouch, tag, views in shots:
+        st = sim.State({"cane", "cast"}, "normal", speed=speed, time=6.0, crouching=crouch)
+        scene, mats, _, _ = posed_scene(model, outfit, textures, label, st, 700, 700)
+        c = mats[model.bone("ValveBiped.Bip01_L_Calf")][:3, 3] + np.array([0, 0, -2.0])
+        for vname, off in views:
+            scene.view(f"cast_{label.replace('.', '_')}_{vname.replace(' ', '_')}", c + np.array(off), c, 38)
+            titles.append(f"cast, {tag}: {vname}")
+        paths += scene.render(os.path.join(out, "cast"))
     return paths, titles
 
 
@@ -199,9 +227,12 @@ def main():
     outfit = sim.Outfit(args.outfit)
     textures = BodyTextures(model, os.path.dirname(os.path.abspath(args.dump)))
     print(render_main(model, outfit, textures, args.out))
+    cp, ct = render_cast(model, outfit, textures, args.out)
+    print(contact_sheet(cp, ct, 4, os.path.join(args.out, "sheet_leg_cast.png")))
     sp, st = render_smoking(model, outfit, textures, args.out)
+    print(contact_sheet(sp, st, 4, os.path.join(args.out, "sheet_smoking.png")))
     ap_, at = render_armed(model, outfit, textures, args.out)
-    print(contact_sheet(sp + ap_, st + at, 4, os.path.join(args.out, "sheet_smoking_and_armed.png")))
+    print(contact_sheet(ap_, at, 4, os.path.join(args.out, "sheet_armed.png")))
 
 
 if __name__ == "__main__":

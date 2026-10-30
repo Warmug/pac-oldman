@@ -4,7 +4,7 @@
     python3 generator/make_outfit.py [--dump path/to/male08_dump.txt]   (default: build/male08/male08_dump.txt)
 
 Writes outfit/old_man_2_male08.txt plus the meshes/textures under props/.
-Toggles: pac_event cane 2 | smoke 2 | glasses 2 | mask 2 | tank 2
+Toggles: pac_event cane 2 | smoke 2 | glasses 2 | mask 2 | tank 2 | cast 2
 """
 import argparse
 import os
@@ -111,7 +111,8 @@ CANE_FINGERS = {"right finger 1": -62, "right finger 11": -78, "right finger 12"
 
 
 def cane_group(fit):
-    cane = model("cane", url("props/cane.obj"), "right hand", "cane_wood", *fit.cane_hand)
+    scale = {"Scale": Vector(1, 1, fit.cane_scale)} if fit.cane_scale != 1 else {}
+    cane = model("cane", url("props/cane.obj"), "right hand", "cane_wood", *fit.cane_hand, **scale)
     in_hand = group(
         "cane in his hand (holdtype normal)",
         holdtype_event("only when holdtype is normal", PROP_HOLD, True),
@@ -135,7 +136,7 @@ def cane_group(fit):
     on_belt = group(
         "cane hooked on his belt (any other holdtype)",
         holdtype_event("hidden while holdtype is normal", PROP_HOLD, False),
-        model("cane on belt", url("props/cane.obj"), "pelvis", "cane_wood", *fit.cane_belt),
+        model("cane on belt", url("props/cane.obj"), "pelvis", "cane_wood", *fit.cane_belt, **scale),
     )
     # hidden while crouching: a full crouch puts his hands and hips so low that the cane goes
     # into the floor whether held or hooked on the belt
@@ -242,10 +243,30 @@ def glasses_group(fit):
         material_3d("oldman_wire", basetexture=url("oldman/oldman_glasses.jpg"), bumpmap=url("props/flat_n.png"),
                     phong=True, phongboost=6, phongexponent=50, envmap="env_cubemap",
                     envmaptint=Vector(0.35, 0.3, 0.2)),
-        material_3d("oldman_lens", basetexture=url("props/lens.png"), translucent=True, alpha=0.3,
+        material_3d("oldman_lens", basetexture=url("props/lens.png"), translucent=True,
                     envmap="env_cubemap", envmaptint=Vector(0.25, 0.25, 0.25)),
         model("frames", url(fit.glasses_obj), "head", "oldman_wire"),
-        model("lenses", url(fit.lenses_obj), "head", "oldman_lens"),
+        model("lenses", url(fit.lenses_obj), "head", "oldman_lens", Alpha=0.3, Translucent=True),
+    )
+
+
+# --- leg cast -----------------------------------------------------------------------
+
+def cast_group(fit):
+    """Plaster long-leg cast, upper thigh to just above the ankle, on his left leg (the cane is in his
+    right hand, the side you hold a cane on for a bad left leg). Each piece rides its own bone,
+    modelled in that bone's frame, so it follows the animation without the leg poking through; the
+    knee is a drum around the knee's hinge, so bending never opens a gap."""
+    bones = getattr(fit, "cast_bones", None)
+    if not bones:
+        return None
+    return group(
+        "leg cast  [pac_event cast]",
+        command_event("toggle with: pac_event cast 2", "cast", True),
+        material_3d("cast_plaster", basetexture=url("props/cast_plaster.jpg"), bumpmap=url("props/cast_plaster_n.png"),
+                    halflambert=True),
+        model("plaster: thigh", url("props/cast_thigh.obj"), bones["thigh"], "cast_plaster"),
+        model("plaster: knee and shin", url("props/cast_shin.obj"), bones["shin"], "cast_plaster"),
     )
 
 
@@ -271,13 +292,15 @@ def oxygen_groups(fit):
         "oxygen mask  [pac_event mask]",
         command_event("toggle with: pac_event mask 2", "mask", True),
         material_3d("o2_mask_plastic", basetexture=url("props/o2_mask.png"), bumpmap=url("props/flat_n.png"),
-                    translucent=True, alpha=0.42, phong=True, phongboost=8, phongexponent=60,
+                    translucent=True, phong=True, phongboost=8, phongexponent=60,
                     phongfresnelranges=Vector(0.4, 0.8, 1), envmap="env_cubemap", envmaptint=Vector(0.12, 0.12, 0.12)),
         material_3d("o2_mask_strap", basetexture=url("props/o2_strap.jpg"), bumpmap=url("props/flat_n.png"),
                     phong=True, phongboost=1.5, phongexponent=12, halflambert=True),
         material_2d("o2_tube", basetexture=url("props/o2_tube.png"), vertexcolor=True, vertexalpha=True,
                     translucent=True),
-        model("mask shell", url("props/o2_mask.obj"), "head", "o2_mask_plastic"),
+        # see-through comes from the part's Alpha: pac draws models with render.SetBlend(Alpha),
+        # which overwrites the material's $alpha (a material alpha alone left the mask opaque white)
+        model("mask shell", url("props/o2_mask.obj"), "head", "o2_mask_plastic", Alpha=0.35, Translucent=True),
         model("elastic strap and nose clip", url("props/o2_strap.obj"), "head", "o2_mask_strap"),
         clip, mask_outlet_to_clip,
     )
@@ -315,8 +338,8 @@ def build(fit):
     always, unarmed, armed = posture(fit)
     mask, tank, tube = oxygen_groups(fit)
     return group(
-        "Old man (male_08) - posture, cane, cigarette, glasses, oxygen",
-        always, unarmed, armed, cane_group(fit), cig_group(fit), glasses_group(fit), mask, tank, tube,
+        "Old man (male_08) - posture, cane, cigarette, glasses, leg cast, oxygen",
+        always, unarmed, armed, cane_group(fit), cig_group(fit), glasses_group(fit), cast_group(fit), mask, tank, tube,
         OwnerName="self", EditorExpand=True,
     )
 

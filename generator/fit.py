@@ -47,6 +47,7 @@ class Fit:
         self.cane_arm = {"right upperarm": (1.76, -18.15, 7.02), "right forearm": (0, -32.78, 0),
                          "right hand": (-26.95, -0.25, 5.67)}
         self.cane_belt = ((-4.0, 2.0, -7.5), (0, 0, 0))
+        self.cane_scale = 1.0       # along the shaft (the cane model's z)
 
         self.cig_hand = ((4.785, -0.625, 0.763), (-33.2, 55.54, -172.3))
         self.cig_hand_tip = (6.1391, 1.3482, 2.329)

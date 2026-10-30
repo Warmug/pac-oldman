@@ -2,7 +2,7 @@
 	["self"] = {
 		["ClassName"] = "group",
 		["UniqueID"] = "0496be0753e79529920b95e5de09201cd54cf200aaf2426c3d928f20356811a0",
-		["Name"] = "Old man (male_08) - posture, cane, cigarette, glasses, oxygen",
+		["Name"] = "Old man (male_08) - posture, cane, cigarette, glasses, leg cast, oxygen",
 		["OwnerName"] = "self",
 		["EditorExpand"] = true,
 	},
@@ -687,7 +687,8 @@
 								["Bone"] = "right hand",
 								["Material"] = "cane_wood",
 								["Position"] = Vector(2.79, -0.133, -0.031),
-								["Angles"] = Angle(9.805, 7.854, -4.986),
+								["Angles"] = Angle(5.202, 10.364, -3.419),
+								["Scale"] = Vector(1, 1, 0.93),
 								["AimPartUID"] = "a9b4db3914792e97e021cd455995e5b0ee88608f3b38be7de7fc189e18285ee2",
 							},
 							["children"] = {
@@ -699,7 +700,7 @@
 								["UniqueID"] = "a9b4db3914792e97e021cd455995e5b0ee88608f3b38be7de7fc189e18285ee2",
 								["Name"] = "keeps the cane upright (the cane aims at this)",
 								["Bone"] = "pelvis",
-								["Position"] = Vector(-26.064, -4.956, 406.726),
+								["Position"] = Vector(-32.448, -6.974, 401.647),
 								["Angles"] = Angle(0, 0, 0),
 								["SpritePath"] = "sprites/light_glow02_add",
 								["Size"] = 0,
@@ -879,7 +880,7 @@
 								["UniqueID"] = "d203cc4da2895e379d16a1726490077620ab0abfe50e89378dbf958b1193b0a4",
 								["Name"] = "cane grip: right upperarm",
 								["Bone"] = "right upperarm",
-								["Angles"] = Angle(0.64, -24.93, 7.94),
+								["Angles"] = Angle(9.55, -9.73, 13.79),
 							},
 							["children"] = {
 							},
@@ -890,7 +891,7 @@
 								["UniqueID"] = "904f029ebd0b38454e1d2eea72700cb006f93229f3b7a9a8e8cc6e0f66b1c57a",
 								["Name"] = "cane grip: right forearm",
 								["Bone"] = "right forearm",
-								["Angles"] = Angle(0, -35.24, 0),
+								["Angles"] = Angle(0, -23.18, 0),
 							},
 							["children"] = {
 							},
@@ -901,7 +902,7 @@
 								["UniqueID"] = "7bd766ac73be76e10c999b4890c67e8cac16497cb6d17fe640792f4a4cc9d939",
 								["Name"] = "cane grip: right hand",
 								["Bone"] = "right hand",
-								["Angles"] = Angle(-52.85, 10.49, 3.94),
+								["Angles"] = Angle(-24.06, -8.08, 7.64),
 							},
 							["children"] = {
 							},
@@ -938,6 +939,7 @@
 								["Material"] = "cane_wood",
 								["Position"] = Vector(-6.844, 2.597, -2.988),
 								["Angles"] = Angle(-8.82, -15.36, -59.11),
+								["Scale"] = Vector(1, 1, 0.93),
 							},
 							["children"] = {
 							},
@@ -1256,7 +1258,7 @@
 										["UniqueID"] = "d1a0ea7b3db117716e69f6abe5774a1701e78b095f7f6a463bef288cd8e9b020",
 										["Name"] = "smoking arm: left upperarm",
 										["Bone"] = "left upperarm",
-										["Angles"] = Angle(13.01, 8.53, -25.27),
+										["Angles"] = Angle(-29.76, -25.61, -23.27),
 									},
 									["children"] = {
 										[1] = {
@@ -1265,7 +1267,7 @@
 												["UniqueID"] = "8676ea8818d9c476879396090afc4238fbd72166e5967d568688be6b6a5eb61a",
 												["Name"] = "take a drag every 13s while standing still",
 												["VariableName"] = "Angles",
-												["Expression"] = "13.01 + (18.78)*(clamp(min((time()%13)/1.0, (3.4-(time()%13))/1.0), 0, 1)*clamp(min((time()%13)/1.0, (3.4-(time()%13))/1.0), 0, 1)*(3-2*clamp(min((time()%13)/1.0, (3.4-(time()%13))/1.0), 0, 1)))*(1 - clamp(owner_velocity_length()/50, 0, 1)), 8.53 + (-80.58)*(clamp(min((time()%13)/1.0, (3.4-(time()%13))/1.0), 0, 1)*clamp(min((time()%13)/1.0, (3.4-(time()%13))/1.0), 0, 1)*(3-2*clamp(min((time()%13)/1.0, (3.4-(time()%13))/1.0), 0, 1)))*(1 - clamp(owner_velocity_length()/50, 0, 1)), -25.27 + (28.08)*(clamp(min((time()%13)/1.0, (3.4-(time()%13))/1.0), 0, 1)*clamp(min((time()%13)/1.0, (3.4-(time()%13))/1.0), 0, 1)*(3-2*clamp(min((time()%13)/1.0, (3.4-(time()%13))/1.0), 0, 1)))*(1 - clamp(owner_velocity_length()/50, 0, 1))",
+												["Expression"] = "-29.76 + (-12.08)*(clamp(min((time()%13)/1.0, (3.4-(time()%13))/1.0), 0, 1)*clamp(min((time()%13)/1.0, (3.4-(time()%13))/1.0), 0, 1)*(3-2*clamp(min((time()%13)/1.0, (3.4-(time()%13))/1.0), 0, 1)))*(1 - clamp(owner_velocity_length()/50, 0, 1)), -25.61 + (-63.21)*(clamp(min((time()%13)/1.0, (3.4-(time()%13))/1.0), 0, 1)*clamp(min((time()%13)/1.0, (3.4-(time()%13))/1.0), 0, 1)*(3-2*clamp(min((time()%13)/1.0, (3.4-(time()%13))/1.0), 0, 1)))*(1 - clamp(owner_velocity_length()/50, 0, 1)), -23.27 + (48.46)*(clamp(min((time()%13)/1.0, (3.4-(time()%13))/1.0), 0, 1)*clamp(min((time()%13)/1.0, (3.4-(time()%13))/1.0), 0, 1)*(3-2*clamp(min((time()%13)/1.0, (3.4-(time()%13))/1.0), 0, 1)))*(1 - clamp(owner_velocity_length()/50, 0, 1))",
 											},
 											["children"] = {
 											},
@@ -1278,7 +1280,7 @@
 										["UniqueID"] = "e116f42e24bbb6ed3cd8dd33297e4efd8e870a61b65f48a0ac9d59f4c72a09d8",
 										["Name"] = "smoking arm: left forearm",
 										["Bone"] = "left forearm",
-										["Angles"] = Angle(0, -88.22, 0),
+										["Angles"] = Angle(0, -87.86, -0.31),
 									},
 									["children"] = {
 										[1] = {
@@ -1287,7 +1289,7 @@
 												["UniqueID"] = "1b75fc815f70f0b7bd1dab3c02ddea4d1ba609b2847857fa601f63fb82dce13e",
 												["Name"] = "take a drag every 13s while standing still",
 												["VariableName"] = "Angles",
-												["Expression"] = "0.00 + (0.00)*(clamp(min((time()%13)/1.0, (3.4-(time()%13))/1.0), 0, 1)*clamp(min((time()%13)/1.0, (3.4-(time()%13))/1.0), 0, 1)*(3-2*clamp(min((time()%13)/1.0, (3.4-(time()%13))/1.0), 0, 1)))*(1 - clamp(owner_velocity_length()/50, 0, 1)), -88.22 + (-17.29)*(clamp(min((time()%13)/1.0, (3.4-(time()%13))/1.0), 0, 1)*clamp(min((time()%13)/1.0, (3.4-(time()%13))/1.0), 0, 1)*(3-2*clamp(min((time()%13)/1.0, (3.4-(time()%13))/1.0), 0, 1)))*(1 - clamp(owner_velocity_length()/50, 0, 1)), 0.00 + (0.00)*(clamp(min((time()%13)/1.0, (3.4-(time()%13))/1.0), 0, 1)*clamp(min((time()%13)/1.0, (3.4-(time()%13))/1.0), 0, 1)*(3-2*clamp(min((time()%13)/1.0, (3.4-(time()%13))/1.0), 0, 1)))*(1 - clamp(owner_velocity_length()/50, 0, 1))",
+												["Expression"] = "0.00 + (0.00)*(clamp(min((time()%13)/1.0, (3.4-(time()%13))/1.0), 0, 1)*clamp(min((time()%13)/1.0, (3.4-(time()%13))/1.0), 0, 1)*(3-2*clamp(min((time()%13)/1.0, (3.4-(time()%13))/1.0), 0, 1)))*(1 - clamp(owner_velocity_length()/50, 0, 1)), -87.86 + (-16.12)*(clamp(min((time()%13)/1.0, (3.4-(time()%13))/1.0), 0, 1)*clamp(min((time()%13)/1.0, (3.4-(time()%13))/1.0), 0, 1)*(3-2*clamp(min((time()%13)/1.0, (3.4-(time()%13))/1.0), 0, 1)))*(1 - clamp(owner_velocity_length()/50, 0, 1)), -0.31 + (-27.45)*(clamp(min((time()%13)/1.0, (3.4-(time()%13))/1.0), 0, 1)*clamp(min((time()%13)/1.0, (3.4-(time()%13))/1.0), 0, 1)*(3-2*clamp(min((time()%13)/1.0, (3.4-(time()%13))/1.0), 0, 1)))*(1 - clamp(owner_velocity_length()/50, 0, 1))",
 											},
 											["children"] = {
 											},
@@ -1300,7 +1302,7 @@
 										["UniqueID"] = "736642695a34ca4a20567f155c41cc0e09791395aeb92ac68487e7e9ec1a5c30",
 										["Name"] = "smoking arm: left hand",
 										["Bone"] = "left hand",
-										["Angles"] = Angle(-38.3, -12.32, -13.34),
+										["Angles"] = Angle(-26.28, -2.55, -23.03),
 									},
 									["children"] = {
 										[1] = {
@@ -1309,7 +1311,7 @@
 												["UniqueID"] = "17f0b278b378dd8b19b78c2957e9796ed464e3cae0ae2d386b9f20b9a5452e89",
 												["Name"] = "take a drag every 13s while standing still",
 												["VariableName"] = "Angles",
-												["Expression"] = "-38.30 + (16.59)*(clamp(min((time()%13)/1.0, (3.4-(time()%13))/1.0), 0, 1)*clamp(min((time()%13)/1.0, (3.4-(time()%13))/1.0), 0, 1)*(3-2*clamp(min((time()%13)/1.0, (3.4-(time()%13))/1.0), 0, 1)))*(1 - clamp(owner_velocity_length()/50, 0, 1)), -12.32 + (17.12)*(clamp(min((time()%13)/1.0, (3.4-(time()%13))/1.0), 0, 1)*clamp(min((time()%13)/1.0, (3.4-(time()%13))/1.0), 0, 1)*(3-2*clamp(min((time()%13)/1.0, (3.4-(time()%13))/1.0), 0, 1)))*(1 - clamp(owner_velocity_length()/50, 0, 1)), -13.34 + (-8.31)*(clamp(min((time()%13)/1.0, (3.4-(time()%13))/1.0), 0, 1)*clamp(min((time()%13)/1.0, (3.4-(time()%13))/1.0), 0, 1)*(3-2*clamp(min((time()%13)/1.0, (3.4-(time()%13))/1.0), 0, 1)))*(1 - clamp(owner_velocity_length()/50, 0, 1))",
+												["Expression"] = "-26.28 + (1.63)*(clamp(min((time()%13)/1.0, (3.4-(time()%13))/1.0), 0, 1)*clamp(min((time()%13)/1.0, (3.4-(time()%13))/1.0), 0, 1)*(3-2*clamp(min((time()%13)/1.0, (3.4-(time()%13))/1.0), 0, 1)))*(1 - clamp(owner_velocity_length()/50, 0, 1)), -2.55 + (1.26)*(clamp(min((time()%13)/1.0, (3.4-(time()%13))/1.0), 0, 1)*clamp(min((time()%13)/1.0, (3.4-(time()%13))/1.0), 0, 1)*(3-2*clamp(min((time()%13)/1.0, (3.4-(time()%13))/1.0), 0, 1)))*(1 - clamp(owner_velocity_length()/50, 0, 1)), -23.03 + (-1.17)*(clamp(min((time()%13)/1.0, (3.4-(time()%13))/1.0), 0, 1)*clamp(min((time()%13)/1.0, (3.4-(time()%13))/1.0), 0, 1)*(3-2*clamp(min((time()%13)/1.0, (3.4-(time()%13))/1.0), 0, 1)))*(1 - clamp(owner_velocity_length()/50, 0, 1))",
 											},
 											["children"] = {
 											},
@@ -1383,7 +1385,7 @@
 										["UniqueID"] = "1f4810b8e58de78e1278f9c4708080db8e702c4fd29a8ae474a230f77794dee8",
 										["Name"] = "smoking arm: left upperarm",
 										["Bone"] = "left upperarm",
-										["Angles"] = Angle(13.01, 8.53, -25.27),
+										["Angles"] = Angle(-29.76, -25.61, -23.27),
 									},
 									["children"] = {
 									},
@@ -1394,7 +1396,7 @@
 										["UniqueID"] = "f61e18546964eac28c426a51ddf2be5355399c0a025f5f2e9609e7a978ed9820",
 										["Name"] = "smoking arm: left forearm",
 										["Bone"] = "left forearm",
-										["Angles"] = Angle(0, -88.22, 0),
+										["Angles"] = Angle(0, -87.86, -0.31),
 									},
 									["children"] = {
 									},
@@ -1405,7 +1407,7 @@
 										["UniqueID"] = "6a4a88f1e7fa189ed2b743f83a22bc2a7caadd4fe4924c6cfd8be7e21bb97cd9",
 										["Name"] = "smoking arm: left hand",
 										["Bone"] = "left hand",
-										["Angles"] = Angle(-38.3, -12.32, -13.34),
+										["Angles"] = Angle(-26.28, -2.55, -23.03),
 									},
 									["children"] = {
 									},
@@ -1677,7 +1679,6 @@
 						["Name"] = "oldman_lens",
 						["basetexture"] = "https://raw.githubusercontent.com/Warmug/pac-oldman/main/props/lens.png",
 						["translucent"] = true,
-						["alpha"] = 0.3,
 						["envmap"] = "env_cubemap",
 						["envmaptint"] = Vector(0.25, 0.25, 0.25),
 					},
@@ -1708,6 +1709,8 @@
 						["Material"] = "oldman_lens",
 						["Position"] = Vector(0, 0, 0),
 						["Angles"] = Angle(0, 0, 0),
+						["Alpha"] = 0.3,
+						["Translucent"] = true,
 					},
 					["children"] = {
 					},
@@ -1717,14 +1720,76 @@
 		[7] = {
 			["self"] = {
 				["ClassName"] = "group",
-				["UniqueID"] = "e4928300dc47c35a356248cd21a37fae2ed11383f903d710d7e0328be0e6a139",
+				["UniqueID"] = "9aa3be644f70223b8aba9e2f51c50a5f3cabb05c57dbbb75c780c3ad9dd02dc0",
+				["Name"] = "leg cast  [pac_event cast]",
+			},
+			["children"] = {
+				[1] = {
+					["self"] = {
+						["ClassName"] = "event",
+						["UniqueID"] = "7bf61fa83089fc3cc30f55bba79ebdc8948f16b3c4dd5ef83d09ebf71c8c1be8",
+						["Name"] = "toggle with: pac_event cast 2",
+						["Event"] = "command",
+						["Arguments"] = "cast@@0@@0",
+						["Operator"] = "equal",
+						["Invert"] = true,
+					},
+					["children"] = {
+					},
+				},
+				[2] = {
+					["self"] = {
+						["ClassName"] = "material_3d",
+						["UniqueID"] = "395c8467ee2bb4c39b56c6a14d017636d6d577653f033a367bb5bcf985cf6232",
+						["Name"] = "cast_plaster",
+						["basetexture"] = "https://raw.githubusercontent.com/Warmug/pac-oldman/main/props/cast_plaster.jpg",
+						["bumpmap"] = "https://raw.githubusercontent.com/Warmug/pac-oldman/main/props/cast_plaster_n.png",
+						["halflambert"] = true,
+					},
+					["children"] = {
+					},
+				},
+				[3] = {
+					["self"] = {
+						["ClassName"] = "model2",
+						["UniqueID"] = "1fe390efe5b17bc420300dc8412be1c06202860bf94e545ae0ccd3507ff08d58",
+						["Name"] = "plaster: thigh",
+						["Model"] = "https://raw.githubusercontent.com/Warmug/pac-oldman/main/props/cast_thigh.obj",
+						["Bone"] = "left thigh",
+						["Material"] = "cast_plaster",
+						["Position"] = Vector(0, 0, 0),
+						["Angles"] = Angle(0, 0, 0),
+					},
+					["children"] = {
+					},
+				},
+				[4] = {
+					["self"] = {
+						["ClassName"] = "model2",
+						["UniqueID"] = "2fd4325ee193fcdbbe8517305dfaef8aa9be7ccdb57025bf7d98e18eae0fb689",
+						["Name"] = "plaster: knee and shin",
+						["Model"] = "https://raw.githubusercontent.com/Warmug/pac-oldman/main/props/cast_shin.obj",
+						["Bone"] = "left calf",
+						["Material"] = "cast_plaster",
+						["Position"] = Vector(0, 0, 0),
+						["Angles"] = Angle(0, 0, 0),
+					},
+					["children"] = {
+					},
+				},
+			},
+		},
+		[8] = {
+			["self"] = {
+				["ClassName"] = "group",
+				["UniqueID"] = "9acaf15849a0713225c4cca36654ba5270e2dcf12512da74fee66b42616b7072",
 				["Name"] = "oxygen mask  [pac_event mask]",
 			},
 			["children"] = {
 				[1] = {
 					["self"] = {
 						["ClassName"] = "event",
-						["UniqueID"] = "67c717c89719bd0aa0940cf9689a1e3311d516603953e0960e3a08411b3265a4",
+						["UniqueID"] = "9e1c1b16ca75fccaff3f9782e88d173e024907f5f6ba915883204aa94e266107",
 						["Name"] = "toggle with: pac_event mask 2",
 						["Event"] = "command",
 						["Arguments"] = "mask@@0@@0",
@@ -1737,12 +1802,11 @@
 				[2] = {
 					["self"] = {
 						["ClassName"] = "material_3d",
-						["UniqueID"] = "cae8a77c6d4dda1885fdd9cc43d67f0a1cf824fe75cc3e0deb7b933c145f7daa",
+						["UniqueID"] = "55ce591d99bd376848f85fd48c38c37f2e57067b598b294317e5941cb5b680be",
 						["Name"] = "o2_mask_plastic",
 						["basetexture"] = "https://raw.githubusercontent.com/Warmug/pac-oldman/main/props/o2_mask.png",
 						["bumpmap"] = "https://raw.githubusercontent.com/Warmug/pac-oldman/main/props/flat_n.png",
 						["translucent"] = true,
-						["alpha"] = 0.42,
 						["phong"] = true,
 						["phongboost"] = 8,
 						["phongexponent"] = 60,
@@ -1756,7 +1820,7 @@
 				[3] = {
 					["self"] = {
 						["ClassName"] = "material_3d",
-						["UniqueID"] = "2616083e23b943c19d09089f21159fb4d6df160001f005b336e0858b50d1a3f6",
+						["UniqueID"] = "050054dc3a7176dd85488647959c8ec76465a7cd2014738eb3fc530ced1c72b1",
 						["Name"] = "o2_mask_strap",
 						["basetexture"] = "https://raw.githubusercontent.com/Warmug/pac-oldman/main/props/o2_strap.jpg",
 						["bumpmap"] = "https://raw.githubusercontent.com/Warmug/pac-oldman/main/props/flat_n.png",
@@ -1771,7 +1835,7 @@
 				[4] = {
 					["self"] = {
 						["ClassName"] = "material_2d",
-						["UniqueID"] = "e4ce7dc3fe3239e5c3ddb5826beaf6874ecfc069fbdbaac7b23309ec302c6ff2",
+						["UniqueID"] = "30d160539df0411e58fcf433ec57981153637978f429255dfedf59f6df32d4b3",
 						["Name"] = "o2_tube",
 						["basetexture"] = "https://raw.githubusercontent.com/Warmug/pac-oldman/main/props/o2_tube.png",
 						["vertexcolor"] = true,
@@ -1784,13 +1848,15 @@
 				[5] = {
 					["self"] = {
 						["ClassName"] = "model2",
-						["UniqueID"] = "e92132498333f4d97ab5dbcab07b2f70962966f255d163fd2603495d1dbf13cc",
+						["UniqueID"] = "75ebbdbc62d7c755b8f096286f17ef7015780bf7f9d4db12fb604b708682916f",
 						["Name"] = "mask shell",
 						["Model"] = "https://raw.githubusercontent.com/Warmug/pac-oldman/main/props/o2_mask.obj",
 						["Bone"] = "head",
 						["Material"] = "o2_mask_plastic",
 						["Position"] = Vector(0, 0, 0),
 						["Angles"] = Angle(0, 0, 0),
+						["Alpha"] = 0.35,
+						["Translucent"] = true,
 					},
 					["children"] = {
 					},
@@ -1798,7 +1864,7 @@
 				[6] = {
 					["self"] = {
 						["ClassName"] = "model2",
-						["UniqueID"] = "3eb2fb60a5a9dded2e6c5dc4d52836de707596ea4c4a82aeac338db1ff2aadf4",
+						["UniqueID"] = "1a353a72ec48e331e0bd21380884c853be2b58268ac7147ea844ab82f139cc89",
 						["Name"] = "elastic strap and nose clip",
 						["Model"] = "https://raw.githubusercontent.com/Warmug/pac-oldman/main/props/o2_strap.obj",
 						["Bone"] = "head",
@@ -1812,7 +1878,7 @@
 				[7] = {
 					["self"] = {
 						["ClassName"] = "sprite",
-						["UniqueID"] = "aa61bebba6c7cf24900126ecd583a3f0cf17c694a496fc1dabb587d4c54a60ec",
+						["UniqueID"] = "0178039ec46f044f81831e9cb80de05aa2a6e7e8280a65a5ead1d6421e13b137",
 						["Name"] = "tube clip on his shirt",
 						["Bone"] = "spine 1",
 						["Position"] = Vector(1.7106, 7.3011, 4.9561),
@@ -1827,12 +1893,12 @@
 				[8] = {
 					["self"] = {
 						["ClassName"] = "beam",
-						["UniqueID"] = "d37d6ef8f1630261de14188e8adcd17b9bdc4493aec4405a3be1d1c252177f76",
+						["UniqueID"] = "8064744955202d7bb1c29a2cfcedfd286e656a371e1094b803dfea93d9e9fa15",
 						["Name"] = "tube: mask down to his shirt",
 						["Bone"] = "head",
 						["Position"] = Vector(-0.9993, -7.5823, 0.0129),
 						["Angles"] = Angle(0.095, -140.1, -89.946),
-						["EndPointUID"] = "aa61bebba6c7cf24900126ecd583a3f0cf17c694a496fc1dabb587d4c54a60ec",
+						["EndPointUID"] = "0178039ec46f044f81831e9cb80de05aa2a6e7e8280a65a5ead1d6421e13b137",
 						["Material"] = "o2_tube",
 						["Width"] = 0.42,
 						["Bend"] = 2,
@@ -1850,17 +1916,17 @@
 				},
 			},
 		},
-		[8] = {
+		[9] = {
 			["self"] = {
 				["ClassName"] = "group",
-				["UniqueID"] = "4e678664a3ab9987823aa83d25a3d60dcd91f7b6a758edc02ab50c3a8e8f26e1",
+				["UniqueID"] = "4270e5efd9ebdb1a0543acb02fa3a3b83136063ed880965b0551306238c6eed3",
 				["Name"] = "oxygen tank cart  [pac_event tank]",
 			},
 			["children"] = {
 				[1] = {
 					["self"] = {
 						["ClassName"] = "event",
-						["UniqueID"] = "2ae4b928a5843e227ae921539af393e65b40608dca4214736aa90aaf8b989094",
+						["UniqueID"] = "fbf945d26e8cc35cda409528d4e3a6afbf1255328db4bff5806a58ca62e2be16",
 						["Name"] = "toggle with: pac_event tank 2",
 						["Event"] = "command",
 						["Arguments"] = "tank@@0@@0",
@@ -1873,7 +1939,7 @@
 				[2] = {
 					["self"] = {
 						["ClassName"] = "material_3d",
-						["UniqueID"] = "e628c5a30bdd583c63b8e402198f4d1a875fa40cc72a0ee4d7d34db0181cc61a",
+						["UniqueID"] = "dcec382fa341b7a8a4ce7786c524627591da7db6acabc164230839e24aa71599",
 						["Name"] = "o2_cart",
 						["basetexture"] = "https://raw.githubusercontent.com/Warmug/pac-oldman/main/props/o2_cart.jpg",
 						["bumpmap"] = "https://raw.githubusercontent.com/Warmug/pac-oldman/main/props/flat_n.png",
@@ -1888,7 +1954,7 @@
 				[3] = {
 					["self"] = {
 						["ClassName"] = "jiggle",
-						["UniqueID"] = "3eac81e3515eb7648bb527db250a0ecc6a3a125f73bbad7d1c54fa638d0879cb",
+						["UniqueID"] = "853e105dd66193b40e27f58321c77897251c1b757a3db2c9768f27ad47bdb2ed",
 						["Name"] = "cart rolls along beside him",
 						["Bone"] = "none",
 						["Position"] = Vector(-7, 23, 37.18),
@@ -1904,7 +1970,7 @@
 						[1] = {
 							["self"] = {
 								["ClassName"] = "model2",
-								["UniqueID"] = "5edc5b08175800c3f75d2b155397782d4d2304783cdde832eb4259378fe71c21",
+								["UniqueID"] = "136e66523a271a755f32c34d1d48551abaa65a8e31798843e92669fd6e0903d3",
 								["Name"] = "cylinder and cart",
 								["Model"] = "https://raw.githubusercontent.com/Warmug/pac-oldman/main/props/o2_cart.obj",
 								["Bone"] = "pelvis",
@@ -1918,7 +1984,7 @@
 						[2] = {
 							["self"] = {
 								["ClassName"] = "model2",
-								["UniqueID"] = "bcc59fcf0c63b11dd825ae26b9e7ddaf6a47eff7a69939200c954387d75bf511",
+								["UniqueID"] = "e6788dab105cdc16f9f4097db2d519252d1da7a2402ac97bf47f3f9c80948d61",
 								["Name"] = "wheel left",
 								["Model"] = "https://raw.githubusercontent.com/Warmug/pac-oldman/main/props/o2_wheel.obj",
 								["Bone"] = "pelvis",
@@ -1930,7 +1996,7 @@
 								[1] = {
 									["self"] = {
 										["ClassName"] = "proxy",
-										["UniqueID"] = "88e4914d0ef7312eb2088d8199781ff68e967a5f3978040e46a54a07a595e454",
+										["UniqueID"] = "51cf57019168ec40ee89cb03c13c55cbce6719a4c9a9a04f3431e93163ef5f38",
 										["Name"] = "wheel rolls when he walks",
 										["VariableName"] = "Angles",
 										["Expression"] = "owner_velocity_forward()*ftime()*22.037",
@@ -1946,7 +2012,7 @@
 						[3] = {
 							["self"] = {
 								["ClassName"] = "model2",
-								["UniqueID"] = "7808b446b3cd83f16c03a400fc3952ecf1a71bdfdcd9e450f4214a347c4d2068",
+								["UniqueID"] = "fd5ca4f36371251e1b7fc2f314ed60e6f00d9711332e28ece9b2d0215a1949e6",
 								["Name"] = "wheel right",
 								["Model"] = "https://raw.githubusercontent.com/Warmug/pac-oldman/main/props/o2_wheel.obj",
 								["Bone"] = "pelvis",
@@ -1958,7 +2024,7 @@
 								[1] = {
 									["self"] = {
 										["ClassName"] = "proxy",
-										["UniqueID"] = "e47ae2d8a82ec087cfcfe6e21c2ebb57d2e82d474d2ca552a3e2842e42e5f5fb",
+										["UniqueID"] = "717bf8ddf2a004667ca8eef128bcab025c805f1fcc9abfea39161de2c63042a9",
 										["Name"] = "wheel rolls when he walks",
 										["VariableName"] = "Angles",
 										["Expression"] = "owner_velocity_forward()*ftime()*22.037",
@@ -1974,7 +2040,7 @@
 						[4] = {
 							["self"] = {
 								["ClassName"] = "sprite",
-								["UniqueID"] = "d83e27f74f4d4903ef6c3ae97b6f9feda5be0c574ba846ea3ea4df0fbcc0e056",
+								["UniqueID"] = "22c1d0c6dba469128918278d65aef7ad3082252772fdaf54a7e58b7e8ce50471",
 								["Name"] = "tube connector on the regulator",
 								["Bone"] = "pelvis",
 								["Position"] = Vector(0, -2.9, 26.05),
@@ -1990,17 +2056,17 @@
 				},
 			},
 		},
-		[9] = {
+		[10] = {
 			["self"] = {
 				["ClassName"] = "group",
-				["UniqueID"] = "b55188f7f6b56d380d5ecfbed8b0fc9931c215b1152a5f1bc19e7e09dfcd123f",
+				["UniqueID"] = "b814b5e87cf19e3035083d7849e4f3c10c86ae979bdea2b3f77cde7183510fbc",
 				["Name"] = "oxygen tube to the tank (mask + tank)",
 			},
 			["children"] = {
 				[1] = {
 					["self"] = {
 						["ClassName"] = "event",
-						["UniqueID"] = "8229b5a2cd696daefbf1584649d5987d9f8da0e9799997ae7deb6210bbc4cb6b",
+						["UniqueID"] = "50e3dd0883eb23a87db361194479d1f0186dd70aaf253caf087e39f30c9e78e1",
 						["Name"] = "needs the mask on",
 						["Event"] = "command",
 						["Arguments"] = "mask@@0@@0",
@@ -2013,7 +2079,7 @@
 				[2] = {
 					["self"] = {
 						["ClassName"] = "event",
-						["UniqueID"] = "7ed28076643ed911a7aee7ca6b9233bc00e03ec71e0d68f52e19948e14ad767e",
+						["UniqueID"] = "6b93526ae8b41b820e0f05ad605f61002d55717ab266a612b7b134b3d69972bc",
 						["Name"] = "needs the tank on",
 						["Event"] = "command",
 						["Arguments"] = "tank@@0@@0",
@@ -2026,12 +2092,12 @@
 				[3] = {
 					["self"] = {
 						["ClassName"] = "beam",
-						["UniqueID"] = "aa5ca9621a5742ed76926321328ecfa5691831d17fcc1c34902b439909a790dc",
+						["UniqueID"] = "be7dfd4715516188ad0e3aa2fe5bcb3b2c633c2df4c216beb2cd98cd112a6108",
 						["Name"] = "tube: shirt to the tank",
 						["Bone"] = "spine 1",
 						["Position"] = Vector(1.7106, 7.3011, 4.9561),
 						["Angles"] = Angle(-0.001, 178.354, 90.998),
-						["EndPointUID"] = "d83e27f74f4d4903ef6c3ae97b6f9feda5be0c574ba846ea3ea4df0fbcc0e056",
+						["EndPointUID"] = "22c1d0c6dba469128918278d65aef7ad3082252772fdaf54a7e58b7e8ce50471",
 						["Material"] = "o2_tube",
 						["Width"] = 0.42,
 						["Bend"] = 9,

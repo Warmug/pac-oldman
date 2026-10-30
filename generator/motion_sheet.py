@@ -28,7 +28,7 @@ def main():
     ap.add_argument("--dump", default=os.path.join(REPO, "build", "male08", "male08_dump.txt"))
     ap.add_argument("--out", default=os.path.join(REPO, "build", "previews"))
     ap.add_argument("--outfit", default=OUTFIT)
-    ap.add_argument("--props", default="cane,smoke,glasses,mask,tank")
+    ap.add_argument("--props", default="cane,smoke,glasses,mask,tank,cast")
     args = ap.parse_args()
     model = Model(args.dump)
     outfit = sim.Outfit(args.outfit)
