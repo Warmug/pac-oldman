@@ -13,6 +13,7 @@ import meshkit as mk
 import oxygen_cart as oc
 import oxygen_mask as om
 from geom import RayCaster
+from pacgen import ORIGIN_BONE
 
 IDLE = "aim_normal_0"
 REF = "seq0"      # reference (ragdoll) pose from the first export; head-space fitting uses it
@@ -208,9 +209,14 @@ def fit_face_props(fit, hd):
 def fit_cart_and_tube(fit, model, hd):
     mats = model.pose(IDLE, posture_bone3(fit))
     pelvis = mats[model.bone("ValveBiped.Bip01_Pelvis")]
-    target = np.array([-7.0, 23.0, pelvis[2, 3]])
-    fit.cart_pos = tuple(to_local(pelvis, target))
-    fit.cart_ang = mk.matrix_to_source_angle(pelvis[:3, :3].T)
+    # Hung off pac's no-bone frame (his origin turned to his eye yaw, never pitched or rolled), not
+    # the pelvis: rifle and physgun stances twist the pelvis 36-72 degrees and crouching tilts it,
+    # which swung the cart around him and, with ConstrainPitch, could freeze it tilted. The dump's
+    # entity sits at the origin facing +x, so that frame is the identity here. The drop trace starts
+    # at pelvis height, 24 units out: outside the player's 32x32 hull so it can't hit him.
+    fit.cart_bone = ORIGIN_BONE
+    fit.cart_pos = (-7.0, 23.0, round(float(pelvis[2, 3]), 2))
+    fit.cart_ang = (0.0, 0.0, 0.0)
     fit.barb_pos = tuple(oc.barb_tip())
 
     # clip on the shirt: front-left of the belly, a little off the skin
@@ -232,6 +238,25 @@ def fit_cart_and_tube(fit, model, hd):
     fit.clip_world = clip_world
 
 
+def fit_cane_belt(fit, model):
+    """Cane hooked on the belt at the right hip, slung diagonally back like a sword so it clears
+    the floor in low stances. Defined in the pelvis's own frame (taken from the idle pose, where
+    the pelvis faces forward), so it stays on the right hip whatever the weapon stance does."""
+    mats = model.pose(IDLE, {"pelvis": (fit.pelvis_sink, (0, 0, 0))})
+    pelvis = mats[model.bone("ValveBiped.Bip01_Pelvis")]
+    hook = pelvis[:3, 3] + np.array([-2.6, -7.0, 2.6])        # right hip, a little back, belt height
+    shaft = np.array([-0.5, -0.18, -0.85])                     # hangs down and back, slightly out
+    up = -shaft / np.linalg.norm(shaft)
+    inward = np.array([0.25, 1.0, 0.0])                         # the handle hooks over the belt
+    x = inward - (inward @ up) * up
+    x /= np.linalg.norm(x)
+    world = np.eye(4)
+    world[:3, :3] = np.column_stack([x, np.cross(up, x), up])
+    world[:3, 3] = hook
+    local = np.linalg.inv(pelvis) @ world
+    fit.cane_belt = (tuple(np.round(local[:3, 3], 3)), tuple(np.round(mk.matrix_to_source_angle(local[:3, :3]), 2)))
+
+
 def posture_bone3(fit, arms=True, cane=False, smoke=False):
     """The always-on posture as bone3 manipulations {bone: (pos, ang)} (unarmed)."""
     b = {"pelvis": (fit.pelvis_sink, (0, 0, 0)), "spine": ((0, 0, 0), fit.hunch[0]),
@@ -244,12 +269,14 @@ def posture_bone3(fit, arms=True, cane=False, smoke=False):
     if arms:
         b["left clavicle"] = ((0, 0, 0), fit.clavicle_l)
         b["right clavicle"] = ((0, 0, 0), fit.clavicle_r)
-        if not smoke:
-            b["left upperarm"] = ((0, 0, 0), fit.upperarm_hang)
-            b["left forearm"] = ((0, 0, 0), fit.forearm_bend)
-        if not cane:
-            b["right upperarm"] = ((0, 0, 0), fit.upperarm_hang)
-            b["right forearm"] = ((0, 0, 0), fit.forearm_bend)
+        hang = getattr(fit, "arm_hang", None)
+        for side, skip in (("left", smoke), ("right", cane)):
+            if skip:
+                continue
+            ua = hang[side]["upperarm"] if hang else fit.upperarm_hang
+            fa = hang[side]["forearm"] if hang else fit.forearm_bend
+            b[f"{side} upperarm"] = ((0, 0, 0), ua)
+            b[f"{side} forearm"] = ((0, 0, 0), fa)
     return b
 
 
@@ -260,6 +287,7 @@ def apply(fit, model):
     fit_glasses(fit, hd)
     fit_face_props(fit, hd)
     fit_cart_and_tube(fit, model, hd)
+    fit_cane_belt(fit, model)
     fit.glasses_obj = "props/glasses_m08.obj"
     fit.lenses_obj = "props/lenses_m08.obj"
     import solve_poses

@@ -10,6 +10,7 @@ import numpy as np
 
 import meshkit as mk
 import oxygen_cart as oc
+from pacgen import ORIGIN_BONE
 
 REPO = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
@@ -32,8 +33,12 @@ class Fit:
         self.hunch = [(0, 3, 0), (0, 5, 0), (0, 9, 0), (0, 13, 0)]
         self.neck = (0, 36, 0)
         self.neck_walk = 5.0
-        self.neck_aim_up = 0.0
+        self.neck_aim_up = 18.0     # crane eased by this much when looking 60+ degrees up
         self.neck_aim_down = 0.0
+        # weapon out: lower back keeps its 3+5 hunch, the upper back takes it back out
+        self.armed_back = [(0, 4, 0), (0, -12, 0)]
+        self.armed_neck = (0, -8, 0)
+        self.armed_head = (0, 8, 0)
         self.thigh, self.calf, self.foot = (0, -8, 0), (0, 16, 0), (0, -8, 0)
         self.clavicle_l, self.clavicle_r = (-8, 0, 0), (8, 0, 0)
         self.upperarm_hang, self.forearm_bend = (0, -28, 0), (0, -10, 0)
@@ -62,7 +67,8 @@ class Fit:
         self.tube_bend_upper = 2.0
         self.tube_bend_lower = 9.0
 
-        self.cart_pos = (0, 0, 0)
+        self.cart_bone = ORIGIN_BONE
+        self.cart_pos = (-7, 23, 36)
         self.cart_ang = (0, 0, 0)
         self.cart_speed = 7.0   # with strain 0.45: no overshoot at 60-144 fps, trails ~5-7 units when walking
         self.cart_strain = 0.45
@@ -74,10 +80,12 @@ class Fit:
         """Neck crane: more while walking (he leans further), less when he aims up and
         more when he aims down, so the head follows the aim instead of over-bending."""
         expr = f"{self.neck[1]:g} + {self.neck_walk:g}*{walk}"
+        # owner_eye_angle_pitch() is 0.5 when level and 1 when looking straight up; *2.97 saturates at 60
+        # degrees up, where the engine's head_pitch also stops turning the head
         if self.neck_aim_up:
-            expr += f" - {self.neck_aim_up:g}*clamp((owner_eye_angle_pitch() - 0.5)*2, 0, 1)"
+            expr += f" - {self.neck_aim_up:g}*clamp((owner_eye_angle_pitch() - 0.5)*2.97, 0, 1)"
         if self.neck_aim_down:
-            expr += f" + {self.neck_aim_down:g}*clamp((0.5 - owner_eye_angle_pitch())*2, 0, 1)"
+            expr += f" + {self.neck_aim_down:g}*clamp((0.5 - owner_eye_angle_pitch())*2.97, 0, 1)"
         return expr
 
     def write_assets(self, repo):

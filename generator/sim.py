@@ -22,12 +22,13 @@ RAW = "https://raw.githubusercontent.com/Warmug/pac-oldman/main/"
 
 
 class State:
-    def __init__(self, commands=(), holdtype="normal", pitch=0.0, speed=0.0, time=0.0):
+    def __init__(self, commands=(), holdtype="normal", pitch=0.0, speed=0.0, time=0.0, crouching=False):
         self.commands = set(commands)
         self.holdtype = holdtype
         self.pitch = pitch      # eye pitch in degrees, positive = looking down (Source)
         self.speed = speed
         self.time = time
+        self.crouching = crouching
 
 
 class Outfit:
@@ -57,6 +58,8 @@ class Outfit:
             cond = args[0] in st.commands
         elif name == "holdtype":
             cond = st.holdtype is not None and st.holdtype in args[0].split(";")
+        elif name == "is_crouching":
+            cond = st.crouching
         else:
             raise NotImplementedError(name)
         invert = ev.get("Invert", True)
@@ -162,7 +165,12 @@ class Placer:
         self.cache = {}
 
     def bone_matrix(self, bone_name):
-        return self.mats[self.model.bone(bone_name)]
+        try:
+            return self.mats[self.model.bone(bone_name)]
+        except KeyError:
+            # not a bone: pac falls back to the player's origin turned to his eye yaw; the dumped
+            # model stands at the origin facing +x, the way he faces when his eyes are level ahead
+            return np.eye(4)
 
     def world(self, uid):
         if uid in self.cache:
@@ -178,6 +186,14 @@ class Placer:
         else:
             base = self.bone_matrix(me.get("Bone", "head"))
         w = base @ local
+        aim = me.get("AimPartUID")
+        if aim:
+            # base_movable CalcAngles: Angles + (aim part position - own position):Angle(), added per component
+            d = self.world(aim)[:3, 3] - w[:3, 3]
+            pitch = math.degrees(math.atan2(-d[2], math.hypot(d[0], d[1])))
+            yaw = math.degrees(math.atan2(d[1], d[0]))
+            p, y, r = vec(me.get("Angles"))
+            w[:3, :3] = mk.source_angle_matrix(p + pitch, y + yaw, r)
         self.cache[uid] = w
         return w
 

@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Builds the old man outfit for models/player/Suits/male_08_shirt_tie.mdl.
 
-    python3 generator/make_outfit.py [--dump path/to/male08_dump.txt]
+    python3 generator/make_outfit.py [--dump path/to/male08_dump.txt]   (default: build/male08/male08_dump.txt)
 
 Writes outfit/old_man_2_male08.txt plus the meshes/textures under props/.
 Toggles: pac_event cane 2 | smoke 2 | glasses 2 | mask 2 | tank 2
@@ -9,7 +9,7 @@ Toggles: pac_event cane 2 | smoke 2 | glasses 2 | mask 2 | tank 2
 import argparse
 import os
 
-from pacgen import (Angle, Part, Vector, bone, command_event, encode_outfit, group, holdtype_event,
+from pacgen import (Angle, Part, Vector, bone, command_event, crouch_event, encode_outfit, group, holdtype_event,
                     material_2d, material_3d, model, proxy)
 
 REPO = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -17,9 +17,12 @@ RAW = "https://raw.githubusercontent.com/Warmug/pac-oldman/main/"
 OUTFIT = os.path.join(REPO, "outfit", "old_man_2_male08.txt")
 SEED = "oldman2-male08"
 
-# holdtypes that count as "no weapon out": the arm posture, the cane in his hand and the
-# cigarette in his fingers only apply with these. Anything else gets the plain weapon animation.
+# holdtypes that count as "no weapon out": the full hunch and the arm posture apply with these.
+# Anything else gets the plain weapon animation plus a back shape that keeps the weapon on target.
 UNARMED = ["normal", "passive", "fist"]
+# the cane-in-hand and cigarette-in-fingers arm poses are solved on the "normal" animation; with
+# any other holdtype the cane hangs from his belt and the cigarette goes to his mouth
+PROP_HOLD = ["normal"]
 
 SPEED = "owner_velocity_length()"
 STILL = f"(1 - clamp({SPEED}/50, 0, 1))"
@@ -31,45 +34,72 @@ def url(path):
 
 # --- posture ----------------------------------------------------------------------
 
+def arm_hang(side, command, fit):
+    """The hang pose for one arm, unless that hand holds the cane/cigarette (command on + PROP_HOLD)
+    or he is crouching (the crouch animation rests the arms on the knees).
+    pac events only AND together, so 'unless A and B' becomes two copies."""
+    s = side[0].upper()
+    prop = "cane" if command == "cane" else "cigarette"
+    solved = getattr(fit, "arm_hang", None)
+    upper = solved[side]["upperarm"] if solved else fit.upperarm_hang
+    fore = solved[side]["forearm"] if solved else fit.forearm_bend
+    a = [bone(f"arms hang straight down {s}", f"{side} upperarm", upper, None,
+              command_event(f"not while the {prop} is out", command, False),
+              crouch_event("not while crouching", False)),
+         bone(f"slight elbow bend {s}", f"{side} forearm", fore, None,
+              command_event(f"not while the {prop} is out", command, False),
+              crouch_event("not while crouching", False))]
+    b = group(f"{side} arm hangs while the {prop} is put away",
+              command_event(f"only while the {prop} is out", command, True),
+              holdtype_event(f"the {prop} is in his hand with holdtype normal", PROP_HOLD, False),
+              crouch_event("not while crouching", False),
+              bone(f"arms hang straight down {s}", f"{side} upperarm", upper),
+              bone(f"slight elbow bend {s}", f"{side} forearm", fore))
+    return a + [b]
+
+
 def posture(fit):
     walk = f"clamp({SPEED}/120, 0, 1)"
-    hunch = group(
-        "posture: hunch (always on)",
+    always = group(
+        "posture: lower back, knees, tremor (always on)",
         bone("sink pelvis (keeps feet on ground)", "pelvis", (0, 0, 0), fit.pelvis_sink),
         bone("hunch 1: lower back", "spine", fit.hunch[0], None,
              proxy("idle balance sway", "Angles", f"1.5*sin(time()*0.7)*{STILL}", "p")),
-        bone("hunch 2: mid back", "spine 1", fit.hunch[1], None,
-             proxy("lean further forward when walking", "Angles",
-                   f"{fit.hunch[1][1]:g} + 6*{walk}", "y")),
-        bone("hunch 3: upper back", "spine 2", fit.hunch[2]),
-        bone("hunch 4: the hump", "spine 4", fit.hunch[3]),
-        bone("neck cranes back so he looks ahead", "neck", fit.neck, None,
-             proxy("keep eyes up while walking, less crane when aiming up", "Angles",
-                   fit.neck_expression(walk), "y")),
+        bone("hunch 2: mid back", "spine 1", fit.hunch[1]),
         bone("head tremor", "head", (0, 0, 0), None,
              proxy("head tremor (delete this if it bugs you)", "Angles",
                    "1.1*sin(time()*23) + 0.4*sin(time()*37)", "r")),
     )
     for side in ("left", "right"):
-        hunch.add(bone(f"bent knees: hip {side[0].upper()}", f"{side} thigh", fit.thigh),
-                  bone(f"bent knees: knee {side[0].upper()}", f"{side} calf", fit.calf),
-                  bone(f"bent knees: keep foot flat {side[0].upper()}", f"{side} foot", fit.foot))
+        always.add(bone(f"bent knees: hip {side[0].upper()}", f"{side} thigh", fit.thigh),
+                   bone(f"bent knees: knee {side[0].upper()}", f"{side} calf", fit.calf),
+                   bone(f"bent knees: keep foot flat {side[0].upper()}", f"{side} foot", fit.foot))
 
-    arms = group(
-        "posture: arms (only with no weapon out)",
+    unarmed = group(
+        "posture: hunch and arms (no weapon out)",
         holdtype_event("only when holdtype is normal/passive/fist", UNARMED, True),
+        bone("lean further forward when walking", "spine 1", (0, 0, 0), None,
+             proxy("lean further forward when walking", "Angles", f"6*{walk}", "y")),
+        bone("hunch 3: upper back", "spine 2", fit.hunch[2]),
+        bone("hunch 4: the hump", "spine 4", fit.hunch[3]),
+        bone("neck cranes back so he looks ahead", "neck", fit.neck, None,
+             proxy("keep eyes up while walking, crane less when looking up", "Angles",
+                   fit.neck_expression(walk), "y")),
         bone("rounded shoulders L", "left clavicle", fit.clavicle_l),
         bone("rounded shoulders R", "right clavicle", fit.clavicle_r),
-        bone("arms hang straight down L", "left upperarm", fit.upperarm_hang, None,
-             command_event("steps aside while the cigarette is in his hand", "smoke", False)),
-        bone("arms hang straight down R", "right upperarm", fit.upperarm_hang, None,
-             command_event("steps aside while the cane is in his hand", "cane", False)),
-        bone("slight elbow bend L", "left forearm", fit.forearm_bend, None,
-             command_event("steps aside while the cigarette is in his hand", "smoke", False)),
-        bone("slight elbow bend R", "right forearm", fit.forearm_bend, None,
-             command_event("steps aside while the cane is in his hand", "cane", False)),
+        *arm_hang("left", "smoke", fit),
+        *arm_hang("right", "cane", fit),
     )
-    return hunch, arms
+
+    armed = group(
+        "posture: weapon out (upper back evens out the hunch so the weapon stays on target)",
+        holdtype_event("hidden while holdtype is normal/passive/fist", UNARMED, False),
+        bone("upper back", "spine 2", fit.armed_back[0]),
+        bone("upper back straightens over the lower back hunch", "spine 4", fit.armed_back[1]),
+        bone("head pokes forward a little", "neck", fit.armed_neck),
+        bone("keeps the eyes level", "head", fit.armed_head),
+    )
+    return always, unarmed, armed
 
 
 # --- cane -------------------------------------------------------------------------
@@ -81,11 +111,19 @@ CANE_FINGERS = {"right finger 1": -62, "right finger 11": -78, "right finger 12"
 
 
 def cane_group(fit):
+    cane = model("cane", url("props/cane.obj"), "right hand", "cane_wood", *fit.cane_hand)
     in_hand = group(
-        "cane in his hand (no weapon out)",
-        holdtype_event("only when holdtype is normal/passive/fist", UNARMED, True),
-        model("cane", url("props/cane.obj"), "right hand", "cane_wood", *fit.cane_hand),
+        "cane in his hand (holdtype normal)",
+        holdtype_event("only when holdtype is normal", PROP_HOLD, True),
+        cane,
     )
+    aim = getattr(fit, "cane_aim", None)
+    if aim:
+        # the grip follows his hand but the cane keeps its standing lean instead of swinging with the arm
+        upright = marker("keeps the cane upright (the cane aims at this)", aim[0], aim[1], (0, 0, 0))
+        cane.props["Angles"] = Angle(*fit.cane_upright_ang)
+        cane.props["AimPartUID"] = upright
+        in_hand.add(upright)
     for b, yaw in CANE_FINGERS.items():
         in_hand.add(bone(f"cane grip: {b}", b, (0, yaw, 0)))
     in_hand.add(bone("cane grip: right finger 0", "right finger 0", (0, 18, -10)),
@@ -95,13 +133,16 @@ def cane_group(fit):
         in_hand.add(bone(f"cane grip: {b}", b, ang))
 
     on_belt = group(
-        "cane hooked on his belt (weapon out)",
-        holdtype_event("hidden while holdtype is normal/passive/fist", UNARMED, False),
+        "cane hooked on his belt (any other holdtype)",
+        holdtype_event("hidden while holdtype is normal", PROP_HOLD, False),
         model("cane on belt", url("props/cane.obj"), "pelvis", "cane_wood", *fit.cane_belt),
     )
+    # hidden while crouching: a full crouch puts his hands and hips so low that the cane goes
+    # into the floor whether held or hooked on the belt
     return group(
         "cane  [pac_event cane]",
         command_event("toggle with: pac_event cane 2", "cane", True),
+        crouch_event("hidden while crouching", False),
         material_3d("cane_wood", basetexture=url("props/cane.jpg"), bumpmap=url("props/flat_n.png"),
                     phong=True, phongboost=2.5, phongexponent=30, phongfresnelranges=Vector(0.3, 0.7, 1)),
         in_hand, on_belt,
@@ -141,8 +182,9 @@ def smoke_bits(bone_name, tip, prefix):
 
 def cig_group(fit):
     in_hand = group(
-        "cigarette in his fingers (no weapon out)",
-        holdtype_event("only when holdtype is normal/passive/fist", UNARMED, True),
+        "cigarette in his fingers (holdtype normal, not crouching)",
+        holdtype_event("only when holdtype is normal", PROP_HOLD, True),
+        crouch_event("not while crouching (it goes in his mouth)", False),
         model("cigarette", url("props/cigarette.obj"), "left hand", "cigarette_paper", *fit.cig_hand),
         *smoke_bits("left hand", fit.cig_hand_tip, ""),
     )
@@ -168,8 +210,17 @@ def cig_group(fit):
     in_hand.add(drag, hold)
 
     in_mouth = group(
-        "cigarette in his mouth (weapon out, no mask)",
-        holdtype_event("hidden while holdtype is normal/passive/fist", UNARMED, False),
+        "cigarette in his mouth (any other holdtype, no mask)",
+        holdtype_event("hidden while holdtype is normal", PROP_HOLD, False),
+        command_event("hidden while the oxygen mask is on", "mask", False),
+        model("cigarette in mouth", url("props/cigarette.obj"), "head", "cigarette_paper", *fit.cig_mouth),
+        *smoke_bits("head", fit.cig_mouth_tip, "mouth "),
+    )
+    # pac events only AND together, so "other holdtype OR crouching" is a second copy
+    in_mouth_crouching = group(
+        "cigarette in his mouth (holdtype normal, crouching, no mask)",
+        holdtype_event("only when holdtype is normal", PROP_HOLD, True),
+        crouch_event("only while crouching", True),
         command_event("hidden while the oxygen mask is on", "mask", False),
         model("cigarette in mouth", url("props/cigarette.obj"), "head", "cigarette_paper", *fit.cig_mouth),
         *smoke_bits("head", fit.cig_mouth_tip, "mouth "),
@@ -178,7 +229,7 @@ def cig_group(fit):
         "cigarette  [pac_event smoke]",
         command_event("toggle with: pac_event smoke 2", "smoke", True),
         material_3d("cigarette_paper", basetexture=url("props/cigarette.jpg")),
-        in_hand, in_mouth,
+        in_hand, in_mouth, in_mouth_crouching,
     )
 
 
@@ -208,7 +259,7 @@ def tube_beam(name, start_bone, start_pos, start_ang, end_part, bend):
 
 
 def marker(name, bone_name, pos, ang):
-    """Invisible anchor for a tube end; its forward axis is the direction the tube leaves in."""
+    """Invisible anchor: a tube end (its forward axis is the direction the tube leaves in) or an aim target."""
     return Part("sprite", name, Bone=bone_name, Position=Vector(*pos), Angles=Angle(*ang),
                 SpritePath="sprites/light_glow02_add", Size=0, Alpha=0)
 
@@ -232,7 +283,8 @@ def oxygen_groups(fit):
     )
 
     barb = marker("tube connector on the regulator", "pelvis", fit.barb_pos, (90, 0, 0))
-    cart = Part("jiggle", "cart rolls along beside him", Bone="pelvis", Position=Vector(*fit.cart_pos),
+    # Bone "none" is not a bone: pac then uses his origin turned to his eye yaw, never tilted
+    cart = Part("jiggle", "cart rolls along beside him", Bone=fit.cart_bone, Position=Vector(*fit.cart_pos),
                 Angles=Angle(*fit.cart_ang), Speed=fit.cart_speed, Strain=fit.cart_strain, Ground=True,
                 ConstrainPitch=True, ConstrainRoll=True, ResetOnHide=True)
     cart.add(
@@ -260,22 +312,28 @@ def oxygen_groups(fit):
 
 
 def build(fit):
-    hunch, arms = posture(fit)
+    always, unarmed, armed = posture(fit)
     mask, tank, tube = oxygen_groups(fit)
     return group(
         "Old man (male_08) - posture, cane, cigarette, glasses, oxygen",
-        hunch, arms, cane_group(fit), cig_group(fit), glasses_group(fit), mask, tank, tube,
+        always, unarmed, armed, cane_group(fit), cig_group(fit), glasses_group(fit), mask, tank, tube,
         OwnerName="self", EditorExpand=True,
     )
 
 
 def main():
     ap = argparse.ArgumentParser()
-    ap.add_argument("--dump", default=None)
+    default_dump = os.path.join(REPO, "build", "male08", "male08_dump.txt")
+    ap.add_argument("--dump", default=default_dump if os.path.exists(default_dump) else None)
     args = ap.parse_args()
     import fit as fitmod
     f = fitmod.Fit(args.dump)
+    print(f"fitted to male_08 from {args.dump}" if f.fitted else
+          "WARNING: no male_08 dump found, using the old generic-skeleton values (NOT fitted)")
     f.write_assets(REPO)
+    if f.fitted:
+        os.makedirs(os.path.join(REPO, "generator", "data"), exist_ok=True)
+        f.model.skeleton_json(os.path.join(REPO, "generator", "data", "male08_skeleton.json"))
     root = build(f)
     os.makedirs(os.path.dirname(OUTFIT), exist_ok=True)
     with open(OUTFIT, "w", newline="\n") as fh:

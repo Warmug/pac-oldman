@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Preview renders of the generated outfit on male_08 (needs the dump).
 
-    python3 generator/render_previews.py --dump build/male08/male08_dump.txt [--out build/previews]
+    python3 generator/render_previews.py [--dump build/male08/male08_dump.txt] [--out build/previews]
 
 The outfit file is read back and evaluated with sim.py (events, proxies, bone3), so the
 pictures show what the .txt does, not what the generator meant to do.
@@ -108,39 +108,100 @@ def posed_scene(model, outfit, textures, label, state, width=900, height=900, gr
         name = m.material.lower()
         style = {"map": tex} if tex else {"color": [0.75, 0.72, 0.7]}
         if "eyeball" in name:
-            style = {"color": [0.95, 0.95, 0.95], "roughness": 0.2}
+            # Source draws irises with the eye shader, not these uvs; a dark iris colour reads right
+            style = {"color": [0.3, 0.24, 0.2], "doubleSided": True}
+        if "mouth" in name or "error" in name:
+            continue
         scene.add(m, name=m.material, roughness=0.75, **style)
     place = sim.Placer(outfit, model, mats, ev, ground_z=0.0)
     add_outfit(scene, outfit, model, mats, ev, place)
     return scene, mats, ev, feet_z
 
 
+def contact_sheet(paths, titles, cols, out, cell=(450, 450)):
+    from PIL import Image, ImageDraw, ImageFont
+    font = ImageFont.truetype("/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf", 18)
+    rows = (len(paths) + cols - 1) // cols
+    sheet = Image.new("RGB", (cols * cell[0], rows * (cell[1] + 30)), (28, 30, 34))
+    d = ImageDraw.Draw(sheet)
+    for i, (p, t) in enumerate(zip(paths, titles)):
+        x, y = (i % cols) * cell[0], (i // cols) * (cell[1] + 30)
+        sheet.paste(Image.open(p).convert("RGB").resize(cell), (x, y + 30))
+        d.text((x + 10, y + 5), t, font=font, fill=(235, 235, 235))
+    sheet.save(out)
+    return out
+
+
+def face_views(scene, mats, model, prefix=""):
+    hf = mats[model.bone("ValveBiped.Bip01_Head1")]
+    face_c = hf[:3, :3] @ np.array([3.5, -4.5, 0]) + hf[:3, 3]
+    fwd = hf[:3, :3] @ np.array([0, -1.0, 0])
+    left = hf[:3, :3] @ np.array([0, 0, -1.0])
+    scene.view(prefix + "mask_front", face_c + fwd * 20 + left * 7 + np.array([0, 0, 2]), face_c, 30)
+    scene.view(prefix + "mask_side", face_c + left * 21 + fwd * 3, face_c, 30)
+    scene.view(prefix + "mask_back3q", face_c - fwd * 14 + left * 15 + np.array([0, 0, 4]), face_c, 30)
+    return face_c, fwd, left
+
+
+def render_main(model, outfit, textures, out):
+    """Everything on (mask, tank, cane, glasses), standing: full body and the mask close up."""
+    everything = {"cane", "glasses", "mask", "tank"}
+    scene, mats, _, _ = posed_scene(model, outfit, textures, "aim_normal_0", sim.State(everything, "normal", time=6.0))
+    c = np.array([-1.0, 9.0, 35.0])          # between him and the cart
+    scene.view("full_front_left", c + np.array([92, 62, 6]), c, 36)
+    scene.view("full_left_side", c + np.array([10, 118, 4]), c + np.array([0, -6, 0]), 36)
+    scene.view("full_front_right", c + np.array([100, -70, 6]), c + np.array([2, -6, 0]), 36)
+    scene.view("full_back_left", c + np.array([-95, 60, 14]), c, 36)
+    face_views(scene, mats, model)
+    paths = scene.render(os.path.join(out, "main"))
+    titles = ["front left", "left side (cart)", "front right (cane)", "back left",
+              "mask: front", "mask: side", "mask: strap, back 3/4"]
+    return contact_sheet(paths, titles, 4, os.path.join(out, "sheet_mask_and_tank.png"))
+
+
+def render_smoking(model, outfit, textures, out):
+    """Mask off, cigarette on: the drag (filter at the lips) and the resting hold."""
+    paths, titles = [], []
+    for t, tag in ((1.8, "drag"), (8.0, "hold")):
+        st = sim.State({"smoke", "glasses", "cane"}, "normal", time=t)
+        scene, mats, _, _ = posed_scene(model, outfit, textures, "aim_normal_0", st, 700, 700)
+        face_c, fwd, left = face_views(scene, mats, model, f"{tag}_")
+        del scene.desc["views"][1:]
+        chest = face_c - np.array([0, 0, 8.0])
+        scene.view(f"{tag}_upper_body", chest + fwd * 38 + left * 26 + np.array([0, 0, 4]), chest, 34)
+        paths += scene.render(os.path.join(out, "smoking"))
+        titles += [f"smoking: {tag} (face)", f"smoking: {tag}"]
+    return paths, titles
+
+
+def render_armed(model, outfit, textures, out):
+    """Weapon out: cane on the belt, cigarette in the mouth, plain weapon posture."""
+    paths, titles = [], []
+    for hold, props, tag in (("pistol", {"cane", "glasses", "mask", "tank"}, "pistol, mask on"),
+                             ("ar2", {"cane", "glasses", "smoke", "tank"}, "ar2, smoking")):
+        st = sim.State(props, hold, time=6.0)
+        scene, mats, _, _ = posed_scene(model, outfit, textures, f"aim_{hold}_0", st, 700, 700)
+        c = np.array([0.0, 4.0, 35.0])
+        scene.view(f"{hold}_front_right", c + np.array([95, -75, 8]), c, 36)
+        scene.view(f"{hold}_back_right", c + np.array([-90, -80, 10]), c, 36)
+        paths += scene.render(os.path.join(out, "armed"))
+        titles += [f"{tag}: front right", f"{tag}: back right (belt cane)"]
+    return paths, titles
+
+
 def main():
     ap = argparse.ArgumentParser()
-    ap.add_argument("--dump", required=True)
+    ap.add_argument("--dump", default=os.path.join(REPO, "build", "male08", "male08_dump.txt"))
     ap.add_argument("--out", default=os.path.join(REPO, "build", "previews"))
     ap.add_argument("--outfit", default=OUTFIT)
     args = ap.parse_args()
     model = Model(args.dump)
     outfit = sim.Outfit(args.outfit)
     textures = BodyTextures(model, os.path.dirname(os.path.abspath(args.dump)))
-    head = model.bone("ValveBiped.Bip01_Head1")
-
-    everything = {"cane", "smoke", "glasses", "mask", "tank"}
-    st = sim.State(everything - {"smoke"}, "normal", 0, 0, time=6.0)
-    scene, mats, ev, _ = posed_scene(model, outfit, textures, "aim_normal_0", st)
-    hp = mats[head][:3, 3]
-    scene.view("full_front3q", hp + np.array([58, -44, -18]), hp + np.array([0, 6, -26]), 36)
-    scene.view("full_side", hp + np.array([4, 85, -22]), hp + np.array([-2, 8, -26]), 36)
-    scene.view("full_back3q", hp + np.array([-55, 50, -14]), hp + np.array([0, 8, -26]), 36)
-    hf = mats[head]
-    face_c = hf[:3, :3] @ np.array([3.5, -4.5, 0]) + hf[:3, 3]
-    fwd = hf[:3, :3] @ np.array([0, -1.0, 0])
-    left = hf[:3, :3] @ np.array([0, 0, -1.0])
-    scene.view("mask_front", face_c + fwd * 20 + left * 7 + np.array([0, 0, 2]), face_c, 30)
-    scene.view("mask_side", face_c + left * 21 + fwd * 3, face_c, 30)
-    scene.view("mask_back3q", face_c - fwd * 14 + left * 15 + np.array([0, 0, 4]), face_c, 30)
-    print(scene.render(args.out))
+    print(render_main(model, outfit, textures, args.out))
+    sp, st = render_smoking(model, outfit, textures, args.out)
+    ap_, at = render_armed(model, outfit, textures, args.out)
+    print(contact_sheet(sp + ap_, st + at, 4, os.path.join(args.out, "sheet_smoking_and_armed.png")))
 
 
 if __name__ == "__main__":

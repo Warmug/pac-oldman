@@ -8,6 +8,10 @@ runs a bytecode whitelist and rejects anything else (arithmetic, locals, ...).
 """
 import hashlib
 
+# Not a bone: pac.GetBonePosAng (lua/pac3/core/client/bones.lua) falls back to the player's origin
+# turned to his eye yaw, with no pitch or roll, for any name that isn't a bone, attachment or special.
+ORIGIN_BONE = "none"
+
 
 class Vector(tuple):
     def __new__(cls, x=0.0, y=0.0, z=0.0):
@@ -142,6 +146,10 @@ def holdtype_event(name, holdtypes, show_when_match):
     """Active weapon holdtype is one of `holdtypes` (pac splits the argument on ';')."""
     return Part("event", name, Event="holdtype", Arguments=";".join(holdtypes),
                 Operator="equal", Invert=bool(show_when_match))
+
+
+def crouch_event(name, show_when_crouching):
+    return Part("event", name, Event="is_crouching", Operator="equal", Invert=bool(show_when_crouching))
 
 
 def material_3d(name, **params):

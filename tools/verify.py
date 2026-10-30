@@ -33,6 +33,14 @@ SPECIAL_BONES = {"hitpos", "footstep", "skirt", "skirt2", "hitpos_world_props", 
                  "pos_eyeang", "eyepos_eyeang", "eyepos_ang", "pos_noang", "camera", "player_eyes",
                  "physgun_beam_endpos", "hit position"}
 
+# Not a bone: pac.GetBonePosAng falls back to the player's origin turned to his eye yaw (pitch
+# zeroed) for any name that isn't a bone, attachment or special. The outfit uses this one name
+# for things that must stay level and face where he faces (the oxygen cart); any other unknown
+# bone is still an error, so typos are caught.
+ORIGIN_BONE = "none"
+ORIGIN_FALLBACK = re.compile(r"if not pos then\s+pos = ent:GetPos\(\)\s+end\s+if not ang then\s+"
+                             r"if ent:IsPlayer\(\) then\s+ang = ent:EyeAngles\(\)\s+ang\.p = 0")
+
 HOLDTYPES = {"normal", "melee", "melee2", "fist", "knife", "smg", "ar2", "pistol", "rpg", "physgun",
              "grenade", "shotgun", "crossbow", "slam", "passive", "magic", "duel", "revolver", "camera"}
 
@@ -360,6 +368,9 @@ def check(outfit_path, pac3, skeleton_path):
     if skeleton_path and os.path.exists(skeleton_path):
         sk = json.load(open(skeleton_path))
         bones = {pac_bone_name(b) for b in sk["bones"]} | {pac_attachment_name(a) for a in sk.get("attachments", [])}
+    bones_lua = open(os.path.join(pac3, "lua/pac3/core/client/bones.lua")).read()
+    origin_ok = (bool(ORIGIN_FALLBACK.search(bones_lua)) and ORIGIN_BONE not in SPECIAL_BONES
+                 and (bones is None or ORIGIN_BONE not in bones))
 
     parts = []
 
@@ -406,7 +417,10 @@ def check(outfit_path, pac3, skeleton_path):
 
         if "Bone" in props and cls != "group":
             bone = me.get("Bone", "head")
-            if bone not in SPECIAL_BONES and bones is not None and bone not in bones:
+            if bone == ORIGIN_BONE:
+                if not origin_ok:
+                    rep.err(path, f"bone {bone!r}: this pac version has no origin/eye-yaw fallback for unknown bones")
+            elif bone not in SPECIAL_BONES and bones is not None and bone not in bones:
                 rep.err(path, f"bone {bone!r} does not exist on the model")
 
         if cls in ("model2", "beam"):

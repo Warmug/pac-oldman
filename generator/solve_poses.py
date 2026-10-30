@@ -8,9 +8,10 @@
 import os
 
 import numpy as np
+from scipy.spatial import cKDTree
 
 import meshkit as mk
-from fit_male08 import IDLE, HEAD, load_obj, posture_bone3
+from fit_male08 import IDLE, HEAD, load_obj, posture_bone3, to_local
 
 REPO = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
@@ -60,7 +61,18 @@ def cane_geometry():
     return tip, top
 
 
-def solve_cane(fit, model):
+def leg_tree(model, mats):
+    """KD-tree of the leg and hip skin (vertices mostly weighted to pelvis/thigh/calf/foot)."""
+    legs = {model.bone(f"ValveBiped.Bip01_{s}_{b}") for s in "LR" for b in ("Thigh", "Calf", "Foot", "Toe0")}
+    legs.add(model.bone("ValveBiped.Bip01_Pelvis"))
+    pts = [mesh.v[k] for mesh, src in zip(model.skinned(mats), model.meshes)
+           for k, ws in enumerate(src["w"]) if max(ws, key=lambda t: t[1])[0] in legs]
+    return cKDTree(np.array(pts))
+
+
+def solve_cane(fit, model, ahead=7.0, outside=3.5, clearance=1.6):
+    """Right-arm angles so the cane tip rests on the floor `ahead` units in front of and
+    `outside` units to the right of the right foot, with the shaft kept `clearance` off his legs."""
     tip_l, top_l = cane_geometry()
     names = ["right upperarm", "right forearm", "right hand"]
     x0 = np.array([*fit.cane_arm["right upperarm"], fit.cane_arm["right forearm"][1], *fit.cane_arm["right hand"]])
@@ -68,6 +80,8 @@ def solve_cane(fit, model):
     hand = model.bone("ValveBiped.Bip01_R_Hand")
     cane_m = part_matrix(*fit.cane_hand)
     base = posture_bone3(fit, cane=True)
+    legs = leg_tree(model, model.pose(IDLE, base))            # the arm angles don't move the legs
+    shaft_l = np.array([top_l + (tip_l - top_l) * t for t in np.linspace(0, 0.97, 14)])
 
     def pose_with(x):
         b = dict(base)
@@ -84,11 +98,13 @@ def solve_cane(fit, model):
         f = mats[foot][:3, 3]
         shaft = (top - tip) / np.linalg.norm(top - tip)
         lean = np.degrees(np.arccos(np.clip(shaft[2], -1, 1)))
+        gap, _ = legs.query(shaft_l @ w[:3, :3].T + w[:3, 3])
         return np.array([
             (tip[2] - 0.2) * 3.0,                 # resting on the floor
-            (tip[0] - (f[0] + 7.0)) * 0.6,        # a step ahead of the right foot
-            (tip[1] - (f[1] - 3.5)) * 0.6,        # a little outside it
+            (tip[0] - (f[0] + ahead)) * 0.6,      # a step ahead of the right foot
+            (tip[1] - (f[1] - outside)) * 0.6,    # a little outside it
             max(0.0, lean - 10.0) * 0.5,          # close to vertical
+            *(np.maximum(0.0, clearance - gap) * 3.0),   # not touching his legs
             *((x - x0) * 0.02),                   # stay near the old look
         ])
 
@@ -171,6 +187,50 @@ def aim_report(fit, model, holdtypes=("normal", "pistol", "ar2", "smg", "melee",
     return rows
 
 
+def solve_arm_hang(fit, model, elbow=-12.0):
+    """Upper arm straight down beside the body (slightly forward and out) under the hunch.
+    Only the swing (pitch/yaw) is solved; no roll so the sleeve doesn't twist, fixed gentle elbow."""
+    base = posture_bone3(fit, smoke=True, cane=True)      # hunch + clavicles, no hang parts
+    fit.arm_hang = {}
+    for side in ("left", "right"):
+        S = "L" if side == "left" else "R"
+        ua, hand = model.bone(f"ValveBiped.Bip01_{S}_UpperArm"), model.bone(f"ValveBiped.Bip01_{S}_Hand")
+        sgn = 1 if side == "left" else -1
+        target = np.array([0.0, 0.18 * sgn, -1.0])
+        target /= np.linalg.norm(target)
+
+        def pose_with(x):
+            b = dict(base)
+            b[f"{side} upperarm"] = ((0, 0, 0), (x[0], x[1], 0.0))
+            b[f"{side} forearm"] = ((0, 0, 0), (0, elbow, 0))
+            return model.pose(IDLE, b)
+
+        def residual(x):
+            return (pose_with(x)[ua][:3, 0] - target) * 10.0
+
+        x, cost = lm(residual, np.array([0.0, -20.0]))
+        mats = pose_with(x)
+        fit.arm_hang[side] = {"upperarm": (round(float(x[0]), 2), round(float(x[1]), 2), 0.0), "forearm": (0, elbow, 0),
+                              "dir": np.round(mats[ua][:3, 0], 3), "hand": np.round(mats[hand][:3, 3], 2), "cost": cost}
+
+
+def solve_cane_upright(fit, model, reach=400.0):
+    """Stops the cane swinging with the walk cycle (it poked forward and across him mid-stride).
+    The cane part aims (pac AimPart) at a marker far ahead on the pelvis, so it keeps its standing
+    lean whatever the arm does and only its grip follows the hand. pac adds the aim direction's
+    angles to the part's Angles; the marker sits straight ahead of the standing grip, where those
+    aim angles are zero, so the cane's Angles are just its standing world angles."""
+    b = posture_bone3(fit, cane=True)
+    b.update({name: ((0, 0, 0), ang) for name, ang in fit.cane_arm.items()})
+    mats = model.pose(IDLE, b)
+    w = mats[model.bone("ValveBiped.Bip01_R_Hand")] @ part_matrix(*fit.cane_hand)
+    pelvis = mats[model.bone("ValveBiped.Bip01_Pelvis")]
+    fit.cane_aim = ("pelvis", tuple(np.round(to_local(pelvis, w[:3, 3] + np.array([reach, 0.0, 0.0])), 3)))
+    fit.cane_upright_ang = tuple(round(float(a), 3) for a in mk.matrix_to_source_angle(w[:3, :3]))
+
+
 def solve(fit, model):
+    solve_arm_hang(fit, model)
     solve_cane(fit, model)
+    solve_cane_upright(fit, model)
     solve_cig(fit, model)

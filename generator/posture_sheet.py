@@ -2,6 +2,7 @@
 """Contact sheet of the posture across holdtypes and aim pitches, old outfit vs new.
 
     python3 generator/posture_sheet.py --dump build/male08/male08_dump.txt --old OLD.txt --new outfit/old_man_2_male08.txt
+    -> build/previews/posture_old_vs_new.png
 
 Every cell is posed by evaluating the outfit file with sim.py. Weapon holdtypes get a
 plain stand-in gun on the right-hand attachment so you can see where it points.
@@ -51,7 +52,8 @@ def cell(model, outfit, textures, holdtype, pitch, commands, out_dir, name, mode
     gun = gun_mesh(holdtype)
     if gun is not None:
         scene.add(gun, mats[model.bone("ValveBiped.Anim_Attachment_RH")], color=[0.12, 0.12, 0.13], roughness=0.4, metalness=0.3)
-    scene.view(name, (14, 78, 40), (6, 0, 36), 40)
+    # from his right front, where the weapon hand is, far enough back for head to feet
+    scene.view(name, (78, -92, 44), (5, 0, 35), 42)
     return scene.render(out_dir)[0]
 
 
@@ -73,15 +75,15 @@ def sheet(paths, rows, cols, title, out):
     return out
 
 
-def run(model, outfit, textures, holdtypes, pitches, out_dir, title, out_file, commands=(), models=True):
+def run(model, outfit, textures, holdtypes, pitches, out_dir, title, out_file, commands=(), models=True, col0=0, paths=None):
     os.makedirs(out_dir, exist_ok=True)
-    paths = {}
+    paths = {} if paths is None else paths
     for r, h in enumerate(holdtypes):
         for c, p in enumerate(pitches):
             look = "looking up" if p < 0 else ("looking down" if p > 0 else "level")
-            paths[(r, c, h, f"aim {-p:+d} ({look})")] = cell(model, outfit, textures, h, p, commands, out_dir,
-                                                               f"{title.split()[0]}_{h}_{p}", models)
-    return sheet(paths, len(holdtypes), len(pitches), title, out_file)
+            paths[(r, col0 + c, h, f"{title.split()[0]}: {look}")] = cell(model, outfit, textures, h, p, commands, out_dir,
+                                                                         f"{title.split()[0]}_{h}_{p}", models)
+    return paths
 
 
 def main():
@@ -95,10 +97,14 @@ def main():
     textures = BodyTextures(model, os.path.dirname(os.path.abspath(args.dump)))
     holdtypes = ["normal", "pistol", "ar2", "melee"]
     pitches = [-45, 0, 45]
-    for tag, path in (("OLD", args.old), ("NEW", args.new)):
+    paths = {}
+    for i, (tag, path) in enumerate((("OLD", args.old), ("NEW", args.new))):
         outfit = sim.Outfit(path)
-        print(run(model, outfit, textures, holdtypes, pitches, os.path.join(args.out, tag.lower()),
-                  f"{tag} posture", os.path.join(args.out, f"posture_{tag.lower()}.png"), models=(tag == "NEW")))
+        run(model, outfit, textures, holdtypes, pitches, os.path.join(args.out, tag.lower()), f"{tag} posture", None,
+            models=(tag == "NEW"), col0=i * len(pitches), paths=paths)
+    print(sheet(paths, len(holdtypes), 2 * len(pitches),
+                "Posture: OLD outfit (left 3) vs NEW (right 3), aiming 45 up / level / 45 down. Grey box = the weapon.",
+                os.path.join(args.out, "posture_old_vs_new.png")))
 
 
 if __name__ == "__main__":
