@@ -289,6 +289,120 @@ def solve_cig(fit, model, upper_r=3.0, fore_r=2.6, path=(0.0, 0.25, 0.5, 0.75, 1
     fit.cig_hand_tip = tuple(np.round(cig_m[:3, :3] @ tip_l + cig_m[:3, 3], 4))
 
 
+WATCH_LOOK_DOWN = 20.0          # degrees his head tips down to read the watch
+
+
+def solve_watch_check(fit, model, upper_r=3.0, fore_r=2.6, path=(0.33, 0.66, 1.0)):
+    """Left arm offsets (on top of the hanging arm) that bring the watch from his pocket to in front
+    of his chest, face toward his eyes, while his head tips down WATCH_LOOK_DOWN degrees. pac blends
+    the offsets in from zero, so the arm is kept off his torso along the whole motion, and the chain
+    from the pocket to the watch stays a believable length."""
+    import pocket_watch as pw
+    hand = model.bone("ValveBiped.Bip01_L_Hand")
+    head = model.bone(HEAD)
+    pel = model.bone("ValveBiped.Bip01_Pelvis")
+    sh, el = model.bone("ValveBiped.Bip01_L_UpperArm"), model.bone("ValveBiped.Bip01_L_Forearm")
+    base = posture_bone3(fit)                                  # cigarette off: the left arm hangs
+    torso = torso_tree(model, model.pose(IDLE, base))
+    hd = fit.head
+    watch_m = part_matrix(*fit.watch_hand)
+    bow_l = np.array(pw.bow_point())
+    pocket_l = np.array(fit.watch_pocket[0])
+
+    def items(x, t):
+        d = cig_split(x * t)
+        out = [(b, p_, a) for b, (p_, a) in base.items()]
+        out += [(n, (0, 0, 0), d[n]) for n in CIG_NAMES]
+        out.append(("head", (0, 0, 0), (0, -WATCH_LOOK_DOWN * t, 0)))
+        return out
+
+    def arm_axis(mats):
+        S, E, W = mats[sh][:3, 3], mats[el][:3, 3], mats[hand][:3, 3]
+        return (np.array([S + (E - S) * f for f in np.linspace(0.45, 1, 6)]),
+                np.array([E + (W - E) * f for f in np.linspace(0, 1, 8)]))
+
+    def residual(x):
+        r = []
+        for t in path:
+            mats = model.pose(IDLE, items(x, t))
+            up, fo = arm_axis(mats)
+            r += list(np.maximum(0, upper_r - torso.query(up)[0]) * 3.0)
+            r += list(np.maximum(0, fore_r - torso.query(fo)[0]) * 3.0)
+        mats = model.pose(IDLE, items(x, 1.0))
+        w = mats[hand] @ watch_m
+        hw = mats[head]
+        eyes = hw[:3, :3] @ hd.origin + hw[:3, 3]
+        fwd, upv, left = hw[:3, :3] @ hd.F, hw[:3, :3] @ hd.U, hw[:3, :3] @ hd.L
+        gaze = np.cos(np.radians(58)) * fwd - np.sin(np.radians(58)) * upv
+        target = eyes + gaze * 10.0 + left * 1.5
+        to_eyes = (eyes - w[:3, 3]) / np.linalg.norm(eyes - w[:3, 3])
+        r += list((w[:3, 3] - target) * 1.5)
+        r += [max(0.0, 0.85 - w[:3, 0] @ to_eyes) * 6.0]                      # face toward his eyes
+        r += [max(0.0, -(w[:3, 2] @ fwd)) * 1.0]                              # 12 o'clock away from him
+        # a reading arm, not a reaching one: elbow well below the shoulder, by his side, not thrown out front
+        S, E = mats[sh][:3, 3], mats[el][:3, 3]
+        r += [max(0.0, E[2] - (S[2] - 7.0)) * 2.0, max(0.0, E[0] - (S[0] + 5.0)) * 2.0,
+              max(0.0, (S[1] - 1.0) - E[1]) * 2.0]
+        bow = w[:3, :3] @ bow_l + w[:3, 3]
+        pocket = mats[pel][:3, :3] @ pocket_l + mats[pel][:3, 3]
+        r += [max(0.0, np.linalg.norm(bow - pocket) - 18.0) * 1.0]         # chain length
+        d = cig_split(x)
+        tw = d["left forearm"][2]
+        r += [tw * 0.03, max(0.0, abs(tw) - 70) * 0.5]
+        hnd = np.array(d["left hand"])
+        r += list(hnd * 0.02) + list(np.maximum(0, np.abs(hnd) - 70) * 0.5)
+        fa = d["left forearm"][1]
+        r += [max(0.0, fa) * 0.5, max(0.0, -140.0 - fa) * 0.5]
+        r += list(x * 0.003)
+        return np.array(r)
+
+    best = None
+    for start in ([0, 0, 0, -90, 0, 0, 0, 0], [20, 0, 0, -100, 0, 0, 0, 0], [-20, 0, 0, -100, 0, 0, 0, 0],
+                  [0, -40, 0, -100, 30, 0, 0, 0], [0, 40, 0, -100, -30, 0, 0, 0], [0, 0, 40, -110, 0, 0, 0, 0],
+                  [0, 0, -40, -110, 0, 0, 0, 0]):
+        x, cost = lm(residual, np.array(start, float), iters=80)
+        if best is None or cost < best[1]:
+            best = (x, cost)
+    x, cost = best
+    fit.watch_delta = {n: tuple(round(float(a), 2) for a in ang) for n, ang in cig_split(x).items()}
+    mats = model.pose(IDLE, items(x, 1.0))
+    w = mats[hand] @ watch_m
+    hw = mats[head]
+    eyes = hw[:3, :3] @ hd.origin + hw[:3, 3]
+    # turn the watch in his palm (about its own face) so 12 o'clock points away from him as he reads
+    # it; its centre and facing, which the solve placed, stay the same
+    face = w[:3, 0]
+    away = hw[:3, :3] @ hd.F                   # his forward: on the dial that is its far edge
+    twelve = away - (away @ face) * face
+    twelve /= np.linalg.norm(twelve)
+    r_world = np.column_stack([face, np.cross(twelve, face), twelve])
+    r_hand = mats[hand][:3, :3].T @ r_world
+    fit.watch_hand = (fit.watch_hand[0], tuple(round(float(a), 3) for a in mk.matrix_to_source_angle(r_hand)))
+    watch_m = part_matrix(*fit.watch_hand)
+    w = mats[hand] @ watch_m
+    bow = w[:3, :3] @ bow_l + w[:3, 3]
+    pocket = mats[pel][:3, :3] @ pocket_l + mats[pel][:3, 3]
+    clear = []
+    for t in path:
+        m_t = model.pose(IDLE, items(x, t))
+        up, fo = arm_axis(m_t)
+        clear.append((t, float(torso.query(up)[0].min()), float(torso.query(fo)[0].min())))
+    # second hand on the hand bone: at the subdial, the watch's own angles (the proxy turns its roll,
+    # which is a turn about the dial's axis); bow marker pointing down at the check so the chain sags
+    sub = watch_m @ part_matrix(pw.SUBDIAL, (0, 0, 0))
+    fit.watch_second_hand = (tuple(np.round(sub[:3, 3], 3)), tuple(round(float(a), 3) for a in fit.watch_hand[1]))
+    down_in_hand = mats[hand][:3, :3].T @ np.array([0, 0, -1.0])
+    bow_in_hand = watch_m[:3, :3] @ bow_l + watch_m[:3, 3]
+    side = np.cross(down_in_hand, [0, 0, 1.0])
+    side = side if np.linalg.norm(side) > 1e-6 else np.array([0, 1.0, 0])
+    from fit_male08 import angles_from_axes
+    fit.watch_bow_marker = (tuple(np.round(bow_in_hand, 3)), angles_from_axes(down_in_hand, np.cross(side, down_in_hand)))
+    fit.watch_look_down = WATCH_LOOK_DOWN
+    fit.watch_report = dict(cost=cost, eye_dist=float(np.linalg.norm(eyes - w[:3, 3])),
+                            facing=float(w[:3, 0] @ ((eyes - w[:3, 3]) / np.linalg.norm(eyes - w[:3, 3]))),
+                            chain=float(np.linalg.norm(bow - pocket)), clearance=clear)
+
+
 def head_pitch(mats, model, hd):
     """World pitch of the face direction (positive = looking down) and the neck bend."""
     hw = mats[model.bone(HEAD)]
@@ -360,3 +474,4 @@ def solve(fit, model):
     solve_cane(fit, model)
     solve_cane_upright(fit, model)
     solve_cig(fit, model)
+    solve_watch_check(fit, model)

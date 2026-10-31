@@ -416,6 +416,93 @@ def fit_leg_cast(fit, model, side="L", poses=CAST_POSES, knee_gap=1.0, knee_over
     fit.cast_bones = {"thigh": pac_name(thigh_n), "shin": pac_name(calf_n)}
 
 
+def hand_info(model, side):
+    """Hand frame facts from the plain standing animation: long axis (wrist -> knuckles), knuckle
+    distance, palm direction (perpendicular to the long axis, the side the relaxed fingers curl
+    toward) and the hand's skin in the hand frame."""
+    mats = model.poses[IDLE]
+    hb = model.bone(f"ValveBiped.Bip01_{side}_Hand")
+    inv = np.linalg.inv(mats[hb])
+    loc = lambda n: inv[:3, :3] @ mats[model.bone(f"ValveBiped.Bip01_{side}_{n}")][:3, 3] + inv[:3, 3]
+    knuckles = np.mean([loc(f"Finger{k}") for k in (1, 2, 3, 4)], axis=0)
+    tips = np.mean([loc(f"Finger{k}2") for k in (1, 2, 3, 4)], axis=0)
+    long_ax = knuckles / np.linalg.norm(knuckles)
+    palm = tips - knuckles
+    palm -= (palm @ long_ax) * long_ax
+    palm /= np.linalg.norm(palm)
+    skin = skin_samples(model, mats, {hb}, 0.6)
+    skin = skin @ inv[:3, :3].T + inv[:3, 3]
+    return dict(long=long_ax, knuckle_len=float(np.linalg.norm(knuckles)), palm=palm, skin=skin)
+
+
+def _surface_along(skin, centre, direction, radius=0.8):
+    """Highest skin point along `direction` within `radius` of the line through `centre`."""
+    d = direction / np.linalg.norm(direction)
+    rel = skin - centre
+    along = rel @ d
+    off = np.linalg.norm(rel - along[:, None] * d, axis=1)
+    return centre + d * along[off < radius].max()
+
+
+def fit_iv(fit, model):
+    """IV stand on his right, mirrored from the oxygen cart on his left; cannula taped on the back
+    of his right hand, the line leaving toward his wrist."""
+    import iv_drip as iv
+    hi = hand_info(model, "R")
+    L, D = hi["long"], -hi["palm"]                         # D: out of the back of the hand
+    q = L * 0.45 * hi["knuckle_len"]
+    top = _surface_along(hi["skin"], q, D)
+    x_c, z_c = -L, D
+    y_c = np.cross(z_c, x_c)
+    origin = top + D * 0.04 - L * 0.6                         # tape centre (x = -0.6) over q
+    fit.iv_cannula = (tuple(np.round(origin, 3)), mk.matrix_to_source_angle(np.column_stack([x_c, y_c, z_c])))
+    exit_dir = -L + 0.35 * D                                   # line runs off toward the elbow
+    fit.iv_line_end = (tuple(np.round(origin + D * 0.16 + x_c * 0.12, 3)), angles_from_axes(exit_dir, D))
+    fit.iv_bone = ORIGIN_BONE
+    fit.iv_pos = (fit.cart_pos[0], -fit.cart_pos[1], fit.cart_pos[2])
+    fit.iv_clamp = (tuple(iv.clamp_point()), (90.0, 0.0, 0.0))       # forward = down, so the line sags
+    fit.iv_drip = tuple(iv.drip_point())
+
+
+def fit_watch(fit, model):
+    """Belt loop and trouser pocket on his left hip (pelvis frame), and the watch lying face-up
+    in his left palm (hand frame), 12 o'clock toward his fingers so it reads upright to him."""
+    import pocket_watch as pw
+    post = posture_bone3(fit)
+    mats = model.pose(IDLE, post)
+    pel = mats[model.bone("ValveBiped.Bip01_Pelvis")]
+    leg_w = [np.array([sum(x for bb, x in ws if model.names[bb] in
+                           ("ValveBiped.Bip01_Pelvis", "ValveBiped.Bip01_Spine", "ValveBiped.Bip01_L_Thigh"))
+                       for ws in src["w"]]) for src in model.meshes]
+    hips = skin_samples(model, mats, None, 0.5, leg_w)
+
+    def hip_point(angle_deg, dz, out=0.15):
+        a = np.radians(angle_deg)
+        d = np.array([np.cos(a), np.sin(a), 0.0])
+        c = pel[:3, 3] + np.array([0, 0, dz])
+        rel = hips - c
+        along = rel @ d
+        near = (np.abs(rel[:, 2]) < 0.6) & (np.linalg.norm(rel - along[:, None] * d, axis=1) < 1.0) & (along > 0)
+        return c + d * (along[near].max() + out)
+
+    down_local = dir_local(pel, [0, 0, -1.0])
+    hang = angles_from_axes(down_local, dir_local(pel, [1.0, 0, 0]))   # forward = down: the chain droops
+    # belt from the texture: black between ~2.7 and ~3.9 above the pelvis bone at the front-left
+    fit.watch_loop = (tuple(np.round(to_local(pel, hip_point(40, 3.3)), 3)), hang)
+    fit.watch_pocket = (tuple(np.round(to_local(pel, hip_point(55, 0.4)), 3)), hang)
+
+    hi = hand_info(model, "L")
+    L, P = hi["long"], hi["palm"]
+    q = L * 0.5 * hi["knuckle_len"]
+    palm_top = _surface_along(hi["skin"], q, P)
+    centre = palm_top + P * (abs(pw.BACK) + 0.1)
+    x_w, z_w = P, L
+    y_w = np.cross(z_w, x_w)
+    fit.watch_hand = (tuple(np.round(centre, 3)), mk.matrix_to_source_angle(np.column_stack([x_w, y_w, z_w])))
+    fit.watch_second = (tuple(np.round(pw.SUBDIAL, 3)), (0.0, 0.0, 0.0))
+    fit.watch_bow = (tuple(np.round(pw.bow_point(), 3)), (90.0, 0.0, 0.0))
+
+
 def pac_name(real):
     from male08 import pac_bone_name
     return pac_bone_name(real)
@@ -459,6 +546,8 @@ def apply(fit, model):
     fit.glasses_obj = "props/glasses_m08.obj"
     fit.lenses_obj = "props/lenses_m08.obj"
     fit_leg_cast(fit, model)
+    fit_iv(fit, model)
+    fit_watch(fit, model)
     import solve_poses
     solve_poses.solve(fit, model)
 
@@ -483,3 +572,20 @@ def write_head_assets(fit, props):
         mesh.write_obj(os.path.join(props, fname),
                        f"{what} - procedural, CC0\n{fit.cast_bones[k]} bone frame of male_08_shirt_tie, inches")
     lc.paint(os.path.join(props, "cast_plaster.jpg"), os.path.join(props, "cast_plaster_n.png"))
+    import iv_drip as iv
+    import pocket_watch as pw
+    iv.stand_mesh().write_obj(os.path.join(props, "iv_stand.obj"),
+                              "IV pole on a five-leg caster base, two hooks, roller clamp - procedural, CC0\n"
+                              "stand frame: origin on the ground under the pole, inches")
+    iv.bag_mesh().write_obj(os.path.join(props, "iv_bag.obj"), "saline bag, port and drip chamber - procedural, CC0")
+    iv.cannula_mesh().write_obj(os.path.join(props, "iv_cannula.obj"),
+                                "IV cannula hub, wings and clear dressing - procedural, CC0\nline leaves along +x")
+    iv.paint_stand(os.path.join(props, "iv_stand.jpg"))
+    iv.paint_bag(os.path.join(props, "iv_bag.png"))
+    iv.paint_cannula(os.path.join(props, "iv_cannula.png"))
+    pw.watch_mesh().write_obj(os.path.join(props, "pocket_watch.obj"),
+                              "open-face pocket watch - procedural, CC0\nface along +x, 12 o'clock along +z")
+    pw.second_hand_mesh().write_obj(os.path.join(props, "watch_second_hand.obj"),
+                                    "pocket watch small-seconds hand - procedural, CC0\npivot at the origin, points +z")
+    pw.paint_watch(os.path.join(props, "pocket_watch.jpg"))
+    pw.paint_chain(os.path.join(props, "watch_chain.png"))

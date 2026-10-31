@@ -2,7 +2,7 @@
 	["self"] = {
 		["ClassName"] = "group",
 		["UniqueID"] = "0496be0753e79529920b95e5de09201cd54cf200aaf2426c3d928f20356811a0",
-		["Name"] = "Old man (male_08) - posture, cane, cigarette, glasses, leg cast, oxygen",
+		["Name"] = "Old man (male_08) - posture, cane, cigarette, glasses, leg cast, pocket watch, oxygen, IV",
 		["OwnerName"] = "self",
 		["EditorExpand"] = true,
 	},
@@ -645,8 +645,20 @@
 				},
 				[3] = {
 					["self"] = {
+						["ClassName"] = "event",
+						["UniqueID"] = "fece7fde9dd812e9ca825d81ca731c60f3536fde766fad999ed5b0d7d50e8197",
+						["Name"] = "hidden while sitting (the seated pose is not solved yet)",
+						["Event"] = "is_sitting",
+						["Operator"] = "equal",
+						["Invert"] = false,
+					},
+					["children"] = {
+					},
+				},
+				[4] = {
+					["self"] = {
 						["ClassName"] = "material_3d",
-						["UniqueID"] = "4776ddefa8b6f036ae9b6553e21ee50500b6437814b0a306f60a11107602e00e",
+						["UniqueID"] = "143699fba11865a75aabd5f0c61f7ab626047f63e40a6403517c225191248141",
 						["Name"] = "cane_wood",
 						["basetexture"] = "https://raw.githubusercontent.com/Warmug/pac-oldman/main/props/cane.jpg",
 						["bumpmap"] = "https://raw.githubusercontent.com/Warmug/pac-oldman/main/props/flat_n.png",
@@ -658,17 +670,17 @@
 					["children"] = {
 					},
 				},
-				[4] = {
+				[5] = {
 					["self"] = {
 						["ClassName"] = "group",
-						["UniqueID"] = "b72558b739badb074f2242c37d1b80bc72ecde42a768e43aaea839d5f7d0b7b4",
+						["UniqueID"] = "1318c49c115c5463449e583f50f709ba9e4c7357ae5a22b1aaae46fd48b69f87",
 						["Name"] = "cane in his hand (holdtype normal)",
 					},
 					["children"] = {
 						[1] = {
 							["self"] = {
 								["ClassName"] = "event",
-								["UniqueID"] = "f840a237554dc13508c5c99ea0e66f7d7f5d820df6d4480fb0ab0a08978989e5",
+								["UniqueID"] = "702f60235e6c4c28985a5fc9cc50643d948773e6b02a0bd1ebc26ecd7281bdc9",
 								["Name"] = "only when holdtype is normal",
 								["Event"] = "holdtype",
 								["Arguments"] = "normal",
@@ -681,7 +693,7 @@
 						[2] = {
 							["self"] = {
 								["ClassName"] = "model2",
-								["UniqueID"] = "41de0fe53152a9aff654c95f8d9c5e3b2709d596d6194c76f9cd6ee2218e75ba",
+								["UniqueID"] = "42a6c114243e04de696f8afd9d544f351ab4a623199ff7127bb839f67ebf68ea",
 								["Name"] = "cane",
 								["Model"] = "https://raw.githubusercontent.com/Warmug/pac-oldman/main/props/cane.obj",
 								["Bone"] = "right hand",
@@ -689,7 +701,7 @@
 								["Position"] = Vector(2.79, -0.133, -0.031),
 								["Angles"] = Angle(5.202, 10.364, -3.419),
 								["Scale"] = Vector(1, 1, 0.93),
-								["AimPartUID"] = "a9b4db3914792e97e021cd455995e5b0ee88608f3b38be7de7fc189e18285ee2",
+								["AimPartUID"] = "beaada5ded3745955d255d47530e1b700e0b33cf2b560d036b877c3e8361df06",
 							},
 							["children"] = {
 							},
@@ -697,7 +709,7 @@
 						[3] = {
 							["self"] = {
 								["ClassName"] = "sprite",
-								["UniqueID"] = "a9b4db3914792e97e021cd455995e5b0ee88608f3b38be7de7fc189e18285ee2",
+								["UniqueID"] = "beaada5ded3745955d255d47530e1b700e0b33cf2b560d036b877c3e8361df06",
 								["Name"] = "keeps the cane upright (the cane aims at this)",
 								["Bone"] = "pelvis",
 								["Position"] = Vector(-32.448, -6.974, 401.647),
@@ -712,7 +724,7 @@
 						[4] = {
 							["self"] = {
 								["ClassName"] = "bone3",
-								["UniqueID"] = "f13b2baf075f329a1789680ee7a7891c7683b5d124280abbda8b984a51fabe98",
+								["UniqueID"] = "d0a24542a9798a822146b614996254a52fbc9f8d83270ea182c66c5cb99673b5",
 								["Name"] = "cane grip: right finger 1",
 								["Bone"] = "right finger 1",
 								["Angles"] = Angle(0, -62, 0),
@@ -723,7 +735,7 @@
 						[5] = {
 							["self"] = {
 								["ClassName"] = "bone3",
-								["UniqueID"] = "34ff2e788ab476a81cdc1fe5e4029621d7da05435bd2d884a7c5d5ec3b9e1bbe",
+								["UniqueID"] = "d12a124464c05293d9a43d00e94833a3ed0038069e07cc64ad3784dfcf92f593",
 								["Name"] = "cane grip: right finger 11",
 								["Bone"] = "right finger 11",
 								["Angles"] = Angle(0, -78, 0),
@@ -734,7 +746,7 @@
 						[6] = {
 							["self"] = {
 								["ClassName"] = "bone3",
-								["UniqueID"] = "5930c158b3905f5d11faee074ab7e50fecd2bdfc31a1108950127ba2fcd69b81",
+								["UniqueID"] = "ead2bb7820367014256645357b308df77090d5c15191538e6ba945506cb919c3",
 								["Name"] = "cane grip: right finger 12",
 								["Bone"] = "right finger 12",
 								["Angles"] = Angle(0, -40, 0),
@@ -745,7 +757,7 @@
 						[7] = {
 							["self"] = {
 								["ClassName"] = "bone3",
-								["UniqueID"] = "e2f94150dee4d032bbe1a0f1da8db634270bf081ac8d39b2ea22558648929113",
+								["UniqueID"] = "414205052f9573e16d3f4b0e461cc4640eb4e667926b907a939c1905e08d5ea7",
 								["Name"] = "cane grip: right finger 2",
 								["Bone"] = "right finger 2",
 								["Angles"] = Angle(0, -66, 0),
@@ -756,7 +768,7 @@
 						[8] = {
 							["self"] = {
 								["ClassName"] = "bone3",
-								["UniqueID"] = "6c6d325aee09f22252d57f4c9466cc53fa106bcbb3e5f654f9ed32d15a4dd978",
+								["UniqueID"] = "0c71d7fc823d851a30cce12874626d1a51ba0ac883f01be5cfc33fb170c02a3f",
 								["Name"] = "cane grip: right finger 21",
 								["Bone"] = "right finger 21",
 								["Angles"] = Angle(0, -82, 0),
@@ -767,7 +779,7 @@
 						[9] = {
 							["self"] = {
 								["ClassName"] = "bone3",
-								["UniqueID"] = "598d85c6a1f1b1e105f52294815384cd28ee160769698c4d5dc2ccbd4cf2cca9",
+								["UniqueID"] = "7a589122f6c07cbd4f39883043b86878eab0100d40bb7ff459a9a9c611af1db5",
 								["Name"] = "cane grip: right finger 22",
 								["Bone"] = "right finger 22",
 								["Angles"] = Angle(0, -42, 0),
@@ -778,7 +790,7 @@
 						[10] = {
 							["self"] = {
 								["ClassName"] = "bone3",
-								["UniqueID"] = "087a314e99daaa6db8730b1233dd9307ab53bdbf1160e62022c8061efed59658",
+								["UniqueID"] = "75e91e6284ffb9ee6ea4ad36a333b8e20d66403c07d00947f61acc84e39c658d",
 								["Name"] = "cane grip: right finger 3",
 								["Bone"] = "right finger 3",
 								["Angles"] = Angle(0, -70, 0),
@@ -789,7 +801,7 @@
 						[11] = {
 							["self"] = {
 								["ClassName"] = "bone3",
-								["UniqueID"] = "c1db943b5b44a71da0630971c83d11c44366f6f7173cc9135faf45cbd39a693c",
+								["UniqueID"] = "d42e92f86b5ef90c5985375219116d45bf782d3384427d8c9978a3c9e0233094",
 								["Name"] = "cane grip: right finger 31",
 								["Bone"] = "right finger 31",
 								["Angles"] = Angle(0, -84, 0),
@@ -800,7 +812,7 @@
 						[12] = {
 							["self"] = {
 								["ClassName"] = "bone3",
-								["UniqueID"] = "2f6c3ca1ca72fcc51a1c47228286fcc08548450a2105f1cb83eafd7f424aed12",
+								["UniqueID"] = "83dc8306f79723a05a1bda9cdaa565a2701c3de4978618262f98e71926e39b0d",
 								["Name"] = "cane grip: right finger 32",
 								["Bone"] = "right finger 32",
 								["Angles"] = Angle(0, -40, 0),
@@ -811,7 +823,7 @@
 						[13] = {
 							["self"] = {
 								["ClassName"] = "bone3",
-								["UniqueID"] = "63779730e3b9d6dac2f6100f3f07daf6b535ebfd12caf08f973655db60ea5b4c",
+								["UniqueID"] = "dd9ba99e6c170f3d7510fda06526551a3ddea4c6fb7660bd7a44745e10a9a3b6",
 								["Name"] = "cane grip: right finger 4",
 								["Bone"] = "right finger 4",
 								["Angles"] = Angle(0, -72, 0),
@@ -822,7 +834,7 @@
 						[14] = {
 							["self"] = {
 								["ClassName"] = "bone3",
-								["UniqueID"] = "f79411268cfdcefc7eb87bb07130efb3d86b46399f4b7eba57af7b46a538cb1d",
+								["UniqueID"] = "4ebdaeeb02b32849bc501dd7d9e486ff59efe062585d114175ef30c9c630a742",
 								["Name"] = "cane grip: right finger 41",
 								["Bone"] = "right finger 41",
 								["Angles"] = Angle(0, -80, 0),
@@ -833,7 +845,7 @@
 						[15] = {
 							["self"] = {
 								["ClassName"] = "bone3",
-								["UniqueID"] = "9ab324c0f2acea08637d42bae95f7f36f43924cb2c6a93c26cb05d5395c83053",
+								["UniqueID"] = "11a9eaf52f09219f20191cc4fab2ad87dfd32eb0005e81536beef6040daff4bc",
 								["Name"] = "cane grip: right finger 42",
 								["Bone"] = "right finger 42",
 								["Angles"] = Angle(0, -38, 0),
@@ -844,7 +856,7 @@
 						[16] = {
 							["self"] = {
 								["ClassName"] = "bone3",
-								["UniqueID"] = "767900d3b0e234802db429e6f0e4f2b7c763a01c7e90c2f2cba3d11689da7616",
+								["UniqueID"] = "db2a276ca275e4df4072bc6fcc17198842023f4424036b63328f7522bea6f924",
 								["Name"] = "cane grip: right finger 0",
 								["Bone"] = "right finger 0",
 								["Angles"] = Angle(0, 18, -10),
@@ -855,7 +867,7 @@
 						[17] = {
 							["self"] = {
 								["ClassName"] = "bone3",
-								["UniqueID"] = "5ee1cd7a0d335044cbd4fbd6a2673439aa7af7ba09ccfe49955eaeab707d7747",
+								["UniqueID"] = "396aad1d196318e941f1f22b90d67cf9d0f554258bcd827a7f3316fc2799e48d",
 								["Name"] = "cane grip: right finger 01",
 								["Bone"] = "right finger 01",
 								["Angles"] = Angle(0, 28, 0),
@@ -866,7 +878,7 @@
 						[18] = {
 							["self"] = {
 								["ClassName"] = "bone3",
-								["UniqueID"] = "a761c19681b06495d7c33f8875e206af5ed714b0fb193ea8e11c472c054d11f0",
+								["UniqueID"] = "ef3918018df51a6e5e7c55b6290b83760869a2f6320588e4d8e6ca48c0c6500a",
 								["Name"] = "cane grip: right finger 02",
 								["Bone"] = "right finger 02",
 								["Angles"] = Angle(0, 22, 0),
@@ -877,7 +889,7 @@
 						[19] = {
 							["self"] = {
 								["ClassName"] = "bone3",
-								["UniqueID"] = "d203cc4da2895e379d16a1726490077620ab0abfe50e89378dbf958b1193b0a4",
+								["UniqueID"] = "c2db7e5c82b5c0c26f88beb6a7ef403f5443a68cd5c2a8a094b1b4208c2811c9",
 								["Name"] = "cane grip: right upperarm",
 								["Bone"] = "right upperarm",
 								["Angles"] = Angle(9.55, -9.73, 13.79),
@@ -888,7 +900,7 @@
 						[20] = {
 							["self"] = {
 								["ClassName"] = "bone3",
-								["UniqueID"] = "904f029ebd0b38454e1d2eea72700cb006f93229f3b7a9a8e8cc6e0f66b1c57a",
+								["UniqueID"] = "86134e5acc18af8483bb129bad2a8bd0adb5d4dfdc7285c1b0abfb5781a412e8",
 								["Name"] = "cane grip: right forearm",
 								["Bone"] = "right forearm",
 								["Angles"] = Angle(0, -23.18, 0),
@@ -899,7 +911,7 @@
 						[21] = {
 							["self"] = {
 								["ClassName"] = "bone3",
-								["UniqueID"] = "7bd766ac73be76e10c999b4890c67e8cac16497cb6d17fe640792f4a4cc9d939",
+								["UniqueID"] = "a6a239f13d436596c01dff71241ab2701e8ca1babeaf05a6ec96d17d6f337a49",
 								["Name"] = "cane grip: right hand",
 								["Bone"] = "right hand",
 								["Angles"] = Angle(-24.06, -8.08, 7.64),
@@ -909,17 +921,17 @@
 						},
 					},
 				},
-				[5] = {
+				[6] = {
 					["self"] = {
 						["ClassName"] = "group",
-						["UniqueID"] = "4dca2609f0d81e0140a5c361422610c6a7aeee9e3c3c3ba0a305f2f3f9d01757",
+						["UniqueID"] = "8a10edeb643b46188cca495716283694d2f08955c6720c140448a7f5fbf86fc4",
 						["Name"] = "cane hooked on his belt (any other holdtype)",
 					},
 					["children"] = {
 						[1] = {
 							["self"] = {
 								["ClassName"] = "event",
-								["UniqueID"] = "80223dfc5e2c86a994892c7807fbc087533fd80787ac7a82a11cbc25aca127fb",
+								["UniqueID"] = "767b48ab27ff4f577252e93172e6ac744d74ae353b18bb34b1d9931593f04bb8",
 								["Name"] = "hidden while holdtype is normal",
 								["Event"] = "holdtype",
 								["Arguments"] = "normal",
@@ -932,7 +944,7 @@
 						[2] = {
 							["self"] = {
 								["ClassName"] = "model2",
-								["UniqueID"] = "496e1ca8a1c0ee9e8bbf90fb905c5008f8f725b17bc8539bad4c2b95111804ae",
+								["UniqueID"] = "93b7fead0862f0ef3faf3aaa872c6c895454b81bb93256c624fffc68d82e3c85",
 								["Name"] = "cane on belt",
 								["Model"] = "https://raw.githubusercontent.com/Warmug/pac-oldman/main/props/cane.obj",
 								["Bone"] = "pelvis",
@@ -981,14 +993,14 @@
 				[3] = {
 					["self"] = {
 						["ClassName"] = "group",
-						["UniqueID"] = "874226597447871de8fb6f32ab4aa1419268fdd29668a7bde5790646c83c82dc",
-						["Name"] = "cigarette in his fingers (holdtype normal, not crouching)",
+						["UniqueID"] = "e039067d919118bd9300f04b55fdc7d432bc0c44b343cf2382e9ce97d1e4d763",
+						["Name"] = "cigarette in his fingers (holdtype normal, standing)",
 					},
 					["children"] = {
 						[1] = {
 							["self"] = {
 								["ClassName"] = "event",
-								["UniqueID"] = "502dcd3958fcaddc92d595f505b2b201c892aa286c2214bba29716c0053203ba",
+								["UniqueID"] = "b4e4bc8b2237da41030e8c91e13a7be6a5e59f1dacbfd4a8769af7cc7e56bc0a",
 								["Name"] = "only when holdtype is normal",
 								["Event"] = "holdtype",
 								["Arguments"] = "normal",
@@ -1001,7 +1013,7 @@
 						[2] = {
 							["self"] = {
 								["ClassName"] = "event",
-								["UniqueID"] = "e8ab501cbe3ef612573fd589dde930f333bd2d3567f4bd37bc9e76a513ba9071",
+								["UniqueID"] = "7e56a2e614baff16818efd41088660c3dfbeea541d95d87722640b989512cc29",
 								["Name"] = "not while crouching (it goes in his mouth)",
 								["Event"] = "is_crouching",
 								["Operator"] = "equal",
@@ -1012,8 +1024,20 @@
 						},
 						[3] = {
 							["self"] = {
+								["ClassName"] = "event",
+								["UniqueID"] = "3015be1a930b3259f3b1c3b6bb6428a61f74ea3112105225c698a2e1b287d255",
+								["Name"] = "not while sitting (it goes in his mouth)",
+								["Event"] = "is_sitting",
+								["Operator"] = "equal",
+								["Invert"] = false,
+							},
+							["children"] = {
+							},
+						},
+						[4] = {
+							["self"] = {
 								["ClassName"] = "model2",
-								["UniqueID"] = "2ba4c8af6295142e86c05f2a98a223bb0990d2a599b9f54e79912bcde5d1ee21",
+								["UniqueID"] = "d5b91a6ee9ec7a8046c6753351bc0b9f8686e1644ca26b17461a09a5bd757f7c",
 								["Name"] = "cigarette",
 								["Model"] = "https://raw.githubusercontent.com/Warmug/pac-oldman/main/props/cigarette.obj",
 								["Bone"] = "left hand",
@@ -1024,10 +1048,10 @@
 							["children"] = {
 							},
 						},
-						[4] = {
+						[5] = {
 							["self"] = {
 								["ClassName"] = "sprite",
-								["UniqueID"] = "52afdd6721a51dcf67dbd61749ff27dfa4b9827966083f8693a1322cc079f49a",
+								["UniqueID"] = "bd29df7afd58441160cf6c485132af0cf6b1c04b9d519bfb5f2c73504e257815",
 								["Name"] = "ember glow",
 								["Bone"] = "left hand",
 								["Position"] = Vector(6.1344, 1.3413, 2.3236),
@@ -1040,7 +1064,7 @@
 								[1] = {
 									["self"] = {
 										["ClassName"] = "proxy",
-										["UniqueID"] = "34577bc4d51ed830c16accc06b1a39bd205bdc6360f6924657dcc9b20f8893e4",
+										["UniqueID"] = "d1f7e3f15d4cbce5e431cde04c15eb3afb20a80194ad6a3401e25d2156cd5384",
 										["Name"] = "ember flickers and flares up on a drag",
 										["VariableName"] = "Size",
 										["Expression"] = "0.55 + 0.08*sin(time()*17) + 0.06*sin(time()*29) + 0.9*clamp(min(((time()%13)-1.0)/0.3, (2.4-(time()%13))/0.3), 0, 1)",
@@ -1050,41 +1074,31 @@
 								},
 							},
 						},
-						[5] = {
+						[6] = {
 							["self"] = {
 								["ClassName"] = "particles",
-								["UniqueID"] = "7d659bff4e9d4635e08ed1f540173b880a05148ac8a898cab2e176b9498e668b",
+								["UniqueID"] = "1fdc241354123e06104beff4f8318a7f0055af93066f21d7383d5852ae5ae605",
 								["Name"] = "smoke from the tip",
 								["Bone"] = "left hand",
 								["Position"] = Vector(6.1344, 1.3413, 2.3236),
 								["Material"] = "particle/smokesprites_0001",
-								["StartSize"] = 0.35,
-								["EndSize"] = 5.5,
-								["DieTime"] = 3.2,
-								["FireDelay"] = 0.14,
+								["StartSize"] = 0.3,
+								["EndSize"] = 4,
+								["DieTime"] = 2.6,
+								["FireDelay"] = 0.32,
 								["NumberParticles"] = 1,
 								["Velocity"] = 3,
 								["Spread"] = 0.4,
 								["Gravity"] = Vector(0, 0, 9),
 								["AirResistance"] = 4,
-								["StartAlpha"] = 55,
+								["StartAlpha"] = 38,
 								["EndAlpha"] = 0,
 								["Color1"] = Vector(205, 205, 210),
 								["Color2"] = Vector(170, 170, 178),
 								["Lighting"] = false,
 								["Collide"] = false,
 								["RandomRollSpeed"] = 1.5,
-							},
-							["children"] = {
-							},
-						},
-						[6] = {
-							["self"] = {
-								["ClassName"] = "bone3",
-								["UniqueID"] = "e2bc25332e9201cc9c9343d493c3365ea4377d73124da276244299ff448f35da",
-								["Name"] = "cigarette hold: left finger 1",
-								["Bone"] = "left finger 1",
-								["Angles"] = Angle(0, -12, 0),
+								["DoubleSided"] = false,
 							},
 							["children"] = {
 							},
@@ -1092,10 +1106,10 @@
 						[7] = {
 							["self"] = {
 								["ClassName"] = "bone3",
-								["UniqueID"] = "81dcae4a3ad8579bbda4963bbf5ecb2c2282471d66852217752cfcec7ded29ef",
-								["Name"] = "cigarette hold: left finger 11",
-								["Bone"] = "left finger 11",
-								["Angles"] = Angle(0, -22, 0),
+								["UniqueID"] = "bbb3cc8e78a758b23c11499772d97a7d2ca918fa7223ac10e8274e3ab3bfdb17",
+								["Name"] = "cigarette hold: left finger 1",
+								["Bone"] = "left finger 1",
+								["Angles"] = Angle(0, -12, 0),
 							},
 							["children"] = {
 							},
@@ -1103,10 +1117,10 @@
 						[8] = {
 							["self"] = {
 								["ClassName"] = "bone3",
-								["UniqueID"] = "1dbaea7c38f11adecbcbf43c55d8509beb84c739d0c8cc677ad88ef0ac0b342e",
-								["Name"] = "cigarette hold: left finger 12",
-								["Bone"] = "left finger 12",
-								["Angles"] = Angle(0, -12, 0),
+								["UniqueID"] = "7d6dd671093073f949f8b2a0268470a08f1ee1deceb95821f4cd2252d0088d7d",
+								["Name"] = "cigarette hold: left finger 11",
+								["Bone"] = "left finger 11",
+								["Angles"] = Angle(0, -22, 0),
 							},
 							["children"] = {
 							},
@@ -1114,10 +1128,10 @@
 						[9] = {
 							["self"] = {
 								["ClassName"] = "bone3",
-								["UniqueID"] = "165d2123ea4c1e02349c5e29fde17ee72bb8d7b808ac5a549213011c2ef2857f",
-								["Name"] = "cigarette hold: left finger 2",
-								["Bone"] = "left finger 2",
-								["Angles"] = Angle(0, -14, 0),
+								["UniqueID"] = "78b87c78119577ec3a3e441e0c56d9dfd4defe10aad6e00e73f84de973204f45",
+								["Name"] = "cigarette hold: left finger 12",
+								["Bone"] = "left finger 12",
+								["Angles"] = Angle(0, -12, 0),
 							},
 							["children"] = {
 							},
@@ -1125,10 +1139,10 @@
 						[10] = {
 							["self"] = {
 								["ClassName"] = "bone3",
-								["UniqueID"] = "56a45120fe844fc730a099bce28909c37b13f12abe7976d6427a4506aa133ed1",
-								["Name"] = "cigarette hold: left finger 21",
-								["Bone"] = "left finger 21",
-								["Angles"] = Angle(0, -24, 0),
+								["UniqueID"] = "4d40030d036f7b5004790ccd16f993647f4ba1b65127c24756400be359862591",
+								["Name"] = "cigarette hold: left finger 2",
+								["Bone"] = "left finger 2",
+								["Angles"] = Angle(0, -14, 0),
 							},
 							["children"] = {
 							},
@@ -1136,10 +1150,10 @@
 						[11] = {
 							["self"] = {
 								["ClassName"] = "bone3",
-								["UniqueID"] = "518881a45fdc8444c408319195363616423ef89076bfbdb6a0cb273ab919f61e",
-								["Name"] = "cigarette hold: left finger 22",
-								["Bone"] = "left finger 22",
-								["Angles"] = Angle(0, -12, 0),
+								["UniqueID"] = "fcf39014576bacb3683b5dd9fca97bf192a653d908424fe226b1f0c2c17c3644",
+								["Name"] = "cigarette hold: left finger 21",
+								["Bone"] = "left finger 21",
+								["Angles"] = Angle(0, -24, 0),
 							},
 							["children"] = {
 							},
@@ -1147,10 +1161,10 @@
 						[12] = {
 							["self"] = {
 								["ClassName"] = "bone3",
-								["UniqueID"] = "7455daa7536d7d0341f00aa6ea357461d44ede54d8e5703ef4c70f0ef12d4825",
-								["Name"] = "cigarette hold: left finger 3",
-								["Bone"] = "left finger 3",
-								["Angles"] = Angle(0, -48, 0),
+								["UniqueID"] = "6e52c9fdb55805a17ba8585e5abfefd439631932792fe14a6e1b9d639d65be2b",
+								["Name"] = "cigarette hold: left finger 22",
+								["Bone"] = "left finger 22",
+								["Angles"] = Angle(0, -12, 0),
 							},
 							["children"] = {
 							},
@@ -1158,10 +1172,10 @@
 						[13] = {
 							["self"] = {
 								["ClassName"] = "bone3",
-								["UniqueID"] = "2ec0550a64b892f6f8527e377f45197eedbb21d3ec97485cd3431b621ae46e90",
-								["Name"] = "cigarette hold: left finger 31",
-								["Bone"] = "left finger 31",
-								["Angles"] = Angle(0, -70, 0),
+								["UniqueID"] = "0e99234807c0795924041e0659a060d0c2dd850f080cf66dce6abf818d9a1106",
+								["Name"] = "cigarette hold: left finger 3",
+								["Bone"] = "left finger 3",
+								["Angles"] = Angle(0, -48, 0),
 							},
 							["children"] = {
 							},
@@ -1169,10 +1183,10 @@
 						[14] = {
 							["self"] = {
 								["ClassName"] = "bone3",
-								["UniqueID"] = "1a7170f4976802fee333efee10e7de7316ff473a01b9a51aa1aed526ffcb4062",
-								["Name"] = "cigarette hold: left finger 32",
-								["Bone"] = "left finger 32",
-								["Angles"] = Angle(0, -40, 0),
+								["UniqueID"] = "aab334a51789235e8cedbe9d0a2c500aed0dfb6cccb5dcbafe998763373e689b",
+								["Name"] = "cigarette hold: left finger 31",
+								["Bone"] = "left finger 31",
+								["Angles"] = Angle(0, -70, 0),
 							},
 							["children"] = {
 							},
@@ -1180,10 +1194,10 @@
 						[15] = {
 							["self"] = {
 								["ClassName"] = "bone3",
-								["UniqueID"] = "a3278fef986fbfa0dc2ecc6db63202fba20666411a5ca57545fd4a7eb7841adf",
-								["Name"] = "cigarette hold: left finger 4",
-								["Bone"] = "left finger 4",
-								["Angles"] = Angle(0, -55, 0),
+								["UniqueID"] = "719923cc8a02d1321f9282c254982c6408c877857457b8632fdecee14b80c82a",
+								["Name"] = "cigarette hold: left finger 32",
+								["Bone"] = "left finger 32",
+								["Angles"] = Angle(0, -40, 0),
 							},
 							["children"] = {
 							},
@@ -1191,10 +1205,10 @@
 						[16] = {
 							["self"] = {
 								["ClassName"] = "bone3",
-								["UniqueID"] = "1ff7a4f2658ce695ca339f306a62d97f37b8128a2f951fda7462bfa212e9e9e8",
-								["Name"] = "cigarette hold: left finger 41",
-								["Bone"] = "left finger 41",
-								["Angles"] = Angle(0, -72, 0),
+								["UniqueID"] = "d08e214e30c152124f5a1374206fbac612c96582a0bde07ffa590205695e672f",
+								["Name"] = "cigarette hold: left finger 4",
+								["Bone"] = "left finger 4",
+								["Angles"] = Angle(0, -55, 0),
 							},
 							["children"] = {
 							},
@@ -1202,10 +1216,10 @@
 						[17] = {
 							["self"] = {
 								["ClassName"] = "bone3",
-								["UniqueID"] = "fbd345ea94c49227fff5301f0a925b3a62feca6f80090e32a8e98255f6eadbdb",
-								["Name"] = "cigarette hold: left finger 42",
-								["Bone"] = "left finger 42",
-								["Angles"] = Angle(0, -40, 0),
+								["UniqueID"] = "5cc4cbc8996ef2d43479402bb976081c5dd88088a9dc3a07ee719921f7d8ce01",
+								["Name"] = "cigarette hold: left finger 41",
+								["Bone"] = "left finger 41",
+								["Angles"] = Angle(0, -72, 0),
 							},
 							["children"] = {
 							},
@@ -1213,10 +1227,10 @@
 						[18] = {
 							["self"] = {
 								["ClassName"] = "bone3",
-								["UniqueID"] = "864866cedccda2a1210f4e0fe5008d43c24014fe3d1ff76d4ebf264fd04d860c",
-								["Name"] = "cigarette hold: left finger 0",
-								["Bone"] = "left finger 0",
-								["Angles"] = Angle(0, 10, 0),
+								["UniqueID"] = "7b2ff8e060cca01348da30d1ae8fbf10f905f46e878f7fd8b6041aaea6601493",
+								["Name"] = "cigarette hold: left finger 42",
+								["Bone"] = "left finger 42",
+								["Angles"] = Angle(0, -40, 0),
 							},
 							["children"] = {
 							},
@@ -1224,7 +1238,18 @@
 						[19] = {
 							["self"] = {
 								["ClassName"] = "bone3",
-								["UniqueID"] = "3b38f294ae7619f6388c01a82ff4c31fa90cdfd71539051594651845ed3fb3b6",
+								["UniqueID"] = "d3be60e0f0c1e1df03695694e00d79e33650fab717cd3fbe41db2ba3790dbfe9",
+								["Name"] = "cigarette hold: left finger 0",
+								["Bone"] = "left finger 0",
+								["Angles"] = Angle(0, 10, 0),
+							},
+							["children"] = {
+							},
+						},
+						[20] = {
+							["self"] = {
+								["ClassName"] = "bone3",
+								["UniqueID"] = "e5076df1139e4ccd24c59c00bc01bd01894b7983144ec1d9f685797facb841f0",
 								["Name"] = "cigarette hold: left finger 01",
 								["Bone"] = "left finger 01",
 								["Angles"] = Angle(0, 15, 0),
@@ -1232,17 +1257,17 @@
 							["children"] = {
 							},
 						},
-						[20] = {
+						[21] = {
 							["self"] = {
 								["ClassName"] = "group",
-								["UniqueID"] = "64c7a502299d3ddd591cbc7c3abe7b6ef7b7bfe28f4a122c796853b1f439baf6",
+								["UniqueID"] = "e304db0c0f0493b5dee413692729763f36caf5e84f033bed362b0b058288cd58",
 								["Name"] = "takes a drag every 13s (mask off)",
 							},
 							["children"] = {
 								[1] = {
 									["self"] = {
 										["ClassName"] = "event",
-										["UniqueID"] = "1844f52be8cee95411dc56628c3a2b6da55fbae8e6e826480219f5ddf888a455",
+										["UniqueID"] = "facbc1a347887fc9850069dcb7cbfdda7117e120eacc3aa878dc8ce2dcfc7b35",
 										["Name"] = "not while the oxygen mask is on",
 										["Event"] = "command",
 										["Arguments"] = "mask@@0@@0",
@@ -1255,7 +1280,7 @@
 								[2] = {
 									["self"] = {
 										["ClassName"] = "bone3",
-										["UniqueID"] = "d1a0ea7b3db117716e69f6abe5774a1701e78b095f7f6a463bef288cd8e9b020",
+										["UniqueID"] = "99d060eabffed236916b644b0400656d475d2d9dd507f44a3a62c9532f996655",
 										["Name"] = "smoking arm: left upperarm",
 										["Bone"] = "left upperarm",
 										["Angles"] = Angle(-29.76, -25.61, -23.27),
@@ -1264,7 +1289,7 @@
 										[1] = {
 											["self"] = {
 												["ClassName"] = "proxy",
-												["UniqueID"] = "8676ea8818d9c476879396090afc4238fbd72166e5967d568688be6b6a5eb61a",
+												["UniqueID"] = "b2c1451dcad52eda440bc95e33bc835d652c06a23d1d816e478411de78d984c4",
 												["Name"] = "take a drag every 13s while standing still",
 												["VariableName"] = "Angles",
 												["Expression"] = "-29.76 + (-12.08)*(clamp(min((time()%13)/1.0, (3.4-(time()%13))/1.0), 0, 1)*clamp(min((time()%13)/1.0, (3.4-(time()%13))/1.0), 0, 1)*(3-2*clamp(min((time()%13)/1.0, (3.4-(time()%13))/1.0), 0, 1)))*(1 - clamp(owner_velocity_length()/50, 0, 1)), -25.61 + (-63.21)*(clamp(min((time()%13)/1.0, (3.4-(time()%13))/1.0), 0, 1)*clamp(min((time()%13)/1.0, (3.4-(time()%13))/1.0), 0, 1)*(3-2*clamp(min((time()%13)/1.0, (3.4-(time()%13))/1.0), 0, 1)))*(1 - clamp(owner_velocity_length()/50, 0, 1)), -23.27 + (48.46)*(clamp(min((time()%13)/1.0, (3.4-(time()%13))/1.0), 0, 1)*clamp(min((time()%13)/1.0, (3.4-(time()%13))/1.0), 0, 1)*(3-2*clamp(min((time()%13)/1.0, (3.4-(time()%13))/1.0), 0, 1)))*(1 - clamp(owner_velocity_length()/50, 0, 1))",
@@ -1277,7 +1302,7 @@
 								[3] = {
 									["self"] = {
 										["ClassName"] = "bone3",
-										["UniqueID"] = "e116f42e24bbb6ed3cd8dd33297e4efd8e870a61b65f48a0ac9d59f4c72a09d8",
+										["UniqueID"] = "88717f813f293734975fba6cb9ff3c066b406068a2575791caef0d64faafe346",
 										["Name"] = "smoking arm: left forearm",
 										["Bone"] = "left forearm",
 										["Angles"] = Angle(0, -87.86, -0.31),
@@ -1286,7 +1311,7 @@
 										[1] = {
 											["self"] = {
 												["ClassName"] = "proxy",
-												["UniqueID"] = "1b75fc815f70f0b7bd1dab3c02ddea4d1ba609b2847857fa601f63fb82dce13e",
+												["UniqueID"] = "960c16d76065706198ef51661a6daa6abb191477be9a99896c691b70ac4d99ea",
 												["Name"] = "take a drag every 13s while standing still",
 												["VariableName"] = "Angles",
 												["Expression"] = "0.00 + (0.00)*(clamp(min((time()%13)/1.0, (3.4-(time()%13))/1.0), 0, 1)*clamp(min((time()%13)/1.0, (3.4-(time()%13))/1.0), 0, 1)*(3-2*clamp(min((time()%13)/1.0, (3.4-(time()%13))/1.0), 0, 1)))*(1 - clamp(owner_velocity_length()/50, 0, 1)), -87.86 + (-16.12)*(clamp(min((time()%13)/1.0, (3.4-(time()%13))/1.0), 0, 1)*clamp(min((time()%13)/1.0, (3.4-(time()%13))/1.0), 0, 1)*(3-2*clamp(min((time()%13)/1.0, (3.4-(time()%13))/1.0), 0, 1)))*(1 - clamp(owner_velocity_length()/50, 0, 1)), -0.31 + (-27.45)*(clamp(min((time()%13)/1.0, (3.4-(time()%13))/1.0), 0, 1)*clamp(min((time()%13)/1.0, (3.4-(time()%13))/1.0), 0, 1)*(3-2*clamp(min((time()%13)/1.0, (3.4-(time()%13))/1.0), 0, 1)))*(1 - clamp(owner_velocity_length()/50, 0, 1))",
@@ -1299,7 +1324,7 @@
 								[4] = {
 									["self"] = {
 										["ClassName"] = "bone3",
-										["UniqueID"] = "736642695a34ca4a20567f155c41cc0e09791395aeb92ac68487e7e9ec1a5c30",
+										["UniqueID"] = "a76f603bbdaaa5c4438c3ac6e4c9ac335b93a97e70363d3601e1217fb5b4712f",
 										["Name"] = "smoking arm: left hand",
 										["Bone"] = "left hand",
 										["Angles"] = Angle(-26.28, -2.55, -23.03),
@@ -1308,7 +1333,7 @@
 										[1] = {
 											["self"] = {
 												["ClassName"] = "proxy",
-												["UniqueID"] = "17f0b278b378dd8b19b78c2957e9796ed464e3cae0ae2d386b9f20b9a5452e89",
+												["UniqueID"] = "bb4e74538a871f7e83889baad7302d73b87fba7dd585c0b20dd373280a7a987f",
 												["Name"] = "take a drag every 13s while standing still",
 												["VariableName"] = "Angles",
 												["Expression"] = "-26.28 + (1.63)*(clamp(min((time()%13)/1.0, (3.4-(time()%13))/1.0), 0, 1)*clamp(min((time()%13)/1.0, (3.4-(time()%13))/1.0), 0, 1)*(3-2*clamp(min((time()%13)/1.0, (3.4-(time()%13))/1.0), 0, 1)))*(1 - clamp(owner_velocity_length()/50, 0, 1)), -2.55 + (1.26)*(clamp(min((time()%13)/1.0, (3.4-(time()%13))/1.0), 0, 1)*clamp(min((time()%13)/1.0, (3.4-(time()%13))/1.0), 0, 1)*(3-2*clamp(min((time()%13)/1.0, (3.4-(time()%13))/1.0), 0, 1)))*(1 - clamp(owner_velocity_length()/50, 0, 1)), -23.03 + (-1.17)*(clamp(min((time()%13)/1.0, (3.4-(time()%13))/1.0), 0, 1)*clamp(min((time()%13)/1.0, (3.4-(time()%13))/1.0), 0, 1)*(3-2*clamp(min((time()%13)/1.0, (3.4-(time()%13))/1.0), 0, 1)))*(1 - clamp(owner_velocity_length()/50, 0, 1))",
@@ -1321,36 +1346,37 @@
 								[5] = {
 									["self"] = {
 										["ClassName"] = "particles",
-										["UniqueID"] = "ffaa5f5330e4bfaa54fef608f124b34d42cbaf571baaf876ab58457d53d1bfa5",
+										["UniqueID"] = "1c108040150014831a01247c8d3536204211d2709207b7c5d1a0a1d84e11526e",
 										["Name"] = "exhaled smoke",
 										["Bone"] = "head",
 										["Position"] = Vector(0.7819, -5.6002, 0.0171),
 										["Angles"] = Angle(0.027, -94.136, -89.894),
 										["Material"] = "particle/smokesprites_0001",
-										["StartSize"] = 0.8,
-										["EndSize"] = 7,
-										["DieTime"] = 2.6,
-										["FireDelay"] = 0.05,
-										["NumberParticles"] = 1,
-										["Velocity"] = 14,
+										["StartSize"] = 0.6,
+										["EndSize"] = 4,
+										["DieTime"] = 1.5,
+										["FireDelay"] = 0.09,
+										["NumberParticles"] = 0,
+										["Velocity"] = 9,
 										["Spread"] = 0.25,
 										["Gravity"] = Vector(0, 0, 5),
-										["AirResistance"] = 12,
-										["StartAlpha"] = 70,
+										["AirResistance"] = 10,
+										["StartAlpha"] = 42,
 										["EndAlpha"] = 0,
 										["Color1"] = Vector(210, 210, 215),
 										["Color2"] = Vector(180, 180, 185),
 										["Lighting"] = false,
 										["Collide"] = false,
+										["DoubleSided"] = false,
 									},
 									["children"] = {
 										[1] = {
 											["self"] = {
 												["ClassName"] = "proxy",
-												["UniqueID"] = "4fc5973821f01ab7d6ca24460981ab0e3744d12e94fa051ac9c75deb36dc8e09",
-												["Name"] = "only right after a drag",
-												["VariableName"] = "Hide",
-												["Expression"] = "((((time()%13)) > 3.5 and ((time()%13)) < 5.4) and (1 - clamp(owner_velocity_length()/50, 0, 1)) > 0.5) and 0 or 1",
+												["UniqueID"] = "026d2a545072ca172ed2da4651581ea0d1d8e53cdbc34de49d39a4b2993faf90",
+												["Name"] = "only for a second right after a drag",
+												["VariableName"] = "NumberParticles",
+												["Expression"] = "((((time()%13)) > 3.45 and ((time()%13)) < 4.35) and (1 - clamp(owner_velocity_length()/50, 0, 1)) > 0.5) and 1 or 0",
 											},
 											["children"] = {
 											},
@@ -1359,17 +1385,17 @@
 								},
 							},
 						},
-						[21] = {
+						[22] = {
 							["self"] = {
 								["ClassName"] = "group",
-								["UniqueID"] = "96e575059d0993b4967fbbaa406e8fe7b5f58443756255dd4061259f69a2a240",
+								["UniqueID"] = "5dce680463c943f28cdc517f92877c5cac145d85e68c0cca1693aeaa4e22d98a",
 								["Name"] = "just holds it (mask on)",
 							},
 							["children"] = {
 								[1] = {
 									["self"] = {
 										["ClassName"] = "event",
-										["UniqueID"] = "f8bf7900c7cb5b50d4ca0ab21a1bf01e5f40b9e7ec2d5417619b4aaa82e3fa1c",
+										["UniqueID"] = "23f143dd96c7ca049e2fe1a93bdd20cee2c0cde2ca26e7dedc42699674527842",
 										["Name"] = "only while the oxygen mask is on",
 										["Event"] = "command",
 										["Arguments"] = "mask@@0@@0",
@@ -1382,7 +1408,7 @@
 								[2] = {
 									["self"] = {
 										["ClassName"] = "bone3",
-										["UniqueID"] = "1f4810b8e58de78e1278f9c4708080db8e702c4fd29a8ae474a230f77794dee8",
+										["UniqueID"] = "d6ef953e9293433651f65c456d9c30b84dd5c25307bb7f49fdeca1aab022f9f4",
 										["Name"] = "smoking arm: left upperarm",
 										["Bone"] = "left upperarm",
 										["Angles"] = Angle(-29.76, -25.61, -23.27),
@@ -1393,7 +1419,7 @@
 								[3] = {
 									["self"] = {
 										["ClassName"] = "bone3",
-										["UniqueID"] = "f61e18546964eac28c426a51ddf2be5355399c0a025f5f2e9609e7a978ed9820",
+										["UniqueID"] = "2d2e67d707004c2f4e106771a06f76277abfceeb860b3173e6ec29c628f3364d",
 										["Name"] = "smoking arm: left forearm",
 										["Bone"] = "left forearm",
 										["Angles"] = Angle(0, -87.86, -0.31),
@@ -1404,7 +1430,7 @@
 								[4] = {
 									["self"] = {
 										["ClassName"] = "bone3",
-										["UniqueID"] = "6a4a88f1e7fa189ed2b743f83a22bc2a7caadd4fe4924c6cfd8be7e21bb97cd9",
+										["UniqueID"] = "7bedabdf617b93c3491fe21a0302adb2748e65ea1beaf664c52e8932328aab6b",
 										["Name"] = "smoking arm: left hand",
 										["Bone"] = "left hand",
 										["Angles"] = Angle(-26.28, -2.55, -23.03),
@@ -1497,24 +1523,65 @@
 								["Bone"] = "head",
 								["Position"] = Vector(0.1009, -8.1133, -1.4506),
 								["Material"] = "particle/smokesprites_0001",
-								["StartSize"] = 0.35,
-								["EndSize"] = 5.5,
-								["DieTime"] = 3.2,
-								["FireDelay"] = 0.14,
+								["StartSize"] = 0.3,
+								["EndSize"] = 4,
+								["DieTime"] = 2.6,
+								["FireDelay"] = 0.32,
 								["NumberParticles"] = 1,
 								["Velocity"] = 3,
 								["Spread"] = 0.4,
 								["Gravity"] = Vector(0, 0, 9),
 								["AirResistance"] = 4,
-								["StartAlpha"] = 55,
+								["StartAlpha"] = 38,
 								["EndAlpha"] = 0,
 								["Color1"] = Vector(205, 205, 210),
 								["Color2"] = Vector(170, 170, 178),
 								["Lighting"] = false,
 								["Collide"] = false,
 								["RandomRollSpeed"] = 1.5,
+								["DoubleSided"] = false,
 							},
 							["children"] = {
+							},
+						},
+						[6] = {
+							["self"] = {
+								["ClassName"] = "particles",
+								["UniqueID"] = "6a5fa182b1f390adc22f4648933a245e2021405e36c446a3abb2c66144765e52",
+								["Name"] = "mouth exhale",
+								["Bone"] = "head",
+								["Position"] = Vector(0.7819, -5.6002, 0.0171),
+								["Angles"] = Angle(0.027, -94.136, -89.894),
+								["Material"] = "particle/smokesprites_0001",
+								["StartSize"] = 0.6,
+								["EndSize"] = 4,
+								["DieTime"] = 1.5,
+								["FireDelay"] = 0.09,
+								["NumberParticles"] = 0,
+								["Velocity"] = 9,
+								["Spread"] = 0.25,
+								["Gravity"] = Vector(0, 0, 5),
+								["AirResistance"] = 10,
+								["StartAlpha"] = 42,
+								["EndAlpha"] = 0,
+								["Color1"] = Vector(210, 210, 215),
+								["Color2"] = Vector(180, 180, 185),
+								["Lighting"] = false,
+								["Collide"] = false,
+								["DoubleSided"] = false,
+							},
+							["children"] = {
+								[1] = {
+									["self"] = {
+										["ClassName"] = "proxy",
+										["UniqueID"] = "041f1fd6564d16cc2be05da713da53b55ebd023643af53dda22e53ec6ba2bc23",
+										["Name"] = "only for a second right after a drag",
+										["VariableName"] = "NumberParticles",
+										["Expression"] = "((((time()%13)) > 3.45 and ((time()%13)) < 4.35) and (1 - clamp(owner_velocity_length()/50, 0, 1)) > 0.5) and 1 or 0",
+									},
+									["children"] = {
+									},
+								},
 							},
 						},
 					},
@@ -1612,24 +1679,233 @@
 								["Bone"] = "head",
 								["Position"] = Vector(0.1009, -8.1133, -1.4506),
 								["Material"] = "particle/smokesprites_0001",
-								["StartSize"] = 0.35,
-								["EndSize"] = 5.5,
-								["DieTime"] = 3.2,
-								["FireDelay"] = 0.14,
+								["StartSize"] = 0.3,
+								["EndSize"] = 4,
+								["DieTime"] = 2.6,
+								["FireDelay"] = 0.32,
 								["NumberParticles"] = 1,
 								["Velocity"] = 3,
 								["Spread"] = 0.4,
 								["Gravity"] = Vector(0, 0, 9),
 								["AirResistance"] = 4,
-								["StartAlpha"] = 55,
+								["StartAlpha"] = 38,
 								["EndAlpha"] = 0,
 								["Color1"] = Vector(205, 205, 210),
 								["Color2"] = Vector(170, 170, 178),
 								["Lighting"] = false,
 								["Collide"] = false,
 								["RandomRollSpeed"] = 1.5,
+								["DoubleSided"] = false,
 							},
 							["children"] = {
+							},
+						},
+						[7] = {
+							["self"] = {
+								["ClassName"] = "particles",
+								["UniqueID"] = "c7838d6f6e54b0f071b4f5a9fc630fd8d682bedad42eafe4b0d6fe3022203b98",
+								["Name"] = "mouth exhale",
+								["Bone"] = "head",
+								["Position"] = Vector(0.7819, -5.6002, 0.0171),
+								["Angles"] = Angle(0.027, -94.136, -89.894),
+								["Material"] = "particle/smokesprites_0001",
+								["StartSize"] = 0.6,
+								["EndSize"] = 4,
+								["DieTime"] = 1.5,
+								["FireDelay"] = 0.09,
+								["NumberParticles"] = 0,
+								["Velocity"] = 9,
+								["Spread"] = 0.25,
+								["Gravity"] = Vector(0, 0, 5),
+								["AirResistance"] = 10,
+								["StartAlpha"] = 42,
+								["EndAlpha"] = 0,
+								["Color1"] = Vector(210, 210, 215),
+								["Color2"] = Vector(180, 180, 185),
+								["Lighting"] = false,
+								["Collide"] = false,
+								["DoubleSided"] = false,
+							},
+							["children"] = {
+								[1] = {
+									["self"] = {
+										["ClassName"] = "proxy",
+										["UniqueID"] = "5c26c57be30167a9a45c78f33624bcec4faf08c57a6904897a26a51a01393cc8",
+										["Name"] = "only for a second right after a drag",
+										["VariableName"] = "NumberParticles",
+										["Expression"] = "((((time()%13)) > 3.45 and ((time()%13)) < 4.35) and (1 - clamp(owner_velocity_length()/50, 0, 1)) > 0.5) and 1 or 0",
+									},
+									["children"] = {
+									},
+								},
+							},
+						},
+					},
+				},
+				[6] = {
+					["self"] = {
+						["ClassName"] = "group",
+						["UniqueID"] = "c8d68c1a11e4205890cd42792bb42f7bd0deead287c14adf484344fbf4b1ceca",
+						["Name"] = "cigarette in his mouth (holdtype normal, sitting, no mask)",
+					},
+					["children"] = {
+						[1] = {
+							["self"] = {
+								["ClassName"] = "event",
+								["UniqueID"] = "51af6ae9a8ae7f39400b3e8157719dfb194307a1512702e2f08f960f73ec5368",
+								["Name"] = "only when holdtype is normal",
+								["Event"] = "holdtype",
+								["Arguments"] = "normal",
+								["Operator"] = "equal",
+								["Invert"] = true,
+							},
+							["children"] = {
+							},
+						},
+						[2] = {
+							["self"] = {
+								["ClassName"] = "event",
+								["UniqueID"] = "44a0feb46ca692b20152e2c47db1189156a9aafefe36ca1c963e0863c14fc44b",
+								["Name"] = "not while crouching (that copy has it)",
+								["Event"] = "is_crouching",
+								["Operator"] = "equal",
+								["Invert"] = false,
+							},
+							["children"] = {
+							},
+						},
+						[3] = {
+							["self"] = {
+								["ClassName"] = "event",
+								["UniqueID"] = "8b7405a917ce1d371127fe29d99f99eaed57a0306384008da45651c09d10d514",
+								["Name"] = "only while sitting",
+								["Event"] = "is_sitting",
+								["Operator"] = "equal",
+								["Invert"] = true,
+							},
+							["children"] = {
+							},
+						},
+						[4] = {
+							["self"] = {
+								["ClassName"] = "event",
+								["UniqueID"] = "5e6fec22e850f4e8b9fed67ccc25f33af1186f3b41c4653943e10b54770311c1",
+								["Name"] = "hidden while the oxygen mask is on",
+								["Event"] = "command",
+								["Arguments"] = "mask@@0@@0",
+								["Operator"] = "equal",
+								["Invert"] = false,
+							},
+							["children"] = {
+							},
+						},
+						[5] = {
+							["self"] = {
+								["ClassName"] = "model2",
+								["UniqueID"] = "91f18746491bf4650996fcf01a877a5bfd571b8a15d84a162af0d7fa76778e9e",
+								["Name"] = "cigarette in mouth",
+								["Model"] = "https://raw.githubusercontent.com/Warmug/pac-oldman/main/props/cigarette.obj",
+								["Bone"] = "head",
+								["Material"] = "cigarette_paper",
+								["Position"] = Vector(0.596, -5.4038, -0.7185),
+								["Angles"] = Angle(14.885, -100.355, -95.304),
+							},
+							["children"] = {
+							},
+						},
+						[6] = {
+							["self"] = {
+								["ClassName"] = "sprite",
+								["UniqueID"] = "7399f7daf3b7edc573a00715368d56923ca6edfe5943e22e4ea6ee3f0fe47ed2",
+								["Name"] = "mouth ember glow",
+								["Bone"] = "head",
+								["Position"] = Vector(0.1009, -8.1133, -1.4506),
+								["SpritePath"] = "sprites/light_glow02_add",
+								["Color"] = Vector(255, 120, 40),
+								["Size"] = 0.6,
+								["Alpha"] = 0.9,
+							},
+							["children"] = {
+								[1] = {
+									["self"] = {
+										["ClassName"] = "proxy",
+										["UniqueID"] = "0b1a8838b937988f40d29b5346fe82b8c19710a844d0be4a5a13f62f7b4f3504",
+										["Name"] = "ember flickers and flares up on a drag",
+										["VariableName"] = "Size",
+										["Expression"] = "0.55 + 0.08*sin(time()*17) + 0.06*sin(time()*29) + 0.9*clamp(min(((time()%13)-1.0)/0.3, (2.4-(time()%13))/0.3), 0, 1)",
+									},
+									["children"] = {
+									},
+								},
+							},
+						},
+						[7] = {
+							["self"] = {
+								["ClassName"] = "particles",
+								["UniqueID"] = "947ba0896fee915209f5d7cdc01a8173526ddd83b64a6468206e71ca742e8286",
+								["Name"] = "mouth smoke from the tip",
+								["Bone"] = "head",
+								["Position"] = Vector(0.1009, -8.1133, -1.4506),
+								["Material"] = "particle/smokesprites_0001",
+								["StartSize"] = 0.3,
+								["EndSize"] = 4,
+								["DieTime"] = 2.6,
+								["FireDelay"] = 0.32,
+								["NumberParticles"] = 1,
+								["Velocity"] = 3,
+								["Spread"] = 0.4,
+								["Gravity"] = Vector(0, 0, 9),
+								["AirResistance"] = 4,
+								["StartAlpha"] = 38,
+								["EndAlpha"] = 0,
+								["Color1"] = Vector(205, 205, 210),
+								["Color2"] = Vector(170, 170, 178),
+								["Lighting"] = false,
+								["Collide"] = false,
+								["RandomRollSpeed"] = 1.5,
+								["DoubleSided"] = false,
+							},
+							["children"] = {
+							},
+						},
+						[8] = {
+							["self"] = {
+								["ClassName"] = "particles",
+								["UniqueID"] = "8a9360fb08d26638ddf79a6b5b8314201cd5c13e80793e9bbd4317765131cc97",
+								["Name"] = "mouth exhale",
+								["Bone"] = "head",
+								["Position"] = Vector(0.7819, -5.6002, 0.0171),
+								["Angles"] = Angle(0.027, -94.136, -89.894),
+								["Material"] = "particle/smokesprites_0001",
+								["StartSize"] = 0.6,
+								["EndSize"] = 4,
+								["DieTime"] = 1.5,
+								["FireDelay"] = 0.09,
+								["NumberParticles"] = 0,
+								["Velocity"] = 9,
+								["Spread"] = 0.25,
+								["Gravity"] = Vector(0, 0, 5),
+								["AirResistance"] = 10,
+								["StartAlpha"] = 42,
+								["EndAlpha"] = 0,
+								["Color1"] = Vector(210, 210, 215),
+								["Color2"] = Vector(180, 180, 185),
+								["Lighting"] = false,
+								["Collide"] = false,
+								["DoubleSided"] = false,
+							},
+							["children"] = {
+								[1] = {
+									["self"] = {
+										["ClassName"] = "proxy",
+										["UniqueID"] = "3510814f61ece2c5394f9049bcd152ad337667e3532a9cf3381dbda5b371c0c3",
+										["Name"] = "only for a second right after a drag",
+										["VariableName"] = "NumberParticles",
+										["Expression"] = "((((time()%13)) > 3.45 and ((time()%13)) < 4.35) and (1 - clamp(owner_velocity_length()/50, 0, 1)) > 0.5) and 1 or 0",
+									},
+									["children"] = {
+									},
+								},
 							},
 						},
 					},
@@ -1782,14 +2058,364 @@
 		[8] = {
 			["self"] = {
 				["ClassName"] = "group",
-				["UniqueID"] = "9acaf15849a0713225c4cca36654ba5270e2dcf12512da74fee66b42616b7072",
+				["UniqueID"] = "bf76c6c0196accfef0d95a6ef2e257dd92efe1d693adf28b50af174919c2b816",
+				["Name"] = "pocket watch  [pac_event watch]",
+			},
+			["children"] = {
+				[1] = {
+					["self"] = {
+						["ClassName"] = "event",
+						["UniqueID"] = "1fe02316a2d7bd39b51b70915fc75005ed06ecc16a390a49759e38ae60e61f30",
+						["Name"] = "toggle with: pac_event watch 2",
+						["Event"] = "command",
+						["Arguments"] = "watch@@0@@0",
+						["Operator"] = "equal",
+						["Invert"] = true,
+					},
+					["children"] = {
+					},
+				},
+				[2] = {
+					["self"] = {
+						["ClassName"] = "material_3d",
+						["UniqueID"] = "e2286a4fbb03030db1294c963a8c740ab90d14d7f30d36ae2078e8e471c5bf1d",
+						["Name"] = "pocket_watch",
+						["basetexture"] = "https://raw.githubusercontent.com/Warmug/pac-oldman/main/props/pocket_watch.jpg",
+						["bumpmap"] = "https://raw.githubusercontent.com/Warmug/pac-oldman/main/props/flat_n.png",
+						["phong"] = true,
+						["phongboost"] = 5,
+						["phongexponent"] = 40,
+						["envmap"] = "env_cubemap",
+						["envmaptint"] = Vector(0.45, 0.36, 0.2),
+					},
+					["children"] = {
+					},
+				},
+				[3] = {
+					["self"] = {
+						["ClassName"] = "material_2d",
+						["UniqueID"] = "399e036f4e0067aeb5c832bdf229738bf11fbd48c348231de0bfed2806e3c681",
+						["Name"] = "watch_chain",
+						["basetexture"] = "https://raw.githubusercontent.com/Warmug/pac-oldman/main/props/watch_chain.png",
+						["vertexcolor"] = true,
+						["vertexalpha"] = true,
+						["translucent"] = true,
+					},
+					["children"] = {
+					},
+				},
+				[4] = {
+					["self"] = {
+						["ClassName"] = "sprite",
+						["UniqueID"] = "4e7a351dbe8810009f8d83abbf0645b98be66c618a496c1a5b4907e261a545d7",
+						["Name"] = "chain goes into his pocket",
+						["Bone"] = "pelvis",
+						["Position"] = Vector(4.57, 0.403, 3.596),
+						["Angles"] = Angle(-0.05, -90, 3.195),
+						["SpritePath"] = "sprites/light_glow02_add",
+						["Size"] = 0,
+						["Alpha"] = 0,
+					},
+					["children"] = {
+					},
+				},
+				[5] = {
+					["self"] = {
+						["ClassName"] = "beam",
+						["UniqueID"] = "7e694d9e07496bd1ef7f2ede0c3ac74aff35d432a0d865892857707ee6273242",
+						["Name"] = "chain: belt loop into the pocket",
+						["Bone"] = "pelvis",
+						["Position"] = Vector(3.378, 3.304, 4.512),
+						["Angles"] = Angle(-0.05, -90, 3.195),
+						["EndPointUID"] = "4e7a351dbe8810009f8d83abbf0645b98be66c618a496c1a5b4907e261a545d7",
+						["Material"] = "watch_chain",
+						["Width"] = 0.2,
+						["Bend"] = 0.6,
+						["Resolution"] = 12,
+						["Frequency"] = 1,
+						["StartColor"] = Vector(255, 255, 255),
+						["EndColor"] = Vector(255, 255, 255),
+						["StartAlpha"] = 1,
+						["EndAlpha"] = 1,
+						["TextureStretch"] = 12,
+						["Translucent"] = true,
+					},
+					["children"] = {
+					},
+				},
+				[6] = {
+					["self"] = {
+						["ClassName"] = "group",
+						["UniqueID"] = "d9228f2551cc7683bd6a837c8da471e193dad075027ce546cecb48980ab21fe1",
+						["Name"] = "takes it out and checks the time (standing still, no cigarette)",
+					},
+					["children"] = {
+						[1] = {
+							["self"] = {
+								["ClassName"] = "event",
+								["UniqueID"] = "3393a7448ec3d82727e531346be2a4c336100aa1212d462f8e5a68aedcc64344",
+								["Name"] = "only when holdtype is normal",
+								["Event"] = "holdtype",
+								["Arguments"] = "normal",
+								["Operator"] = "equal",
+								["Invert"] = true,
+							},
+							["children"] = {
+							},
+						},
+						[2] = {
+							["self"] = {
+								["ClassName"] = "event",
+								["UniqueID"] = "03a095f08515c82fff4c70be672b1acd881577f326b4cc8ef045789f0d451a17",
+								["Name"] = "not while crouching",
+								["Event"] = "is_crouching",
+								["Operator"] = "equal",
+								["Invert"] = false,
+							},
+							["children"] = {
+							},
+						},
+						[3] = {
+							["self"] = {
+								["ClassName"] = "event",
+								["UniqueID"] = "7f318f344432e743126eff3f7ccb74b4c7fa6a7c0cb79d08fe35cf4af18aaf1d",
+								["Name"] = "not while sitting",
+								["Event"] = "is_sitting",
+								["Operator"] = "equal",
+								["Invert"] = false,
+							},
+							["children"] = {
+							},
+						},
+						[4] = {
+							["self"] = {
+								["ClassName"] = "event",
+								["UniqueID"] = "dee1878df590678d27a307a2448b93b6d14d218244816af35da7f1f06d3a806b",
+								["Name"] = "not while smoking (that hand holds the cigarette)",
+								["Event"] = "command",
+								["Arguments"] = "smoke@@0@@0",
+								["Operator"] = "equal",
+								["Invert"] = false,
+							},
+							["children"] = {
+							},
+						},
+						[5] = {
+							["self"] = {
+								["ClassName"] = "model2",
+								["UniqueID"] = "5c3b2b9934c0d207fb5fb6334b038504499c3baf380d9cd44ac78b299c85bdb2",
+								["Name"] = "pocket watch",
+								["Model"] = "https://raw.githubusercontent.com/Warmug/pac-oldman/main/props/pocket_watch.obj",
+								["Bone"] = "left hand",
+								["Material"] = "pocket_watch",
+								["Position"] = Vector(2.012, -2.078, -0.039),
+								["Angles"] = Angle(1.19, -88.115, -73.796),
+							},
+							["children"] = {
+								[1] = {
+									["self"] = {
+										["ClassName"] = "proxy",
+										["UniqueID"] = "ecaf60a1c1af306b10ff547105e22a5fb9c60af0ad424ce41ac2545a5fbbb40b",
+										["Name"] = "in his hand only while he checks it",
+										["VariableName"] = "Size",
+										["Expression"] = "clamp((((clamp(min((time()%31)/1.1, (5.0-(time()%31))/1.1), 0, 1)*clamp(min((time()%31)/1.1, (5.0-(time()%31))/1.1), 0, 1)*(3-2*clamp(min((time()%31)/1.1, (5.0-(time()%31))/1.1), 0, 1)))*(1 - clamp(owner_velocity_length()/50, 0, 1)))-0.04)*25, 0, 1)",
+									},
+									["children"] = {
+									},
+								},
+							},
+						},
+						[6] = {
+							["self"] = {
+								["ClassName"] = "model2",
+								["UniqueID"] = "8bbd2c09bce92ddbc3f052bca742aae8d2e866df80af936c5babcd492adbb582",
+								["Name"] = "small seconds hand",
+								["Model"] = "https://raw.githubusercontent.com/Warmug/pac-oldman/main/props/watch_second_hand.obj",
+								["Bone"] = "left hand",
+								["Material"] = "pocket_watch",
+								["Position"] = Vector(1.613, -2.223, -0.159),
+								["Angles"] = Angle(1.19, -88.115, -73.796),
+							},
+							["children"] = {
+								[1] = {
+									["self"] = {
+										["ClassName"] = "proxy",
+										["UniqueID"] = "f0571758f65f695d533af6225496377c638551e1df8b49dc722fc85b5fe13a12",
+										["Name"] = "ticks once a second",
+										["VariableName"] = "Angles",
+										["Expression"] = "-73.796 - floor(time())*6",
+										["Axis"] = "r",
+									},
+									["children"] = {
+									},
+								},
+								[2] = {
+									["self"] = {
+										["ClassName"] = "proxy",
+										["UniqueID"] = "5d4e345b71422c38e195f8e01dfb62be402e534762af84d0aa7964fe25f44c63",
+										["Name"] = "in his hand only while he checks it",
+										["VariableName"] = "Size",
+										["Expression"] = "clamp((((clamp(min((time()%31)/1.1, (5.0-(time()%31))/1.1), 0, 1)*clamp(min((time()%31)/1.1, (5.0-(time()%31))/1.1), 0, 1)*(3-2*clamp(min((time()%31)/1.1, (5.0-(time()%31))/1.1), 0, 1)))*(1 - clamp(owner_velocity_length()/50, 0, 1)))-0.04)*25, 0, 1)",
+									},
+									["children"] = {
+									},
+								},
+							},
+						},
+						[7] = {
+							["self"] = {
+								["ClassName"] = "sprite",
+								["UniqueID"] = "df06ab0856edeebf6753a804192a33e7686d948f938684da948b12f8bb602dc2",
+								["Name"] = "chain hooks onto the bow",
+								["Bone"] = "left hand",
+								["Position"] = Vector(4.066, -2.023, 0.558),
+								["Angles"] = Angle(49.852, 84.857, 0),
+								["SpritePath"] = "sprites/light_glow02_add",
+								["Size"] = 0,
+								["Alpha"] = 0,
+							},
+							["children"] = {
+							},
+						},
+						[8] = {
+							["self"] = {
+								["ClassName"] = "beam",
+								["UniqueID"] = "6439bace873b4a83b126ffd6171200651fd39075f4d8f79f022a1200296f3d36",
+								["Name"] = "chain: pocket up to the watch",
+								["Bone"] = "pelvis",
+								["Position"] = Vector(4.57, 0.403, 3.596),
+								["Angles"] = Angle(-0.05, -90, 3.195),
+								["EndPointUID"] = "df06ab0856edeebf6753a804192a33e7686d948f938684da948b12f8bb602dc2",
+								["Material"] = "watch_chain",
+								["Width"] = 0,
+								["Bend"] = 3,
+								["Resolution"] = 24,
+								["Frequency"] = 1,
+								["StartColor"] = Vector(255, 255, 255),
+								["EndColor"] = Vector(255, 255, 255),
+								["StartAlpha"] = 1,
+								["EndAlpha"] = 1,
+								["TextureStretch"] = 7,
+								["Translucent"] = true,
+							},
+							["children"] = {
+								[1] = {
+									["self"] = {
+										["ClassName"] = "proxy",
+										["UniqueID"] = "08849f30160a447f86b7972f59745394fb2547d38df6258db74512e10f9df43b",
+										["Name"] = "only while the watch is out",
+										["VariableName"] = "Width",
+										["Expression"] = "0.2*clamp((((clamp(min((time()%31)/1.1, (5.0-(time()%31))/1.1), 0, 1)*clamp(min((time()%31)/1.1, (5.0-(time()%31))/1.1), 0, 1)*(3-2*clamp(min((time()%31)/1.1, (5.0-(time()%31))/1.1), 0, 1)))*(1 - clamp(owner_velocity_length()/50, 0, 1)))-0.04)*25, 0, 1)",
+									},
+									["children"] = {
+									},
+								},
+							},
+						},
+						[9] = {
+							["self"] = {
+								["ClassName"] = "bone3",
+								["UniqueID"] = "d72317ec2d6b3da7b40c1255880ca7ba6027233df70aa258b8f3de6679055e25",
+								["Name"] = "watch check: left upperarm",
+								["Bone"] = "left upperarm",
+								["Angles"] = Angle(0, 0, 0),
+							},
+							["children"] = {
+								[1] = {
+									["self"] = {
+										["ClassName"] = "proxy",
+										["UniqueID"] = "ae72bc7f2c0d7276e720278153614a07dec8af66efe89ed8c00ef85f66dfec5a",
+										["Name"] = "lifts the watch to read it",
+										["VariableName"] = "Angles",
+										["Expression"] = "-38.84*((clamp(min((time()%31)/1.1, (5.0-(time()%31))/1.1), 0, 1)*clamp(min((time()%31)/1.1, (5.0-(time()%31))/1.1), 0, 1)*(3-2*clamp(min((time()%31)/1.1, (5.0-(time()%31))/1.1), 0, 1)))*(1 - clamp(owner_velocity_length()/50, 0, 1))), -4.28*((clamp(min((time()%31)/1.1, (5.0-(time()%31))/1.1), 0, 1)*clamp(min((time()%31)/1.1, (5.0-(time()%31))/1.1), 0, 1)*(3-2*clamp(min((time()%31)/1.1, (5.0-(time()%31))/1.1), 0, 1)))*(1 - clamp(owner_velocity_length()/50, 0, 1))), -6.09*((clamp(min((time()%31)/1.1, (5.0-(time()%31))/1.1), 0, 1)*clamp(min((time()%31)/1.1, (5.0-(time()%31))/1.1), 0, 1)*(3-2*clamp(min((time()%31)/1.1, (5.0-(time()%31))/1.1), 0, 1)))*(1 - clamp(owner_velocity_length()/50, 0, 1)))",
+									},
+									["children"] = {
+									},
+								},
+							},
+						},
+						[10] = {
+							["self"] = {
+								["ClassName"] = "bone3",
+								["UniqueID"] = "7a2e93447de77065ce2e230118566fb78add0f61b84270c5f49640481e22ce62",
+								["Name"] = "watch check: left forearm",
+								["Bone"] = "left forearm",
+								["Angles"] = Angle(0, 0, 0),
+							},
+							["children"] = {
+								[1] = {
+									["self"] = {
+										["ClassName"] = "proxy",
+										["UniqueID"] = "3335274ac5886df2657578edb67dc46c87297a540eb948fc192a303696a4c572",
+										["Name"] = "lifts the watch to read it",
+										["VariableName"] = "Angles",
+										["Expression"] = "0.00*((clamp(min((time()%31)/1.1, (5.0-(time()%31))/1.1), 0, 1)*clamp(min((time()%31)/1.1, (5.0-(time()%31))/1.1), 0, 1)*(3-2*clamp(min((time()%31)/1.1, (5.0-(time()%31))/1.1), 0, 1)))*(1 - clamp(owner_velocity_length()/50, 0, 1))), -104.09*((clamp(min((time()%31)/1.1, (5.0-(time()%31))/1.1), 0, 1)*clamp(min((time()%31)/1.1, (5.0-(time()%31))/1.1), 0, 1)*(3-2*clamp(min((time()%31)/1.1, (5.0-(time()%31))/1.1), 0, 1)))*(1 - clamp(owner_velocity_length()/50, 0, 1))), -24.96*((clamp(min((time()%31)/1.1, (5.0-(time()%31))/1.1), 0, 1)*clamp(min((time()%31)/1.1, (5.0-(time()%31))/1.1), 0, 1)*(3-2*clamp(min((time()%31)/1.1, (5.0-(time()%31))/1.1), 0, 1)))*(1 - clamp(owner_velocity_length()/50, 0, 1)))",
+									},
+									["children"] = {
+									},
+								},
+							},
+						},
+						[11] = {
+							["self"] = {
+								["ClassName"] = "bone3",
+								["UniqueID"] = "67cfbc0a99d37c8cedbb2f9d1f53536c4862bfd0d4cad090d7a5168118acb541",
+								["Name"] = "watch check: left hand",
+								["Bone"] = "left hand",
+								["Angles"] = Angle(0, 0, 0),
+							},
+							["children"] = {
+								[1] = {
+									["self"] = {
+										["ClassName"] = "proxy",
+										["UniqueID"] = "4ccb7f97c3b17f12046354facbe94f854edf814d7d75b6f26c130e500bce3ac2",
+										["Name"] = "lifts the watch to read it",
+										["VariableName"] = "Angles",
+										["Expression"] = "34.55*((clamp(min((time()%31)/1.1, (5.0-(time()%31))/1.1), 0, 1)*clamp(min((time()%31)/1.1, (5.0-(time()%31))/1.1), 0, 1)*(3-2*clamp(min((time()%31)/1.1, (5.0-(time()%31))/1.1), 0, 1)))*(1 - clamp(owner_velocity_length()/50, 0, 1))), 20.95*((clamp(min((time()%31)/1.1, (5.0-(time()%31))/1.1), 0, 1)*clamp(min((time()%31)/1.1, (5.0-(time()%31))/1.1), 0, 1)*(3-2*clamp(min((time()%31)/1.1, (5.0-(time()%31))/1.1), 0, 1)))*(1 - clamp(owner_velocity_length()/50, 0, 1))), -51.99*((clamp(min((time()%31)/1.1, (5.0-(time()%31))/1.1), 0, 1)*clamp(min((time()%31)/1.1, (5.0-(time()%31))/1.1), 0, 1)*(3-2*clamp(min((time()%31)/1.1, (5.0-(time()%31))/1.1), 0, 1)))*(1 - clamp(owner_velocity_length()/50, 0, 1)))",
+									},
+									["children"] = {
+									},
+								},
+							},
+						},
+						[12] = {
+							["self"] = {
+								["ClassName"] = "bone3",
+								["UniqueID"] = "37626c0bb68f25f9c6e74bff8c2e0ec146c2ac7a97dada11af6bded88717e3de",
+								["Name"] = "watch check: looks down at it",
+								["Bone"] = "head",
+								["Angles"] = Angle(0, 0, 0),
+							},
+							["children"] = {
+								[1] = {
+									["self"] = {
+										["ClassName"] = "proxy",
+										["UniqueID"] = "72de1719b1835dcfef42a7e21e20774a7c76280ec79b3bf8fa431b4129dab71f",
+										["Name"] = "tips his head down to read it",
+										["VariableName"] = "Angles",
+										["Expression"] = "-20*((clamp(min((time()%31)/1.1, (5.0-(time()%31))/1.1), 0, 1)*clamp(min((time()%31)/1.1, (5.0-(time()%31))/1.1), 0, 1)*(3-2*clamp(min((time()%31)/1.1, (5.0-(time()%31))/1.1), 0, 1)))*(1 - clamp(owner_velocity_length()/50, 0, 1)))",
+										["Axis"] = "y",
+									},
+									["children"] = {
+									},
+								},
+							},
+						},
+					},
+				},
+			},
+		},
+		[9] = {
+			["self"] = {
+				["ClassName"] = "group",
+				["UniqueID"] = "74a8c3cfa58af7eace27b7ea703686f2b57170dc142e69c46ef013d9494efc4a",
 				["Name"] = "oxygen mask  [pac_event mask]",
 			},
 			["children"] = {
 				[1] = {
 					["self"] = {
 						["ClassName"] = "event",
-						["UniqueID"] = "9e1c1b16ca75fccaff3f9782e88d173e024907f5f6ba915883204aa94e266107",
+						["UniqueID"] = "dca9eb48874d81cf866c6c52693996c4acd3719db9b84c602311911697bf1b46",
 						["Name"] = "toggle with: pac_event mask 2",
 						["Event"] = "command",
 						["Arguments"] = "mask@@0@@0",
@@ -1802,7 +2428,7 @@
 				[2] = {
 					["self"] = {
 						["ClassName"] = "material_3d",
-						["UniqueID"] = "55ce591d99bd376848f85fd48c38c37f2e57067b598b294317e5941cb5b680be",
+						["UniqueID"] = "5ee0115eee881e6a4b701c0bea5843e5c507bc41514a7b96c3998e0de2cb029e",
 						["Name"] = "o2_mask_plastic",
 						["basetexture"] = "https://raw.githubusercontent.com/Warmug/pac-oldman/main/props/o2_mask.png",
 						["bumpmap"] = "https://raw.githubusercontent.com/Warmug/pac-oldman/main/props/flat_n.png",
@@ -1820,7 +2446,7 @@
 				[3] = {
 					["self"] = {
 						["ClassName"] = "material_3d",
-						["UniqueID"] = "050054dc3a7176dd85488647959c8ec76465a7cd2014738eb3fc530ced1c72b1",
+						["UniqueID"] = "1814d127e9b0d5ee2fa19c57fe5334b7f78eedf5d3965b8c00387fe2f7141bab",
 						["Name"] = "o2_mask_strap",
 						["basetexture"] = "https://raw.githubusercontent.com/Warmug/pac-oldman/main/props/o2_strap.jpg",
 						["bumpmap"] = "https://raw.githubusercontent.com/Warmug/pac-oldman/main/props/flat_n.png",
@@ -1835,7 +2461,7 @@
 				[4] = {
 					["self"] = {
 						["ClassName"] = "material_2d",
-						["UniqueID"] = "30d160539df0411e58fcf433ec57981153637978f429255dfedf59f6df32d4b3",
+						["UniqueID"] = "19f2773bb4fdcb4f6a303da6f2711894b3cd26240754636c24d7bb8dd2987180",
 						["Name"] = "o2_tube",
 						["basetexture"] = "https://raw.githubusercontent.com/Warmug/pac-oldman/main/props/o2_tube.png",
 						["vertexcolor"] = true,
@@ -1848,7 +2474,7 @@
 				[5] = {
 					["self"] = {
 						["ClassName"] = "model2",
-						["UniqueID"] = "75ebbdbc62d7c755b8f096286f17ef7015780bf7f9d4db12fb604b708682916f",
+						["UniqueID"] = "0bc77beede52561e494ef1e1436dfa5767d285a2cfdb9654e84e474e06f393b4",
 						["Name"] = "mask shell",
 						["Model"] = "https://raw.githubusercontent.com/Warmug/pac-oldman/main/props/o2_mask.obj",
 						["Bone"] = "head",
@@ -1864,7 +2490,7 @@
 				[6] = {
 					["self"] = {
 						["ClassName"] = "model2",
-						["UniqueID"] = "1a353a72ec48e331e0bd21380884c853be2b58268ac7147ea844ab82f139cc89",
+						["UniqueID"] = "b5d13155a281044f0f02ee7824ef4f8657e1e23fdd560c4d4a989b1514f71504",
 						["Name"] = "elastic strap and nose clip",
 						["Model"] = "https://raw.githubusercontent.com/Warmug/pac-oldman/main/props/o2_strap.obj",
 						["Bone"] = "head",
@@ -1878,7 +2504,7 @@
 				[7] = {
 					["self"] = {
 						["ClassName"] = "sprite",
-						["UniqueID"] = "0178039ec46f044f81831e9cb80de05aa2a6e7e8280a65a5ead1d6421e13b137",
+						["UniqueID"] = "43f803001a7120ca1987dc0441a48f43a05d7c44117981c8a5f1e056023f2354",
 						["Name"] = "tube clip on his shirt",
 						["Bone"] = "spine 1",
 						["Position"] = Vector(1.7106, 7.3011, 4.9561),
@@ -1893,12 +2519,12 @@
 				[8] = {
 					["self"] = {
 						["ClassName"] = "beam",
-						["UniqueID"] = "8064744955202d7bb1c29a2cfcedfd286e656a371e1094b803dfea93d9e9fa15",
+						["UniqueID"] = "c8140f704df6f02231459484ff433acef858a6afcab15aa959a6d2ef5f93aeec",
 						["Name"] = "tube: mask down to his shirt",
 						["Bone"] = "head",
 						["Position"] = Vector(-0.9993, -7.5823, 0.0129),
 						["Angles"] = Angle(0.095, -140.1, -89.946),
-						["EndPointUID"] = "0178039ec46f044f81831e9cb80de05aa2a6e7e8280a65a5ead1d6421e13b137",
+						["EndPointUID"] = "43f803001a7120ca1987dc0441a48f43a05d7c44117981c8a5f1e056023f2354",
 						["Material"] = "o2_tube",
 						["Width"] = 0.42,
 						["Bend"] = 2,
@@ -1916,17 +2542,17 @@
 				},
 			},
 		},
-		[9] = {
+		[10] = {
 			["self"] = {
 				["ClassName"] = "group",
-				["UniqueID"] = "4270e5efd9ebdb1a0543acb02fa3a3b83136063ed880965b0551306238c6eed3",
+				["UniqueID"] = "791556947171677d61555ec299a69c07448d87d0d23ea6066e51b838ae273454",
 				["Name"] = "oxygen tank cart  [pac_event tank]",
 			},
 			["children"] = {
 				[1] = {
 					["self"] = {
 						["ClassName"] = "event",
-						["UniqueID"] = "fbf945d26e8cc35cda409528d4e3a6afbf1255328db4bff5806a58ca62e2be16",
+						["UniqueID"] = "681680a7237ed3407153c98d2388708e848e4aa6692d408aab844ef06e0af18e",
 						["Name"] = "toggle with: pac_event tank 2",
 						["Event"] = "command",
 						["Arguments"] = "tank@@0@@0",
@@ -1939,7 +2565,7 @@
 				[2] = {
 					["self"] = {
 						["ClassName"] = "material_3d",
-						["UniqueID"] = "dcec382fa341b7a8a4ce7786c524627591da7db6acabc164230839e24aa71599",
+						["UniqueID"] = "61a98fed4f5428cb31aae63905442882d323b135f8eb436225b5407a36e9ced9",
 						["Name"] = "o2_cart",
 						["basetexture"] = "https://raw.githubusercontent.com/Warmug/pac-oldman/main/props/o2_cart.jpg",
 						["bumpmap"] = "https://raw.githubusercontent.com/Warmug/pac-oldman/main/props/flat_n.png",
@@ -1954,7 +2580,7 @@
 				[3] = {
 					["self"] = {
 						["ClassName"] = "jiggle",
-						["UniqueID"] = "853e105dd66193b40e27f58321c77897251c1b757a3db2c9768f27ad47bdb2ed",
+						["UniqueID"] = "3980e33ca18b3690f6a7e95040e3bf413c038514517b85d371e3d1fe717a522c",
 						["Name"] = "cart rolls along beside him",
 						["Bone"] = "none",
 						["Position"] = Vector(-7, 23, 37.18),
@@ -1970,7 +2596,7 @@
 						[1] = {
 							["self"] = {
 								["ClassName"] = "model2",
-								["UniqueID"] = "136e66523a271a755f32c34d1d48551abaa65a8e31798843e92669fd6e0903d3",
+								["UniqueID"] = "3a4b437208e63aa68289b695935b3f230ede21a744f6ff39583d6c10c53dbfcf",
 								["Name"] = "cylinder and cart",
 								["Model"] = "https://raw.githubusercontent.com/Warmug/pac-oldman/main/props/o2_cart.obj",
 								["Bone"] = "pelvis",
@@ -1984,7 +2610,7 @@
 						[2] = {
 							["self"] = {
 								["ClassName"] = "model2",
-								["UniqueID"] = "e6788dab105cdc16f9f4097db2d519252d1da7a2402ac97bf47f3f9c80948d61",
+								["UniqueID"] = "5bc248a2f85e413e767f46e8ff166dba770d84280cc735012508b5960f24a1eb",
 								["Name"] = "wheel left",
 								["Model"] = "https://raw.githubusercontent.com/Warmug/pac-oldman/main/props/o2_wheel.obj",
 								["Bone"] = "pelvis",
@@ -1996,7 +2622,7 @@
 								[1] = {
 									["self"] = {
 										["ClassName"] = "proxy",
-										["UniqueID"] = "51cf57019168ec40ee89cb03c13c55cbce6719a4c9a9a04f3431e93163ef5f38",
+										["UniqueID"] = "796e87ec149681a297748f97c31622c0eecd145214b9f09749d60ff77e9edbe1",
 										["Name"] = "wheel rolls when he walks",
 										["VariableName"] = "Angles",
 										["Expression"] = "owner_velocity_forward()*ftime()*22.037",
@@ -2012,7 +2638,7 @@
 						[3] = {
 							["self"] = {
 								["ClassName"] = "model2",
-								["UniqueID"] = "fd5ca4f36371251e1b7fc2f314ed60e6f00d9711332e28ece9b2d0215a1949e6",
+								["UniqueID"] = "60daa38b6592237636eb7654ddd1de37a7827c977a89f9d721a45634c966bc60",
 								["Name"] = "wheel right",
 								["Model"] = "https://raw.githubusercontent.com/Warmug/pac-oldman/main/props/o2_wheel.obj",
 								["Bone"] = "pelvis",
@@ -2024,7 +2650,7 @@
 								[1] = {
 									["self"] = {
 										["ClassName"] = "proxy",
-										["UniqueID"] = "717bf8ddf2a004667ca8eef128bcab025c805f1fcc9abfea39161de2c63042a9",
+										["UniqueID"] = "b30bfa3b89b36a9b20bd6c2035d363d1514bc83dda8a4c2766b2ecd9b9ccbdeb",
 										["Name"] = "wheel rolls when he walks",
 										["VariableName"] = "Angles",
 										["Expression"] = "owner_velocity_forward()*ftime()*22.037",
@@ -2040,7 +2666,7 @@
 						[4] = {
 							["self"] = {
 								["ClassName"] = "sprite",
-								["UniqueID"] = "22c1d0c6dba469128918278d65aef7ad3082252772fdaf54a7e58b7e8ce50471",
+								["UniqueID"] = "555ccd71ea9ad1e4717f8e46d4caae8b6080411e98d0f38ce9649b887b78a7e6",
 								["Name"] = "tube connector on the regulator",
 								["Bone"] = "pelvis",
 								["Position"] = Vector(0, -2.9, 26.05),
@@ -2056,17 +2682,17 @@
 				},
 			},
 		},
-		[10] = {
+		[11] = {
 			["self"] = {
 				["ClassName"] = "group",
-				["UniqueID"] = "b814b5e87cf19e3035083d7849e4f3c10c86ae979bdea2b3f77cde7183510fbc",
+				["UniqueID"] = "0f840c2960558850f54fbf5f6da76dfb00fa783126fcffccc6d5acf8eb52f595",
 				["Name"] = "oxygen tube to the tank (mask + tank)",
 			},
 			["children"] = {
 				[1] = {
 					["self"] = {
 						["ClassName"] = "event",
-						["UniqueID"] = "50e3dd0883eb23a87db361194479d1f0186dd70aaf253caf087e39f30c9e78e1",
+						["UniqueID"] = "9c105621e55b7e85de757943314f9ecc645aca1176cefcc807e9040fbf5d5b89",
 						["Name"] = "needs the mask on",
 						["Event"] = "command",
 						["Arguments"] = "mask@@0@@0",
@@ -2079,7 +2705,7 @@
 				[2] = {
 					["self"] = {
 						["ClassName"] = "event",
-						["UniqueID"] = "6b93526ae8b41b820e0f05ad605f61002d55717ab266a612b7b134b3d69972bc",
+						["UniqueID"] = "baf34cd6464d36c76f48cc647a9ce4b67bc9b8c91df3499aa2741c8240edb54f",
 						["Name"] = "needs the tank on",
 						["Event"] = "command",
 						["Arguments"] = "tank@@0@@0",
@@ -2092,12 +2718,12 @@
 				[3] = {
 					["self"] = {
 						["ClassName"] = "beam",
-						["UniqueID"] = "be7dfd4715516188ad0e3aa2fe5bcb3b2c633c2df4c216beb2cd98cd112a6108",
+						["UniqueID"] = "d54e3f4debfdffdc6b34b197d44ca9788ac582f16b4b251a2dd2852d4c48693e",
 						["Name"] = "tube: shirt to the tank",
 						["Bone"] = "spine 1",
 						["Position"] = Vector(1.7106, 7.3011, 4.9561),
 						["Angles"] = Angle(-0.001, 178.354, 90.998),
-						["EndPointUID"] = "22c1d0c6dba469128918278d65aef7ad3082252772fdaf54a7e58b7e8ce50471",
+						["EndPointUID"] = "555ccd71ea9ad1e4717f8e46d4caae8b6080411e98d0f38ce9649b887b78a7e6",
 						["Material"] = "o2_tube",
 						["Width"] = 0.42,
 						["Bend"] = 9,
@@ -2109,6 +2735,212 @@
 						["EndAlpha"] = 0.85,
 						["TextureStretch"] = 1,
 						["Translucent"] = true,
+					},
+					["children"] = {
+					},
+				},
+			},
+		},
+		[12] = {
+			["self"] = {
+				["ClassName"] = "group",
+				["UniqueID"] = "7f1fd66f6e43c6f5fe44fa68d627d1055ffebae00bed4b3e22e708607e86b892",
+				["Name"] = "IV drip  [pac_event iv]",
+			},
+			["children"] = {
+				[1] = {
+					["self"] = {
+						["ClassName"] = "event",
+						["UniqueID"] = "128e0453def4f9b8033f24c1ba587941c491949a83a816d11330fe09158f5732",
+						["Name"] = "toggle with: pac_event iv 2",
+						["Event"] = "command",
+						["Arguments"] = "iv@@0@@0",
+						["Operator"] = "equal",
+						["Invert"] = true,
+					},
+					["children"] = {
+					},
+				},
+				[2] = {
+					["self"] = {
+						["ClassName"] = "material_3d",
+						["UniqueID"] = "cf3d6caa6cd41254650e5f0f9daa301714ce96f21be4085dae2e12cc215126b0",
+						["Name"] = "iv_stand",
+						["basetexture"] = "https://raw.githubusercontent.com/Warmug/pac-oldman/main/props/iv_stand.jpg",
+						["bumpmap"] = "https://raw.githubusercontent.com/Warmug/pac-oldman/main/props/flat_n.png",
+						["phong"] = true,
+						["phongboost"] = 3,
+						["phongexponent"] = 30,
+						["envmap"] = "env_cubemap",
+						["envmaptint"] = Vector(0.3, 0.3, 0.3),
+					},
+					["children"] = {
+					},
+				},
+				[3] = {
+					["self"] = {
+						["ClassName"] = "material_3d",
+						["UniqueID"] = "4a8aa91c11b65ce364fccb68d975221926ce3b01001b7eb5d3c1932f9c257c14",
+						["Name"] = "iv_bag",
+						["basetexture"] = "https://raw.githubusercontent.com/Warmug/pac-oldman/main/props/iv_bag.png",
+						["translucent"] = true,
+						["phong"] = true,
+						["phongboost"] = 4,
+						["phongexponent"] = 40,
+					},
+					["children"] = {
+					},
+				},
+				[4] = {
+					["self"] = {
+						["ClassName"] = "material_3d",
+						["UniqueID"] = "5155ac3a88ace17381fa67c26f9551c48f1bf9ca6ee9ebec0c8d74c1561199ce",
+						["Name"] = "iv_cannula",
+						["basetexture"] = "https://raw.githubusercontent.com/Warmug/pac-oldman/main/props/iv_cannula.png",
+						["translucent"] = true,
+					},
+					["children"] = {
+					},
+				},
+				[5] = {
+					["self"] = {
+						["ClassName"] = "material_2d",
+						["UniqueID"] = "0e8872fe24a45de93f152a21478d50f13fb8a82ee59b1cb3b106da452d141c77",
+						["Name"] = "iv_line",
+						["basetexture"] = "https://raw.githubusercontent.com/Warmug/pac-oldman/main/props/o2_tube.png",
+						["vertexcolor"] = true,
+						["vertexalpha"] = true,
+						["translucent"] = true,
+					},
+					["children"] = {
+					},
+				},
+				[6] = {
+					["self"] = {
+						["ClassName"] = "jiggle",
+						["UniqueID"] = "ffe2b154936b77422664f2a1a9ea9750f417bf92de9b44b4090fa2158924da51",
+						["Name"] = "IV stand rolls along on his right",
+						["Bone"] = "none",
+						["Position"] = Vector(-7, -23, 37.18),
+						["Angles"] = Angle(0, 0, 0),
+						["Speed"] = 7,
+						["Strain"] = 0.45,
+						["Ground"] = true,
+						["ConstrainPitch"] = true,
+						["ConstrainRoll"] = true,
+						["ResetOnHide"] = true,
+					},
+					["children"] = {
+						[1] = {
+							["self"] = {
+								["ClassName"] = "model2",
+								["UniqueID"] = "4e7731ec4ade6b11de5038bc8be42c09b8467431aa3094a382cea2c075981195",
+								["Name"] = "pole, base and roller clamp",
+								["Model"] = "https://raw.githubusercontent.com/Warmug/pac-oldman/main/props/iv_stand.obj",
+								["Bone"] = "pelvis",
+								["Material"] = "iv_stand",
+								["Position"] = Vector(0, 0, 0),
+								["Angles"] = Angle(0, 0, 0),
+							},
+							["children"] = {
+							},
+						},
+						[2] = {
+							["self"] = {
+								["ClassName"] = "model2",
+								["UniqueID"] = "57ed1fbe5a151672c92810a5971e1036ba64ef628490cc0b8f5b782f2c901370",
+								["Name"] = "saline bag and drip chamber",
+								["Model"] = "https://raw.githubusercontent.com/Warmug/pac-oldman/main/props/iv_bag.obj",
+								["Bone"] = "pelvis",
+								["Material"] = "iv_bag",
+								["Position"] = Vector(0, 0, 0),
+								["Angles"] = Angle(0, 0, 0),
+								["Translucent"] = true,
+							},
+							["children"] = {
+							},
+						},
+						[3] = {
+							["self"] = {
+								["ClassName"] = "particles",
+								["UniqueID"] = "0d935ac1c0eddfd226d4361d0cd5c4bc98fd95f3ed4576f0d5325582547c05fd",
+								["Name"] = "drops falling in the drip chamber",
+								["Bone"] = "pelvis",
+								["Position"] = Vector(0, 3.3, 66.85),
+								["Angles"] = Angle(90, 0, 0),
+								["Material"] = "sprites/light_glow02_add",
+								["StartSize"] = 0.16,
+								["EndSize"] = 0.13,
+								["DieTime"] = 0.3,
+								["FireDelay"] = 1.2,
+								["NumberParticles"] = 1,
+								["Velocity"] = 1,
+								["Spread"] = 0,
+								["Gravity"] = Vector(0, 0, -60),
+								["AirResistance"] = 0,
+								["StartAlpha"] = 220,
+								["EndAlpha"] = 180,
+								["Color1"] = Vector(200, 225, 255),
+								["Color2"] = Vector(200, 225, 255),
+								["Lighting"] = false,
+								["Collide"] = false,
+								["DoubleSided"] = false,
+							},
+							["children"] = {
+							},
+						},
+						[4] = {
+							["self"] = {
+								["ClassName"] = "beam",
+								["UniqueID"] = "ca5b5f970d8deb538006aa9621f6aba7dad250b53b5a0866164979541eb67846",
+								["Name"] = "line: roller clamp to his hand",
+								["Bone"] = "pelvis",
+								["Position"] = Vector(0, 3.3, 56),
+								["Angles"] = Angle(90, 0, 0),
+								["EndPointUID"] = "c264bf1e2530f10ecda0a0e40f1eb6af6043d86ff7ca10001d798d269164dd00",
+								["Material"] = "iv_line",
+								["Width"] = 0.3,
+								["Bend"] = 7,
+								["Resolution"] = 28,
+								["Frequency"] = 1,
+								["StartColor"] = Vector(232, 240, 240),
+								["EndColor"] = Vector(232, 240, 240),
+								["StartAlpha"] = 0.85,
+								["EndAlpha"] = 0.85,
+								["TextureStretch"] = 1,
+								["Translucent"] = true,
+							},
+							["children"] = {
+							},
+						},
+					},
+				},
+				[7] = {
+					["self"] = {
+						["ClassName"] = "model2",
+						["UniqueID"] = "feccab3ab586009b9f5c31ef380548628303176a357ec34386e53f3b22b16f93",
+						["Name"] = "cannula and dressing",
+						["Model"] = "https://raw.githubusercontent.com/Warmug/pac-oldman/main/props/iv_cannula.obj",
+						["Bone"] = "right hand",
+						["Material"] = "iv_cannula",
+						["Position"] = Vector(1.116, 1.001, -0.032),
+						["Angles"] = Angle(-0.187, -178.12, 91.681),
+						["Translucent"] = true,
+					},
+					["children"] = {
+					},
+				},
+				[8] = {
+					["self"] = {
+						["ClassName"] = "sprite",
+						["UniqueID"] = "c264bf1e2530f10ecda0a0e40f1eb6af6043d86ff7ca10001d798d269164dd00",
+						["Name"] = "line ends at the cannula",
+						["Bone"] = "right hand",
+						["Position"] = Vector(0.991, 1.157, -0.036),
+						["Angles"] = Angle(0.378, 162.598, 91.648),
+						["SpritePath"] = "sprites/light_glow02_add",
+						["Size"] = 0,
+						["Alpha"] = 0,
 					},
 					["children"] = {
 					},

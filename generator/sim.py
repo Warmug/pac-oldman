@@ -22,13 +22,14 @@ RAW = "https://raw.githubusercontent.com/Warmug/pac-oldman/main/"
 
 
 class State:
-    def __init__(self, commands=(), holdtype="normal", pitch=0.0, speed=0.0, time=0.0, crouching=False):
+    def __init__(self, commands=(), holdtype="normal", pitch=0.0, speed=0.0, time=0.0, crouching=False, sitting=False):
         self.commands = set(commands)
         self.holdtype = holdtype
         self.pitch = pitch      # eye pitch in degrees, positive = looking down (Source)
         self.speed = speed
         self.time = time
         self.crouching = crouching
+        self.sitting = sitting
 
 
 class Outfit:
@@ -60,6 +61,8 @@ class Outfit:
             cond = st.holdtype is not None and st.holdtype in args[0].split(";")
         elif name == "is_crouching":
             cond = st.crouching
+        elif name == "is_sitting":
+            cond = st.sitting
         else:
             raise NotImplementedError(name)
         invert = ev.get("Invert", True)

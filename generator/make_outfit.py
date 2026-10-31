@@ -4,13 +4,13 @@
     python3 generator/make_outfit.py [--dump path/to/male08_dump.txt]   (default: build/male08/male08_dump.txt)
 
 Writes outfit/old_man_2_male08.txt plus the meshes/textures under props/.
-Toggles: pac_event cane 2 | smoke 2 | glasses 2 | mask 2 | tank 2 | cast 2
+Toggles: pac_event cane 2 | smoke 2 | glasses 2 | mask 2 | tank 2 | cast 2 | iv 2 | watch 2
 """
 import argparse
 import os
 
 from pacgen import (Angle, Part, Vector, bone, command_event, crouch_event, encode_outfit, group, holdtype_event,
-                    material_2d, material_3d, model, proxy)
+                    material_2d, material_3d, model, proxy, sit_event)
 
 REPO = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 RAW = "https://raw.githubusercontent.com/Warmug/pac-oldman/main/"
@@ -144,6 +144,7 @@ def cane_group(fit):
         "cane  [pac_event cane]",
         command_event("toggle with: pac_event cane 2", "cane", True),
         crouch_event("hidden while crouching", False),
+        sit_event("hidden while sitting (the seated pose is not solved yet)", False),
         material_3d("cane_wood", basetexture=url("props/cane.jpg"), bumpmap=url("props/flat_n.png"),
                     phong=True, phongboost=2.5, phongexponent=30, phongfresnelranges=Vector(0.3, 0.7, 1)),
         in_hand, on_belt,
@@ -168,24 +169,41 @@ def drag_expression(base, delta):
     return ", ".join(f"{b:.2f} + ({d:.2f})*{DRAG}" for b, d in zip(base, delta))
 
 
+# exhale: one short puff right after each drag (the drag lets go at 3.4 s into the cycle)
+EXHALE = f"((({_T}) > 3.45 and ({_T}) < 4.35) and {STILL} > 0.5) and 1 or 0"
+
+
 def smoke_bits(bone_name, tip, prefix):
     ember = Part("sprite", f"{prefix}ember glow", Bone=bone_name, Position=Vector(*tip),
                  SpritePath="sprites/light_glow02_add", Color=Vector(255, 120, 40), Size=0.6, Alpha=0.9)
     ember.add(proxy("ember flickers and flares up on a drag", "Size",
                     f"0.55 + 0.08*sin(time()*17) + 0.06*sin(time()*29) + 0.9*clamp(min(({_T}-1.0)/0.3, (2.4-{_T})/0.3), 0, 1)"))
     smoke = Part("particles", f"{prefix}smoke from the tip", Bone=bone_name, Position=Vector(*tip),
-                 Material="particle/smokesprites_0001", StartSize=0.35, EndSize=5.5, DieTime=3.2,
-                 FireDelay=0.14, NumberParticles=1, Velocity=3, Spread=0.4, Gravity=Vector(0, 0, 9),
-                 AirResistance=4, StartAlpha=55, EndAlpha=0, Color1=Vector(205, 205, 210),
-                 Color2=Vector(170, 170, 178), Lighting=False, Collide=False, RandomRollSpeed=1.5)
+                 Material="particle/smokesprites_0001", StartSize=0.3, EndSize=4.0, DieTime=2.6,
+                 FireDelay=0.32, NumberParticles=1, Velocity=3, Spread=0.4, Gravity=Vector(0, 0, 9),
+                 AirResistance=4, StartAlpha=38, EndAlpha=0, Color1=Vector(205, 205, 210),
+                 Color2=Vector(170, 170, 178), Lighting=False, Collide=False, RandomRollSpeed=1.5,
+                 DoubleSided=False)
     return ember, smoke
+
+
+def exhale_puff(name, pos, ang):
+    """A small puff from the lips for about a second after each drag (particle count driven by the
+    drag clock, so it is off the rest of the time)."""
+    puff = Part("particles", name, Bone="head", Position=Vector(*pos), Angles=Angle(*ang),
+                Material="particle/smokesprites_0001", StartSize=0.6, EndSize=4.0, DieTime=1.5, FireDelay=0.09,
+                NumberParticles=0, Velocity=9, Spread=0.25, Gravity=Vector(0, 0, 5), AirResistance=10,
+                StartAlpha=42, EndAlpha=0, Color1=Vector(210, 210, 215), Color2=Vector(180, 180, 185),
+                Lighting=False, Collide=False, DoubleSided=False)
+    return puff.add(proxy("only for a second right after a drag", "NumberParticles", EXHALE))
 
 
 def cig_group(fit):
     in_hand = group(
-        "cigarette in his fingers (holdtype normal, not crouching)",
+        "cigarette in his fingers (holdtype normal, standing)",
         holdtype_event("only when holdtype is normal", PROP_HOLD, True),
         crouch_event("not while crouching (it goes in his mouth)", False),
+        sit_event("not while sitting (it goes in his mouth)", False),
         model("cigarette", url("props/cigarette.obj"), "left hand", "cigarette_paper", *fit.cig_hand),
         *smoke_bits("left hand", fit.cig_hand_tip, ""),
     )
@@ -200,37 +218,32 @@ def cig_group(fit):
         drag.add(bone(f"smoking arm: {b}", b, base, None,
                       proxy("take a drag every 13s while standing still", "Angles", drag_expression(base, delta))))
         hold.add(bone(f"smoking arm: {b}", b, base))
-    exhale = Part("particles", "exhaled smoke", Bone="head", Position=Vector(*fit.mouth), Angles=Angle(*fit.exhale_angles),
-                  Material="particle/smokesprites_0001", StartSize=0.8, EndSize=7, DieTime=2.6, FireDelay=0.05,
-                  NumberParticles=1, Velocity=14, Spread=0.25, Gravity=Vector(0, 0, 5), AirResistance=12,
-                  StartAlpha=70, EndAlpha=0, Color1=Vector(210, 210, 215), Color2=Vector(180, 180, 185),
-                  Lighting=False, Collide=False)
-    exhale.add(proxy("only right after a drag", "Hide",
-                     f"((({_T}) > 3.5 and ({_T}) < 5.4) and {STILL} > 0.5) and 0 or 1"))
-    drag.add(exhale)
+    drag.add(exhale_puff("exhaled smoke", fit.mouth, fit.exhale_angles))
     in_hand.add(drag, hold)
 
-    in_mouth = group(
-        "cigarette in his mouth (any other holdtype, no mask)",
-        holdtype_event("hidden while holdtype is normal", PROP_HOLD, False),
-        command_event("hidden while the oxygen mask is on", "mask", False),
-        model("cigarette in mouth", url("props/cigarette.obj"), "head", "cigarette_paper", *fit.cig_mouth),
-        *smoke_bits("head", fit.cig_mouth_tip, "mouth "),
-    )
-    # pac events only AND together, so "other holdtype OR crouching" is a second copy
-    in_mouth_crouching = group(
-        "cigarette in his mouth (holdtype normal, crouching, no mask)",
-        holdtype_event("only when holdtype is normal", PROP_HOLD, True),
-        crouch_event("only while crouching", True),
-        command_event("hidden while the oxygen mask is on", "mask", False),
-        model("cigarette in mouth", url("props/cigarette.obj"), "head", "cigarette_paper", *fit.cig_mouth),
-        *smoke_bits("head", fit.cig_mouth_tip, "mouth "),
-    )
+    def mouth_copy(name, *events):
+        """The cigarette between his lips, with its tip smoke and a puff after each drag."""
+        return group(name, *events,
+                     command_event("hidden while the oxygen mask is on", "mask", False),
+                     model("cigarette in mouth", url("props/cigarette.obj"), "head", "cigarette_paper", *fit.cig_mouth),
+                     *smoke_bits("head", fit.cig_mouth_tip, "mouth "),
+                     exhale_puff("mouth exhale", fit.mouth, fit.exhale_angles))
+
+    # pac events only AND together, so "other holdtype OR crouching OR sitting" is three copies
+    in_mouth = mouth_copy("cigarette in his mouth (any other holdtype, no mask)",
+                          holdtype_event("hidden while holdtype is normal", PROP_HOLD, False))
+    in_mouth_crouching = mouth_copy("cigarette in his mouth (holdtype normal, crouching, no mask)",
+                                    holdtype_event("only when holdtype is normal", PROP_HOLD, True),
+                                    crouch_event("only while crouching", True))
+    in_mouth_sitting = mouth_copy("cigarette in his mouth (holdtype normal, sitting, no mask)",
+                                  holdtype_event("only when holdtype is normal", PROP_HOLD, True),
+                                  crouch_event("not while crouching (that copy has it)", False),
+                                  sit_event("only while sitting", True))
     return group(
         "cigarette  [pac_event smoke]",
         command_event("toggle with: pac_event smoke 2", "smoke", True),
         material_3d("cigarette_paper", basetexture=url("props/cigarette.jpg")),
-        in_hand, in_mouth, in_mouth_crouching,
+        in_hand, in_mouth, in_mouth_crouching, in_mouth_sitting,
     )
 
 
@@ -272,11 +285,13 @@ def cast_group(fit):
 
 # --- oxygen -------------------------------------------------------------------------
 
-def tube_beam(name, start_bone, start_pos, start_ang, end_part, bend):
+def tube_beam(name, start_bone, start_pos, start_ang, end_part, bend, material="o2_tube", width=0.42, **props):
+    beam = dict(Material=material, Width=width, Bend=bend, Resolution=28, Frequency=1,
+                StartColor=Vector(232, 240, 240), EndColor=Vector(232, 240, 240), StartAlpha=0.85, EndAlpha=0.85,
+                TextureStretch=1, Translucent=True)
+    beam.update(props)
     return Part("beam", name, Bone=start_bone, Position=Vector(*start_pos), Angles=Angle(*start_ang),
-                EndPointUID=end_part, Material="o2_tube", Width=0.42, Bend=bend, Resolution=28,
-                Frequency=1, StartColor=Vector(232, 240, 240), EndColor=Vector(232, 240, 240),
-                StartAlpha=0.85, EndAlpha=0.85, TextureStretch=1, Translucent=True)
+                EndPointUID=end_part, **beam)
 
 
 def marker(name, bone_name, pos, ang):
@@ -334,12 +349,109 @@ def oxygen_groups(fit):
     return mask, tank, tube
 
 
+# --- IV drip -----------------------------------------------------------------------
+
+def iv_group(fit):
+    """Saline drip on its own wheeled stand, rolling along on his right (the oxygen cart is on his
+    left); the line runs from the drip chamber through the roller clamp to a cannula taped on the
+    back of his right hand."""
+    if not getattr(fit, "iv_cannula", None):
+        return None
+    line_end = marker("line ends at the cannula", "right hand", *fit.iv_line_end)
+    drops = Part("particles", "drops falling in the drip chamber", Bone="pelvis", Position=Vector(*fit.iv_drip),
+                 Angles=Angle(90, 0, 0), Material="sprites/light_glow02_add", StartSize=0.16, EndSize=0.13,
+                 DieTime=0.3, FireDelay=1.2, NumberParticles=1, Velocity=1, Spread=0, Gravity=Vector(0, 0, -60),
+                 AirResistance=0, StartAlpha=220, EndAlpha=180, Color1=Vector(200, 225, 255),
+                 Color2=Vector(200, 225, 255), Lighting=False, Collide=False, DoubleSided=False)
+    stand = Part("jiggle", "IV stand rolls along on his right", Bone=fit.iv_bone, Position=Vector(*fit.iv_pos),
+                 Angles=Angle(0, 0, 0), Speed=fit.cart_speed, Strain=fit.cart_strain, Ground=True,
+                 ConstrainPitch=True, ConstrainRoll=True, ResetOnHide=True)
+    stand.add(
+        model("pole, base and roller clamp", url("props/iv_stand.obj"), "pelvis", "iv_stand"),
+        model("saline bag and drip chamber", url("props/iv_bag.obj"), "pelvis", "iv_bag", Translucent=True),
+        drops,
+        tube_beam("line: roller clamp to his hand", "pelvis", *fit.iv_clamp, line_end, 7.0, material="iv_line",
+                  width=0.3),
+    )
+    return group(
+        "IV drip  [pac_event iv]",
+        command_event("toggle with: pac_event iv 2", "iv", True),
+        material_3d("iv_stand", basetexture=url("props/iv_stand.jpg"), bumpmap=url("props/flat_n.png"), phong=True,
+                    phongboost=3, phongexponent=30, envmap="env_cubemap", envmaptint=Vector(0.3, 0.3, 0.3)),
+        material_3d("iv_bag", basetexture=url("props/iv_bag.png"), translucent=True, phong=True, phongboost=4,
+                    phongexponent=40),
+        material_3d("iv_cannula", basetexture=url("props/iv_cannula.png"), translucent=True),
+        material_2d("iv_line", basetexture=url("props/o2_tube.png"), vertexcolor=True, vertexalpha=True, translucent=True),
+        stand,
+        model("cannula and dressing", url("props/iv_cannula.obj"), "right hand", "iv_cannula", *fit.iv_cannula,
+              Translucent=True),
+        line_end,
+    )
+
+
+# --- pocket watch --------------------------------------------------------------------
+
+WATCH_PERIOD = 31
+_WT = f"(time()%{WATCH_PERIOD})"
+_WS = f"clamp(min({_WT}/1.1, (5.0-{_WT})/1.1), 0, 1)"
+WATCH = f"(({_WS}*{_WS}*(3-2*{_WS}))*{STILL})"          # 0 -> 1 -> 0 over 5 s, standing still
+WATCH_OUT = f"clamp(({WATCH}-0.04)*25, 0, 1)"           # watch in his hand (vs in the pocket)
+
+
+def watch_group(fit):
+    """Gold pocket watch on a chain from his belt into his left trouser pocket. Every 31 s, when he
+    stands still with no cigarette and no weapon, he takes it out, holds it up and looks down at it
+    (small seconds hand ticking), then puts it back."""
+    if not getattr(fit, "watch_hand", None):
+        return None
+    pocket = marker("chain goes into his pocket", "pelvis", *fit.watch_pocket)
+    bow = marker("chain hooks onto the bow", "left hand", *fit.watch_bow_marker)
+    check = group(
+        "takes it out and checks the time (standing still, no cigarette)",
+        holdtype_event("only when holdtype is normal", PROP_HOLD, True),
+        crouch_event("not while crouching", False),
+        sit_event("not while sitting", False),
+        command_event("not while smoking (that hand holds the cigarette)", "smoke", False),
+        model("pocket watch", url("props/pocket_watch.obj"), "left hand", "pocket_watch", *fit.watch_hand, None,
+              proxy("in his hand only while he checks it", "Size", WATCH_OUT)),
+        model("small seconds hand", url("props/watch_second_hand.obj"), "left hand", "pocket_watch",
+              *fit.watch_second_hand, None,
+              proxy("ticks once a second", "Angles", f"{fit.watch_second_hand[1][2]:.3f} - floor(time())*6", "r"),
+              proxy("in his hand only while he checks it", "Size", WATCH_OUT)),
+        bow,
+        tube_beam("chain: pocket up to the watch", "pelvis", *fit.watch_pocket, bow, 3.0, material="watch_chain",
+                  width=0.0, Resolution=24, TextureStretch=7, StartColor=Vector(255, 255, 255),
+                  EndColor=Vector(255, 255, 255), StartAlpha=1, EndAlpha=1).add(
+            proxy("only while the watch is out", "Width", f"0.2*{WATCH_OUT}")),
+    )
+    for b, ang in fit.watch_delta.items():
+        check.add(bone(f"watch check: {b}", b, (0, 0, 0), None,
+                       proxy("lifts the watch to read it", "Angles", ", ".join(f"{a:.2f}*{WATCH}" for a in ang))))
+    check.add(bone("watch check: looks down at it", "head", (0, 0, 0), None,
+                   proxy("tips his head down to read it", "Angles", f"-{fit.watch_look_down:g}*{WATCH}", "y")))
+    return group(
+        "pocket watch  [pac_event watch]",
+        command_event("toggle with: pac_event watch 2", "watch", True),
+        material_3d("pocket_watch", basetexture=url("props/pocket_watch.jpg"), bumpmap=url("props/flat_n.png"),
+                    phong=True, phongboost=5, phongexponent=40, envmap="env_cubemap",
+                    envmaptint=Vector(0.45, 0.36, 0.2)),
+        material_2d("watch_chain", basetexture=url("props/watch_chain.png"), vertexcolor=True, vertexalpha=True,
+                    translucent=True),
+        pocket,
+        tube_beam("chain: belt loop into the pocket", "pelvis", *fit.watch_loop, pocket, 0.6, material="watch_chain",
+                  width=0.2, Resolution=12, TextureStretch=12, StartColor=Vector(255, 255, 255),
+                  EndColor=Vector(255, 255, 255), StartAlpha=1, EndAlpha=1),
+        check,
+    )
+
+
 def build(fit):
     always, unarmed, armed = posture(fit)
     mask, tank, tube = oxygen_groups(fit)
     return group(
-        "Old man (male_08) - posture, cane, cigarette, glasses, leg cast, oxygen",
-        always, unarmed, armed, cane_group(fit), cig_group(fit), glasses_group(fit), cast_group(fit), mask, tank, tube,
+        "Old man (male_08) - posture, cane, cigarette, glasses, leg cast, pocket watch, oxygen, IV",
+        always, unarmed, armed, cane_group(fit), cig_group(fit), glasses_group(fit), cast_group(fit), watch_group(fit),
+        mask, tank, tube, iv_group(fit),
         OwnerName="self", EditorExpand=True,
     )
 
