@@ -240,6 +240,62 @@ def render_iv_watch(model, outfit, textures, out):
     return paths, titles
 
 
+SIT_POSE = "sit_act_head0"
+
+
+def seated_scene(model, outfit, textures, state, width=700, height=700):
+    """The chair-sit animation with the outfit, a plain block for the seat, floor under his soles."""
+    import fit_male08 as fm
+    ev = outfit.evaluate(state)
+    mats = model.pose(SIT_POSE, ev["bone3"])
+    feet_w = [np.array([sum(x for bb, x in ws if model.names[bb].endswith(("Foot", "Toe0"))) for ws in src["w"]])
+              for src in model.meshes]
+    floor = fm.skin_samples(model, mats, None, 0.5, feet_w)[:, 2].min()
+    seat_w = [np.array([sum(x for bb, x in ws if model.names[bb].endswith(("Pelvis", "Thigh"))) for ws in src["w"]])
+              for src in model.meshes]
+    seat_pts = fm.skin_samples(model, mats, None, 0.6, seat_w)
+    pel = mats[model.bone("ValveBiped.Bip01_Pelvis")][:3, 3]
+    under = seat_pts[np.abs(seat_pts[:, 0] - pel[0]) < 4]
+    seat_top = under[:, 2].min()
+    scene = preview.Scene(width, height, ground_z=floor)
+    for m in model.skinned(mats):
+        name = m.material.lower()
+        if "mouth" in name or "error" in name:
+            continue
+        tex = textures.get(m.material)
+        style = {"map": tex} if tex else {"color": [0.75, 0.72, 0.7]}
+        if "eyeball" in name:
+            style = {"color": [0.3, 0.24, 0.2], "doubleSided": True}
+        scene.add(m, name=m.material, roughness=0.75, **style)
+    h = seat_top - floor
+    seat = mk.box((16, 22, h), (pel[0] - 2, pel[1], floor + h / 2))
+    scene.add(seat, name="seat", color=[0.18, 0.3, 0.55], roughness=0.8)
+    place = sim.Placer(outfit, model, mats, ev, ground_z=floor)
+    add_outfit(scene, outfit, model, mats, ev, place)
+    return scene, mats, floor
+
+
+def render_seated(model, outfit, textures, out):
+    """Sitting: the cane between his knees, the cigarette held and at the drag, and everything on."""
+    paths, titles = [], []
+    shots = (({"cane", "glasses"}, 20.0, "cane between his knees",
+              (("front left", (52, 40, 22)), ("right side", (6, -62, 10)), ("front", (70, 0, 6)))),
+             ({"cane", "glasses", "smoke"}, 8.0, "smoking, resting", (("front left", (52, 40, 22)),)),
+             ({"cane", "glasses", "smoke"}, 0.5, "smoking, mid-drag", (("front left", (52, 40, 22)),)),
+             ({"cane", "glasses", "smoke"}, 1.8, "smoking, the drag", (("front left", (52, 40, 22)), ("left side", (6, 60, 10)))),
+             ({"glasses", "smoke"}, 8.0, "smoking, no cane", (("front left", (52, 40, 22)),)),
+             ({"cane", "glasses", "mask", "tank", "cast", "iv", "watch"}, 20.0, "everything on", (("front left", (60, 46, 26)),)))
+    for props, t, tag, views in shots:
+        st = sim.State(props, "normal", time=t, sitting=True)
+        scene, mats, floor = seated_scene(model, outfit, textures, st)
+        c = mats[model.bone("ValveBiped.Bip01_Pelvis")][:3, 3] + np.array([7, 0, 3])
+        for vname, off in views:
+            scene.view(f"sit_{t:.1f}_{len(props)}_{vname.replace(' ', '_')}", c + np.array(off), c, 40)
+            titles.append(f"sitting, {tag}: {vname}")
+        paths += scene.render(os.path.join(out, "seated"))
+    return paths, titles
+
+
 def render_armed(model, outfit, textures, out):
     """Weapon out: cane on the belt, cigarette in the mouth, plain weapon posture."""
     paths, titles = [], []
@@ -265,6 +321,9 @@ def main():
     outfit = sim.Outfit(args.outfit)
     textures = BodyTextures(model, os.path.dirname(os.path.abspath(args.dump)))
     print(render_main(model, outfit, textures, args.out))
+    if SIT_POSE in model.poses:
+        sp_, st_ = render_seated(model, outfit, textures, args.out)
+        print(contact_sheet(sp_, st_, 3, os.path.join(args.out, "sheet_seated.png")))
     ip, it = render_iv_watch(model, outfit, textures, args.out)
     print(contact_sheet(ip, it, 4, os.path.join(args.out, "sheet_iv_and_watch.png")))
     cp, ct = render_cast(model, outfit, textures, args.out)

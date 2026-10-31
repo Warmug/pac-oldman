@@ -64,6 +64,10 @@ class Model:
             self.poses = {"seq0": self.poses["seq0"]}
             self.pose_info = {"seq0": self.pose_info["seq0"]}
             self._parse(anims, poses_only=True)
+            # the sitting animations came in a fourth export (tools/gmod/dump_male08_sit.lua)
+            sit = os.path.join(os.path.dirname(os.path.abspath(anims)), "male08_dump4.txt")
+            if os.path.exists(sit):
+                self._parse(sit, poses_only=True)
         self.anims = anims
         self.index = {n: i for i, n in enumerate(self.names)}
         self.pac_index = {pac_bone_name(n): i for i, n in enumerate(self.names)}
