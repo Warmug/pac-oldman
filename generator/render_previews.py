@@ -89,16 +89,22 @@ def add_outfit(scene, outfit, model, mats, ev, place):
                 style["opacity"] = alpha
                 style["renderOrder"] = 2
             scale = np.array(sim.vec(me.get("Scale")) if me.get("Scale") else (1.0, 1.0, 1.0)) * float(me.get("Size", 1.0))
+            if np.min(np.abs(scale)) < 1e-3 or float(me.get("Alpha", 1.0)) <= 0:
+                continue                                   # pac skips drawing at Size 0 / Alpha 0
             scene.add(mesh, place.world(uid) @ np.diag([*scale, 1.0]), name=me.get("Name", ""), **style)
         elif cls == "beam":
             end_uid = me.get("EndPointUID")
-            if end_uid not in ev["nodes"]:
+            width = float(me.get("Width", 1))
+            if end_uid not in ev["nodes"] or width <= 0.01:
                 continue
             a, b = place.world(uid), place.world(end_uid)
             pts = sim.beam_points(a[:3, 3], b[:3, 3], a[:3, 0], b[:3, 0], float(me.get("Bend", 10)))
-            width = float(me.get("Width", 1))
             tube = mk.tube(pts, width / 2, 10, (0.1, 0.1, 0.9, 0.9), up_hint=(0, 0, 1), caps=False)
-            scene.add(tube, name=me.get("Name", ""), color=[0.9, 0.95, 0.97], opacity=0.8, roughness=0.15, renderOrder=3)
+            if "chain" in me.get("Material", ""):
+                scene.add(tube, name=me.get("Name", ""), color=[0.85, 0.66, 0.28], roughness=0.3, metalness=0.8)
+            else:
+                scene.add(tube, name=me.get("Name", ""), color=[0.9, 0.95, 0.97], opacity=0.8, roughness=0.15,
+                          renderOrder=3)
         elif cls == "sprite" and me.get("Size", 1) > 0 and "ember" in me.get("Name", ""):
             w = place.world(uid)
             glow = mk.lathe([(0, -0.12), (0.12, 0), (0, 0.12)], 8, (0, 0, 1, 1)).transformed(w)
@@ -152,7 +158,7 @@ def face_views(scene, mats, model, prefix=""):
 
 def render_main(model, outfit, textures, out):
     """Everything on (mask, tank, cane, glasses, cast), standing: full body and the mask close up."""
-    everything = {"cane", "glasses", "mask", "tank", "cast"}
+    everything = {"cane", "glasses", "mask", "tank", "cast", "iv", "watch"}
     scene, mats, _, _ = posed_scene(model, outfit, textures, "aim_normal_0", sim.State(everything, "normal", time=6.0))
     c = np.array([-1.0, 9.0, 35.0])          # between him and the cart
     scene.view("full_front_left", c + np.array([92, 62, 6]), c, 36)
@@ -202,6 +208,38 @@ def render_cast(model, outfit, textures, out):
     return paths, titles
 
 
+def render_iv_watch(model, outfit, textures, out):
+    """IV stand and line, the cannula on his hand; the pocket watch stowed and while he reads it."""
+    paths, titles = [], []
+    st = sim.State({"cane", "glasses", "iv", "watch", "tank", "mask"}, "normal", time=20.0)
+    scene, mats, _, _ = posed_scene(model, outfit, textures, "aim_normal_0", st, 700, 700)
+    c = np.array([-2.0, -10.0, 38.0])
+    scene.view("iv_front_right", c + np.array([95, -70, 8]), c, 38)
+    scene.view("iv_right_side", c + np.array([6, -120, 6]), c + np.array([0, 3, 0]), 38)
+    hand = mats[model.bone("ValveBiped.Bip01_R_Hand")][:3, 3]
+    scene.view("iv_cannula", hand + np.array([4, -14, 6]), hand, 30)
+    bag = np.array([-7.0, -19.7, 69.0])
+    scene.view("iv_bag", bag + np.array([16, -10, 0]), bag, 34)
+    paths += scene.render(os.path.join(out, "iv"))
+    titles += ["IV: front right", "IV: right side", "IV: cannula on his hand", "IV: bag and drip chamber"]
+    for t, tag in ((20.0, "in the pocket"), (0.55, "taking it out"), (2.2, "reading it")):
+        st = sim.State({"cane", "glasses", "watch"}, "normal", time=t)
+        scene, mats, _, _ = posed_scene(model, outfit, textures, "aim_normal_0", st, 700, 700)
+        if tag == "in the pocket":
+            hip = mats[model.bone("ValveBiped.Bip01_Pelvis")][:3, 3] + np.array([2, 4, 1])
+            scene.view("watch_pocket", hip + np.array([18, 16, 3]), hip, 32)
+            titles.append("watch: chain into his pocket")
+        else:
+            chest = mats[model.bone("ValveBiped.Bip01_Spine4")][:3, 3] + np.array([4, 2, -2])
+            scene.view(f"watch_{t:.2f}_front", chest + np.array([34, 26, 4]), chest, 38)
+            titles.append(f"watch: {tag}")
+            if tag == "reading it":
+                scene.view("watch_read_side", chest + np.array([4, 40, 4]), chest, 38)
+                titles.append("watch: reading it (side)")
+        paths += scene.render(os.path.join(out, "watch"))
+    return paths, titles
+
+
 def render_armed(model, outfit, textures, out):
     """Weapon out: cane on the belt, cigarette in the mouth, plain weapon posture."""
     paths, titles = [], []
@@ -227,6 +265,8 @@ def main():
     outfit = sim.Outfit(args.outfit)
     textures = BodyTextures(model, os.path.dirname(os.path.abspath(args.dump)))
     print(render_main(model, outfit, textures, args.out))
+    ip, it = render_iv_watch(model, outfit, textures, args.out)
+    print(contact_sheet(ip, it, 4, os.path.join(args.out, "sheet_iv_and_watch.png")))
     cp, ct = render_cast(model, outfit, textures, args.out)
     print(contact_sheet(cp, ct, 4, os.path.join(args.out, "sheet_leg_cast.png")))
     sp, st = render_smoking(model, outfit, textures, args.out)

@@ -152,6 +152,11 @@ def crouch_event(name, show_when_crouching):
     return Part("event", name, Event="is_crouching", Operator="equal", Invert=bool(show_when_crouching))
 
 
+def sit_event(name, show_when_sitting):
+    """In a seat or chair (pac's is_sitting: a vehicle other than the prisoner pod, or sit-anywhere)."""
+    return Part("event", name, Event="is_sitting", Operator="equal", Invert=bool(show_when_sitting))
+
+
 def material_3d(name, **params):
     return Part("material_3d", name, **params)
 
