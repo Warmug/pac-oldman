@@ -645,20 +645,8 @@
 				},
 				[3] = {
 					["self"] = {
-						["ClassName"] = "event",
-						["UniqueID"] = "fece7fde9dd812e9ca825d81ca731c60f3536fde766fad999ed5b0d7d50e8197",
-						["Name"] = "hidden while sitting (the seated pose is not solved yet)",
-						["Event"] = "is_sitting",
-						["Operator"] = "equal",
-						["Invert"] = false,
-					},
-					["children"] = {
-					},
-				},
-				[4] = {
-					["self"] = {
 						["ClassName"] = "material_3d",
-						["UniqueID"] = "143699fba11865a75aabd5f0c61f7ab626047f63e40a6403517c225191248141",
+						["UniqueID"] = "4776ddefa8b6f036ae9b6553e21ee50500b6437814b0a306f60a11107602e00e",
 						["Name"] = "cane_wood",
 						["basetexture"] = "https://raw.githubusercontent.com/Warmug/pac-oldman/main/props/cane.jpg",
 						["bumpmap"] = "https://raw.githubusercontent.com/Warmug/pac-oldman/main/props/flat_n.png",
@@ -670,17 +658,17 @@
 					["children"] = {
 					},
 				},
-				[5] = {
+				[4] = {
 					["self"] = {
 						["ClassName"] = "group",
-						["UniqueID"] = "1318c49c115c5463449e583f50f709ba9e4c7357ae5a22b1aaae46fd48b69f87",
+						["UniqueID"] = "b72558b739badb074f2242c37d1b80bc72ecde42a768e43aaea839d5f7d0b7b4",
 						["Name"] = "cane in his hand (holdtype normal)",
 					},
 					["children"] = {
 						[1] = {
 							["self"] = {
 								["ClassName"] = "event",
-								["UniqueID"] = "702f60235e6c4c28985a5fc9cc50643d948773e6b02a0bd1ebc26ecd7281bdc9",
+								["UniqueID"] = "f840a237554dc13508c5c99ea0e66f7d7f5d820df6d4480fb0ab0a08978989e5",
 								["Name"] = "only when holdtype is normal",
 								["Event"] = "holdtype",
 								["Arguments"] = "normal",
@@ -693,7 +681,7 @@
 						[2] = {
 							["self"] = {
 								["ClassName"] = "model2",
-								["UniqueID"] = "42a6c114243e04de696f8afd9d544f351ab4a623199ff7127bb839f67ebf68ea",
+								["UniqueID"] = "41de0fe53152a9aff654c95f8d9c5e3b2709d596d6194c76f9cd6ee2218e75ba",
 								["Name"] = "cane",
 								["Model"] = "https://raw.githubusercontent.com/Warmug/pac-oldman/main/props/cane.obj",
 								["Bone"] = "right hand",
@@ -701,7 +689,7 @@
 								["Position"] = Vector(2.79, -0.133, -0.031),
 								["Angles"] = Angle(5.202, 10.364, -3.419),
 								["Scale"] = Vector(1, 1, 0.93),
-								["AimPartUID"] = "beaada5ded3745955d255d47530e1b700e0b33cf2b560d036b877c3e8361df06",
+								["AimPartUID"] = "a9b4db3914792e97e021cd455995e5b0ee88608f3b38be7de7fc189e18285ee2",
 							},
 							["children"] = {
 							},
@@ -709,7 +697,7 @@
 						[3] = {
 							["self"] = {
 								["ClassName"] = "sprite",
-								["UniqueID"] = "beaada5ded3745955d255d47530e1b700e0b33cf2b560d036b877c3e8361df06",
+								["UniqueID"] = "a9b4db3914792e97e021cd455995e5b0ee88608f3b38be7de7fc189e18285ee2",
 								["Name"] = "keeps the cane upright (the cane aims at this)",
 								["Bone"] = "pelvis",
 								["Position"] = Vector(-32.448, -6.974, 401.647),
@@ -723,8 +711,267 @@
 						},
 						[4] = {
 							["self"] = {
+								["ClassName"] = "event",
+								["UniqueID"] = "f7af6fc79687c5878eaca4bfce056065cdf42981a60f7299bd7829b34c0c2b76",
+								["Name"] = "not while sitting (the seated copy holds it)",
+								["Event"] = "is_sitting",
+								["Operator"] = "equal",
+								["Invert"] = false,
+							},
+							["children"] = {
+							},
+						},
+						[5] = {
+							["self"] = {
 								["ClassName"] = "bone3",
-								["UniqueID"] = "d0a24542a9798a822146b614996254a52fbc9f8d83270ea182c66c5cb99673b5",
+								["UniqueID"] = "d871bf268b7bc4b652efcd94987e27ff548ced1490235d494194f45b9bdeeb10",
+								["Name"] = "cane grip: right finger 1",
+								["Bone"] = "right finger 1",
+								["Angles"] = Angle(0, -62, 0),
+							},
+							["children"] = {
+							},
+						},
+						[6] = {
+							["self"] = {
+								["ClassName"] = "bone3",
+								["UniqueID"] = "f1865d35f7eb22aa3d3d1c9eb8bd6a4b994ffb8cd6883788453ec13119114700",
+								["Name"] = "cane grip: right finger 11",
+								["Bone"] = "right finger 11",
+								["Angles"] = Angle(0, -78, 0),
+							},
+							["children"] = {
+							},
+						},
+						[7] = {
+							["self"] = {
+								["ClassName"] = "bone3",
+								["UniqueID"] = "c4e323930350542fec6c5263a4524d21d2db1ed3e59f641386eb28b9b3c9ade1",
+								["Name"] = "cane grip: right finger 12",
+								["Bone"] = "right finger 12",
+								["Angles"] = Angle(0, -40, 0),
+							},
+							["children"] = {
+							},
+						},
+						[8] = {
+							["self"] = {
+								["ClassName"] = "bone3",
+								["UniqueID"] = "104050b04cdef7383fd4555f803f6f5050330aae4b7a5454ae5ed6588b560b09",
+								["Name"] = "cane grip: right finger 2",
+								["Bone"] = "right finger 2",
+								["Angles"] = Angle(0, -66, 0),
+							},
+							["children"] = {
+							},
+						},
+						[9] = {
+							["self"] = {
+								["ClassName"] = "bone3",
+								["UniqueID"] = "030b9618c1cda2853d6314079767d843cbf941e587f661573ad40ce2841e7d07",
+								["Name"] = "cane grip: right finger 21",
+								["Bone"] = "right finger 21",
+								["Angles"] = Angle(0, -82, 0),
+							},
+							["children"] = {
+							},
+						},
+						[10] = {
+							["self"] = {
+								["ClassName"] = "bone3",
+								["UniqueID"] = "98eb8ebe748901e78d1eb4bee02b2cf00a0ceebc3bf1493d77dc09990f454f21",
+								["Name"] = "cane grip: right finger 22",
+								["Bone"] = "right finger 22",
+								["Angles"] = Angle(0, -42, 0),
+							},
+							["children"] = {
+							},
+						},
+						[11] = {
+							["self"] = {
+								["ClassName"] = "bone3",
+								["UniqueID"] = "f273d9ffe3a213f600398f9566a77f79a7b6c984089fc67805c93c389e769128",
+								["Name"] = "cane grip: right finger 3",
+								["Bone"] = "right finger 3",
+								["Angles"] = Angle(0, -70, 0),
+							},
+							["children"] = {
+							},
+						},
+						[12] = {
+							["self"] = {
+								["ClassName"] = "bone3",
+								["UniqueID"] = "6dfb462f9b2a8948d69e73373271c34a8ab5561252c8560d1ba1ad7c87702926",
+								["Name"] = "cane grip: right finger 31",
+								["Bone"] = "right finger 31",
+								["Angles"] = Angle(0, -84, 0),
+							},
+							["children"] = {
+							},
+						},
+						[13] = {
+							["self"] = {
+								["ClassName"] = "bone3",
+								["UniqueID"] = "1db3f4ff4c3b7c96820090da6bf4f7d9255db352b9208650b9ff81332720feb0",
+								["Name"] = "cane grip: right finger 32",
+								["Bone"] = "right finger 32",
+								["Angles"] = Angle(0, -40, 0),
+							},
+							["children"] = {
+							},
+						},
+						[14] = {
+							["self"] = {
+								["ClassName"] = "bone3",
+								["UniqueID"] = "bdf3bd8bcb307e13d54874d726c34dfccfac8f11bb4a09e01db5904c8b181667",
+								["Name"] = "cane grip: right finger 4",
+								["Bone"] = "right finger 4",
+								["Angles"] = Angle(0, -72, 0),
+							},
+							["children"] = {
+							},
+						},
+						[15] = {
+							["self"] = {
+								["ClassName"] = "bone3",
+								["UniqueID"] = "e4c2e8e2acd724dab22e4d251f45b9021006ad1f6a7646c0bf19ecc11fa2c2bc",
+								["Name"] = "cane grip: right finger 41",
+								["Bone"] = "right finger 41",
+								["Angles"] = Angle(0, -80, 0),
+							},
+							["children"] = {
+							},
+						},
+						[16] = {
+							["self"] = {
+								["ClassName"] = "bone3",
+								["UniqueID"] = "aca86f2cce7861480f1a612a8426913424b33a7a249417368fd0177dc13ed142",
+								["Name"] = "cane grip: right finger 42",
+								["Bone"] = "right finger 42",
+								["Angles"] = Angle(0, -38, 0),
+							},
+							["children"] = {
+							},
+						},
+						[17] = {
+							["self"] = {
+								["ClassName"] = "bone3",
+								["UniqueID"] = "17a7e29a5e3cf9fd1deb7658190fb1844663d6b3df00ba4a673ba6ee9c9a4064",
+								["Name"] = "cane grip: right finger 0",
+								["Bone"] = "right finger 0",
+								["Angles"] = Angle(0, 18, -10),
+							},
+							["children"] = {
+							},
+						},
+						[18] = {
+							["self"] = {
+								["ClassName"] = "bone3",
+								["UniqueID"] = "4bf6c500b9da27f652e18b425e616eeda5376bcca93c5311f8564806d098ea7e",
+								["Name"] = "cane grip: right finger 01",
+								["Bone"] = "right finger 01",
+								["Angles"] = Angle(0, 28, 0),
+							},
+							["children"] = {
+							},
+						},
+						[19] = {
+							["self"] = {
+								["ClassName"] = "bone3",
+								["UniqueID"] = "7e5afedfb62673dbdcf7951114e1863306947316e1f2c24f5765e48aaff83dff",
+								["Name"] = "cane grip: right finger 02",
+								["Bone"] = "right finger 02",
+								["Angles"] = Angle(0, 22, 0),
+							},
+							["children"] = {
+							},
+						},
+						[20] = {
+							["self"] = {
+								["ClassName"] = "bone3",
+								["UniqueID"] = "e6aae943458719a9e16898b8aac675ae56a2427715a3b7ef3cfae492df91e9ca",
+								["Name"] = "cane grip: right upperarm",
+								["Bone"] = "right upperarm",
+								["Angles"] = Angle(9.55, -9.73, 13.79),
+							},
+							["children"] = {
+							},
+						},
+						[21] = {
+							["self"] = {
+								["ClassName"] = "bone3",
+								["UniqueID"] = "25690b54c57337954ea1d08fa21628b80ad65330025c73f3574a71c4d2ec15be",
+								["Name"] = "cane grip: right forearm",
+								["Bone"] = "right forearm",
+								["Angles"] = Angle(0, -23.18, 0),
+							},
+							["children"] = {
+							},
+						},
+						[22] = {
+							["self"] = {
+								["ClassName"] = "bone3",
+								["UniqueID"] = "ef3fc74f0371fd6dacfbcaf89e5156f5ee15f9831282834bb7b91aed986ef558",
+								["Name"] = "cane grip: right hand",
+								["Bone"] = "right hand",
+								["Angles"] = Angle(-24.06, -8.08, 7.64),
+							},
+							["children"] = {
+							},
+						},
+					},
+				},
+				[5] = {
+					["self"] = {
+						["ClassName"] = "group",
+						["UniqueID"] = "b06cbfe762791817a38d34180ecdde4d5f09a0e8c6d5f17b78c1241dbab639bb",
+						["Name"] = "cane between his knees (holdtype normal, sitting)",
+					},
+					["children"] = {
+						[1] = {
+							["self"] = {
+								["ClassName"] = "event",
+								["UniqueID"] = "33feb84ac56c9588a9a1b1bb02006e4d4e406653da66b76f023b3c8b5a018910",
+								["Name"] = "only when holdtype is normal",
+								["Event"] = "holdtype",
+								["Arguments"] = "normal",
+								["Operator"] = "equal",
+								["Invert"] = true,
+							},
+							["children"] = {
+							},
+						},
+						[2] = {
+							["self"] = {
+								["ClassName"] = "event",
+								["UniqueID"] = "db474cdd58d3190986757efdf60d47438233c7880f6b3cbe13c5c4d870740bae",
+								["Name"] = "only while sitting",
+								["Event"] = "is_sitting",
+								["Operator"] = "equal",
+								["Invert"] = true,
+							},
+							["children"] = {
+							},
+						},
+						[3] = {
+							["self"] = {
+								["ClassName"] = "model2",
+								["UniqueID"] = "c8a302223cacb512a791d40aa752b29e8dcf37da2e94508d64697d9b0be73e45",
+								["Name"] = "cane",
+								["Model"] = "https://raw.githubusercontent.com/Warmug/pac-oldman/main/props/cane.obj",
+								["Bone"] = "right hand",
+								["Material"] = "cane_wood",
+								["Position"] = Vector(2.79, -0.133, -0.031),
+								["Angles"] = Angle(89.63, -179.45, 85.33),
+								["Scale"] = Vector(1, 1, 0.93),
+							},
+							["children"] = {
+							},
+						},
+						[4] = {
+							["self"] = {
+								["ClassName"] = "bone3",
+								["UniqueID"] = "194d329dd83e078833d99380bd2819bea60e412ec8cdde35bee8b0d3b2385246",
 								["Name"] = "cane grip: right finger 1",
 								["Bone"] = "right finger 1",
 								["Angles"] = Angle(0, -62, 0),
@@ -735,7 +982,7 @@
 						[5] = {
 							["self"] = {
 								["ClassName"] = "bone3",
-								["UniqueID"] = "d12a124464c05293d9a43d00e94833a3ed0038069e07cc64ad3784dfcf92f593",
+								["UniqueID"] = "a8dfce3f4132f039f25319f5c2a50d402b4feec54be9e9354cdc52e4b2c7d5ae",
 								["Name"] = "cane grip: right finger 11",
 								["Bone"] = "right finger 11",
 								["Angles"] = Angle(0, -78, 0),
@@ -746,7 +993,7 @@
 						[6] = {
 							["self"] = {
 								["ClassName"] = "bone3",
-								["UniqueID"] = "ead2bb7820367014256645357b308df77090d5c15191538e6ba945506cb919c3",
+								["UniqueID"] = "67d62cf7b923ff71e733b513d175e7ce07dbe55615343bb79003571138c46b15",
 								["Name"] = "cane grip: right finger 12",
 								["Bone"] = "right finger 12",
 								["Angles"] = Angle(0, -40, 0),
@@ -757,7 +1004,7 @@
 						[7] = {
 							["self"] = {
 								["ClassName"] = "bone3",
-								["UniqueID"] = "414205052f9573e16d3f4b0e461cc4640eb4e667926b907a939c1905e08d5ea7",
+								["UniqueID"] = "7512c182ab4d16cc4dfd15ca07aa566febd3cc4f09ea8fbc4fbcf76cc4099d58",
 								["Name"] = "cane grip: right finger 2",
 								["Bone"] = "right finger 2",
 								["Angles"] = Angle(0, -66, 0),
@@ -768,7 +1015,7 @@
 						[8] = {
 							["self"] = {
 								["ClassName"] = "bone3",
-								["UniqueID"] = "0c71d7fc823d851a30cce12874626d1a51ba0ac883f01be5cfc33fb170c02a3f",
+								["UniqueID"] = "7ac7cc96987d815831fefee869dfc618aa2b44926eee9ec7bc5df5a89db60a9f",
 								["Name"] = "cane grip: right finger 21",
 								["Bone"] = "right finger 21",
 								["Angles"] = Angle(0, -82, 0),
@@ -779,7 +1026,7 @@
 						[9] = {
 							["self"] = {
 								["ClassName"] = "bone3",
-								["UniqueID"] = "7a589122f6c07cbd4f39883043b86878eab0100d40bb7ff459a9a9c611af1db5",
+								["UniqueID"] = "5b3e6af3b27c6ec1bee9f259d67da6c1083888cb75bca1ab08c8ed9d82e77af0",
 								["Name"] = "cane grip: right finger 22",
 								["Bone"] = "right finger 22",
 								["Angles"] = Angle(0, -42, 0),
@@ -790,7 +1037,7 @@
 						[10] = {
 							["self"] = {
 								["ClassName"] = "bone3",
-								["UniqueID"] = "75e91e6284ffb9ee6ea4ad36a333b8e20d66403c07d00947f61acc84e39c658d",
+								["UniqueID"] = "15432c7e8403b52c885de24261d1e1f65cc26ddedd408b5207f17dba12a6a585",
 								["Name"] = "cane grip: right finger 3",
 								["Bone"] = "right finger 3",
 								["Angles"] = Angle(0, -70, 0),
@@ -801,7 +1048,7 @@
 						[11] = {
 							["self"] = {
 								["ClassName"] = "bone3",
-								["UniqueID"] = "d42e92f86b5ef90c5985375219116d45bf782d3384427d8c9978a3c9e0233094",
+								["UniqueID"] = "174a1bd08887ded635d63697309d8419c7ea686d6a8dc49fa8917750c29ec380",
 								["Name"] = "cane grip: right finger 31",
 								["Bone"] = "right finger 31",
 								["Angles"] = Angle(0, -84, 0),
@@ -812,7 +1059,7 @@
 						[12] = {
 							["self"] = {
 								["ClassName"] = "bone3",
-								["UniqueID"] = "83dc8306f79723a05a1bda9cdaa565a2701c3de4978618262f98e71926e39b0d",
+								["UniqueID"] = "bc760ad6c2855be2ff15fce3a72bdb90388023b3b963d5489b0ebb62b330ab37",
 								["Name"] = "cane grip: right finger 32",
 								["Bone"] = "right finger 32",
 								["Angles"] = Angle(0, -40, 0),
@@ -823,7 +1070,7 @@
 						[13] = {
 							["self"] = {
 								["ClassName"] = "bone3",
-								["UniqueID"] = "dd9ba99e6c170f3d7510fda06526551a3ddea4c6fb7660bd7a44745e10a9a3b6",
+								["UniqueID"] = "7e62bfe73a6e67d3287f112121acf785434509b73922c118e45150ec743821db",
 								["Name"] = "cane grip: right finger 4",
 								["Bone"] = "right finger 4",
 								["Angles"] = Angle(0, -72, 0),
@@ -834,7 +1081,7 @@
 						[14] = {
 							["self"] = {
 								["ClassName"] = "bone3",
-								["UniqueID"] = "4ebdaeeb02b32849bc501dd7d9e486ff59efe062585d114175ef30c9c630a742",
+								["UniqueID"] = "2fe66fc54e2f76fce7c7c716a3dc373ed4dc2c3db50ae5ed82a9597103dd3d6d",
 								["Name"] = "cane grip: right finger 41",
 								["Bone"] = "right finger 41",
 								["Angles"] = Angle(0, -80, 0),
@@ -845,7 +1092,7 @@
 						[15] = {
 							["self"] = {
 								["ClassName"] = "bone3",
-								["UniqueID"] = "11a9eaf52f09219f20191cc4fab2ad87dfd32eb0005e81536beef6040daff4bc",
+								["UniqueID"] = "e1ecd6e0c40bb4ae989903087ad56e87f3a2dd0c85601a175561e97c6cc139f4",
 								["Name"] = "cane grip: right finger 42",
 								["Bone"] = "right finger 42",
 								["Angles"] = Angle(0, -38, 0),
@@ -856,7 +1103,7 @@
 						[16] = {
 							["self"] = {
 								["ClassName"] = "bone3",
-								["UniqueID"] = "db2a276ca275e4df4072bc6fcc17198842023f4424036b63328f7522bea6f924",
+								["UniqueID"] = "3eb453aec56c8934ceea08f5e2af1cec6826cff4b19895f756b82b4636228e92",
 								["Name"] = "cane grip: right finger 0",
 								["Bone"] = "right finger 0",
 								["Angles"] = Angle(0, 18, -10),
@@ -867,7 +1114,7 @@
 						[17] = {
 							["self"] = {
 								["ClassName"] = "bone3",
-								["UniqueID"] = "396aad1d196318e941f1f22b90d67cf9d0f554258bcd827a7f3316fc2799e48d",
+								["UniqueID"] = "cb198eaa067a6ebf8f9863ec14cbd544c31e8dc0a4eb9ca67683ac9591f05e3f",
 								["Name"] = "cane grip: right finger 01",
 								["Bone"] = "right finger 01",
 								["Angles"] = Angle(0, 28, 0),
@@ -878,7 +1125,7 @@
 						[18] = {
 							["self"] = {
 								["ClassName"] = "bone3",
-								["UniqueID"] = "ef3918018df51a6e5e7c55b6290b83760869a2f6320588e4d8e6ca48c0c6500a",
+								["UniqueID"] = "e17cdecf684b6deb40d2f474a50ce5eb5fa4e5c1e68fc29d3746c6dd976c03f8",
 								["Name"] = "cane grip: right finger 02",
 								["Bone"] = "right finger 02",
 								["Angles"] = Angle(0, 22, 0),
@@ -889,10 +1136,10 @@
 						[19] = {
 							["self"] = {
 								["ClassName"] = "bone3",
-								["UniqueID"] = "c2db7e5c82b5c0c26f88beb6a7ef403f5443a68cd5c2a8a094b1b4208c2811c9",
+								["UniqueID"] = "2f22e233eb29f4c28bf582efb4f3191558a2568569ca729b3403ec9d63410f7f",
 								["Name"] = "cane grip: right upperarm",
 								["Bone"] = "right upperarm",
-								["Angles"] = Angle(9.55, -9.73, 13.79),
+								["Angles"] = Angle(31.93, -47.96, -7),
 							},
 							["children"] = {
 							},
@@ -900,10 +1147,10 @@
 						[20] = {
 							["self"] = {
 								["ClassName"] = "bone3",
-								["UniqueID"] = "86134e5acc18af8483bb129bad2a8bd0adb5d4dfdc7285c1b0abfb5781a412e8",
+								["UniqueID"] = "3017ecb90d947418a9e187df1de33dbbe1bc3c1b3fe184fe56d54306558fce94",
 								["Name"] = "cane grip: right forearm",
 								["Bone"] = "right forearm",
-								["Angles"] = Angle(0, -23.18, 0),
+								["Angles"] = Angle(0, -12.08, 0),
 							},
 							["children"] = {
 							},
@@ -911,10 +1158,10 @@
 						[21] = {
 							["self"] = {
 								["ClassName"] = "bone3",
-								["UniqueID"] = "a6a239f13d436596c01dff71241ab2701e8ca1babeaf05a6ec96d17d6f337a49",
+								["UniqueID"] = "a8e6a3007627a960a00789364df271e8307d679747280739c3f2647e46c15f6d",
 								["Name"] = "cane grip: right hand",
 								["Bone"] = "right hand",
-								["Angles"] = Angle(-24.06, -8.08, 7.64),
+								["Angles"] = Angle(6.24, -11.63, 27.54),
 							},
 							["children"] = {
 							},
@@ -924,14 +1171,14 @@
 				[6] = {
 					["self"] = {
 						["ClassName"] = "group",
-						["UniqueID"] = "8a10edeb643b46188cca495716283694d2f08955c6720c140448a7f5fbf86fc4",
-						["Name"] = "cane hooked on his belt (any other holdtype)",
+						["UniqueID"] = "e0863bcb8b8b723c971536b6c45ce6f93142a6e30c02a399e44a0d3e66dd4352",
+						["Name"] = "cane hooked on his belt (any other holdtype, standing)",
 					},
 					["children"] = {
 						[1] = {
 							["self"] = {
 								["ClassName"] = "event",
-								["UniqueID"] = "767b48ab27ff4f577252e93172e6ac744d74ae353b18bb34b1d9931593f04bb8",
+								["UniqueID"] = "3a1a19f09b40127f36b7f8aab880a5be7e51ec4cac721bcb921503ea08a0cab1",
 								["Name"] = "hidden while holdtype is normal",
 								["Event"] = "holdtype",
 								["Arguments"] = "normal",
@@ -943,8 +1190,20 @@
 						},
 						[2] = {
 							["self"] = {
+								["ClassName"] = "event",
+								["UniqueID"] = "7c8bfcd5633a09becc1a8ed7c0cbd152ec7a5b7ceaa4e6d1708ddafc56674502",
+								["Name"] = "not while sitting (it would go through the seat)",
+								["Event"] = "is_sitting",
+								["Operator"] = "equal",
+								["Invert"] = false,
+							},
+							["children"] = {
+							},
+						},
+						[3] = {
+							["self"] = {
 								["ClassName"] = "model2",
-								["UniqueID"] = "93b7fead0862f0ef3faf3aaa872c6c895454b81bb93256c624fffc68d82e3c85",
+								["UniqueID"] = "956f39b1ef6029c67b507624c5b42109f69d2c6359d486d9763e75dc24bd8d80",
 								["Name"] = "cane on belt",
 								["Model"] = "https://raw.githubusercontent.com/Warmug/pac-oldman/main/props/cane.obj",
 								["Bone"] = "pelvis",
@@ -1025,8 +1284,8 @@
 						[3] = {
 							["self"] = {
 								["ClassName"] = "event",
-								["UniqueID"] = "3015be1a930b3259f3b1c3b6bb6428a61f74ea3112105225c698a2e1b287d255",
-								["Name"] = "not while sitting (it goes in his mouth)",
+								["UniqueID"] = "541950ae00cf18c587fd777063c24479f7dd047a70bb371496a8496b138489f5",
+								["Name"] = "not while sitting (the seated copy has it)",
 								["Event"] = "is_sitting",
 								["Operator"] = "equal",
 								["Invert"] = false,
@@ -1289,8 +1548,8 @@
 										[1] = {
 											["self"] = {
 												["ClassName"] = "proxy",
-												["UniqueID"] = "b2c1451dcad52eda440bc95e33bc835d652c06a23d1d816e478411de78d984c4",
-												["Name"] = "take a drag every 13s while standing still",
+												["UniqueID"] = "765ad3a7ee732024091b2868982bfcf878de95de2a4c8d9ebc89d0c16869f5bb",
+												["Name"] = "take a drag every 13s while still",
 												["VariableName"] = "Angles",
 												["Expression"] = "-29.76 + (-12.08)*(clamp(min((time()%13)/1.0, (3.4-(time()%13))/1.0), 0, 1)*clamp(min((time()%13)/1.0, (3.4-(time()%13))/1.0), 0, 1)*(3-2*clamp(min((time()%13)/1.0, (3.4-(time()%13))/1.0), 0, 1)))*(1 - clamp(owner_velocity_length()/50, 0, 1)), -25.61 + (-63.21)*(clamp(min((time()%13)/1.0, (3.4-(time()%13))/1.0), 0, 1)*clamp(min((time()%13)/1.0, (3.4-(time()%13))/1.0), 0, 1)*(3-2*clamp(min((time()%13)/1.0, (3.4-(time()%13))/1.0), 0, 1)))*(1 - clamp(owner_velocity_length()/50, 0, 1)), -23.27 + (48.46)*(clamp(min((time()%13)/1.0, (3.4-(time()%13))/1.0), 0, 1)*clamp(min((time()%13)/1.0, (3.4-(time()%13))/1.0), 0, 1)*(3-2*clamp(min((time()%13)/1.0, (3.4-(time()%13))/1.0), 0, 1)))*(1 - clamp(owner_velocity_length()/50, 0, 1))",
 											},
@@ -1311,8 +1570,8 @@
 										[1] = {
 											["self"] = {
 												["ClassName"] = "proxy",
-												["UniqueID"] = "960c16d76065706198ef51661a6daa6abb191477be9a99896c691b70ac4d99ea",
-												["Name"] = "take a drag every 13s while standing still",
+												["UniqueID"] = "fdd3aee6dc5738af1df7aeec19580c17d69158e2f17e4a7daa36f408dd578cb8",
+												["Name"] = "take a drag every 13s while still",
 												["VariableName"] = "Angles",
 												["Expression"] = "0.00 + (0.00)*(clamp(min((time()%13)/1.0, (3.4-(time()%13))/1.0), 0, 1)*clamp(min((time()%13)/1.0, (3.4-(time()%13))/1.0), 0, 1)*(3-2*clamp(min((time()%13)/1.0, (3.4-(time()%13))/1.0), 0, 1)))*(1 - clamp(owner_velocity_length()/50, 0, 1)), -87.86 + (-16.12)*(clamp(min((time()%13)/1.0, (3.4-(time()%13))/1.0), 0, 1)*clamp(min((time()%13)/1.0, (3.4-(time()%13))/1.0), 0, 1)*(3-2*clamp(min((time()%13)/1.0, (3.4-(time()%13))/1.0), 0, 1)))*(1 - clamp(owner_velocity_length()/50, 0, 1)), -0.31 + (-27.45)*(clamp(min((time()%13)/1.0, (3.4-(time()%13))/1.0), 0, 1)*clamp(min((time()%13)/1.0, (3.4-(time()%13))/1.0), 0, 1)*(3-2*clamp(min((time()%13)/1.0, (3.4-(time()%13))/1.0), 0, 1)))*(1 - clamp(owner_velocity_length()/50, 0, 1))",
 											},
@@ -1333,8 +1592,8 @@
 										[1] = {
 											["self"] = {
 												["ClassName"] = "proxy",
-												["UniqueID"] = "bb4e74538a871f7e83889baad7302d73b87fba7dd585c0b20dd373280a7a987f",
-												["Name"] = "take a drag every 13s while standing still",
+												["UniqueID"] = "c247e51e13de2ecd9fc502425f1a2b5e4a02bff02bd8c750a727e663870059ed",
+												["Name"] = "take a drag every 13s while still",
 												["VariableName"] = "Angles",
 												["Expression"] = "-26.28 + (1.63)*(clamp(min((time()%13)/1.0, (3.4-(time()%13))/1.0), 0, 1)*clamp(min((time()%13)/1.0, (3.4-(time()%13))/1.0), 0, 1)*(3-2*clamp(min((time()%13)/1.0, (3.4-(time()%13))/1.0), 0, 1)))*(1 - clamp(owner_velocity_length()/50, 0, 1)), -2.55 + (1.26)*(clamp(min((time()%13)/1.0, (3.4-(time()%13))/1.0), 0, 1)*clamp(min((time()%13)/1.0, (3.4-(time()%13))/1.0), 0, 1)*(3-2*clamp(min((time()%13)/1.0, (3.4-(time()%13))/1.0), 0, 1)))*(1 - clamp(owner_velocity_length()/50, 0, 1)), -23.03 + (-1.17)*(clamp(min((time()%13)/1.0, (3.4-(time()%13))/1.0), 0, 1)*clamp(min((time()%13)/1.0, (3.4-(time()%13))/1.0), 0, 1)*(3-2*clamp(min((time()%13)/1.0, (3.4-(time()%13))/1.0), 0, 1)))*(1 - clamp(owner_velocity_length()/50, 0, 1))",
 											},
@@ -1445,158 +1704,14 @@
 				[4] = {
 					["self"] = {
 						["ClassName"] = "group",
-						["UniqueID"] = "ae154c939d8a057f910a1135af3931354407d65de4178da13396bc38d0b923ce",
-						["Name"] = "cigarette in his mouth (any other holdtype, no mask)",
+						["UniqueID"] = "b8558ba64e6572915cec837582e1238102aaf2f6ec78cca83e2c6af731433d7d",
+						["Name"] = "cigarette in his fingers (holdtype normal, sitting)",
 					},
 					["children"] = {
 						[1] = {
 							["self"] = {
 								["ClassName"] = "event",
-								["UniqueID"] = "36f832004a32f80145c9a143b45980f416d4c183655aaeb2d1dd90ba12890f60",
-								["Name"] = "hidden while holdtype is normal",
-								["Event"] = "holdtype",
-								["Arguments"] = "normal",
-								["Operator"] = "equal",
-								["Invert"] = false,
-							},
-							["children"] = {
-							},
-						},
-						[2] = {
-							["self"] = {
-								["ClassName"] = "event",
-								["UniqueID"] = "7d0b9521d25ac823c1ef1fcd11a00e0716b6b1be1be712e86f42fb2a0f1bc011",
-								["Name"] = "hidden while the oxygen mask is on",
-								["Event"] = "command",
-								["Arguments"] = "mask@@0@@0",
-								["Operator"] = "equal",
-								["Invert"] = false,
-							},
-							["children"] = {
-							},
-						},
-						[3] = {
-							["self"] = {
-								["ClassName"] = "model2",
-								["UniqueID"] = "ce5feedf1641bb0425c4e6509fe067d5b92365c182c31d3b18842d335b615871",
-								["Name"] = "cigarette in mouth",
-								["Model"] = "https://raw.githubusercontent.com/Warmug/pac-oldman/main/props/cigarette.obj",
-								["Bone"] = "head",
-								["Material"] = "cigarette_paper",
-								["Position"] = Vector(0.596, -5.4038, -0.7185),
-								["Angles"] = Angle(14.885, -100.355, -95.304),
-							},
-							["children"] = {
-							},
-						},
-						[4] = {
-							["self"] = {
-								["ClassName"] = "sprite",
-								["UniqueID"] = "a1fd044bab2fa3f0c8cc07d47d375498cd847d3133788ad186ca77f21af0be09",
-								["Name"] = "mouth ember glow",
-								["Bone"] = "head",
-								["Position"] = Vector(0.1009, -8.1133, -1.4506),
-								["SpritePath"] = "sprites/light_glow02_add",
-								["Color"] = Vector(255, 120, 40),
-								["Size"] = 0.6,
-								["Alpha"] = 0.9,
-							},
-							["children"] = {
-								[1] = {
-									["self"] = {
-										["ClassName"] = "proxy",
-										["UniqueID"] = "fd5ac751da7c7abb95ec7105d696f10c8d8aa45818bdb55b2ee79a55490a4f50",
-										["Name"] = "ember flickers and flares up on a drag",
-										["VariableName"] = "Size",
-										["Expression"] = "0.55 + 0.08*sin(time()*17) + 0.06*sin(time()*29) + 0.9*clamp(min(((time()%13)-1.0)/0.3, (2.4-(time()%13))/0.3), 0, 1)",
-									},
-									["children"] = {
-									},
-								},
-							},
-						},
-						[5] = {
-							["self"] = {
-								["ClassName"] = "particles",
-								["UniqueID"] = "a7f64a4fde44910355f7457dbd31f7e2af89ee27a2cfcaa0895f86c18fe87371",
-								["Name"] = "mouth smoke from the tip",
-								["Bone"] = "head",
-								["Position"] = Vector(0.1009, -8.1133, -1.4506),
-								["Material"] = "particle/smokesprites_0001",
-								["StartSize"] = 0.3,
-								["EndSize"] = 4,
-								["DieTime"] = 2.6,
-								["FireDelay"] = 0.32,
-								["NumberParticles"] = 1,
-								["Velocity"] = 3,
-								["Spread"] = 0.4,
-								["Gravity"] = Vector(0, 0, 9),
-								["AirResistance"] = 4,
-								["StartAlpha"] = 38,
-								["EndAlpha"] = 0,
-								["Color1"] = Vector(205, 205, 210),
-								["Color2"] = Vector(170, 170, 178),
-								["Lighting"] = false,
-								["Collide"] = false,
-								["RandomRollSpeed"] = 1.5,
-								["DoubleSided"] = false,
-							},
-							["children"] = {
-							},
-						},
-						[6] = {
-							["self"] = {
-								["ClassName"] = "particles",
-								["UniqueID"] = "6a5fa182b1f390adc22f4648933a245e2021405e36c446a3abb2c66144765e52",
-								["Name"] = "mouth exhale",
-								["Bone"] = "head",
-								["Position"] = Vector(0.7819, -5.6002, 0.0171),
-								["Angles"] = Angle(0.027, -94.136, -89.894),
-								["Material"] = "particle/smokesprites_0001",
-								["StartSize"] = 0.6,
-								["EndSize"] = 4,
-								["DieTime"] = 1.5,
-								["FireDelay"] = 0.09,
-								["NumberParticles"] = 0,
-								["Velocity"] = 9,
-								["Spread"] = 0.25,
-								["Gravity"] = Vector(0, 0, 5),
-								["AirResistance"] = 10,
-								["StartAlpha"] = 42,
-								["EndAlpha"] = 0,
-								["Color1"] = Vector(210, 210, 215),
-								["Color2"] = Vector(180, 180, 185),
-								["Lighting"] = false,
-								["Collide"] = false,
-								["DoubleSided"] = false,
-							},
-							["children"] = {
-								[1] = {
-									["self"] = {
-										["ClassName"] = "proxy",
-										["UniqueID"] = "041f1fd6564d16cc2be05da713da53b55ebd023643af53dda22e53ec6ba2bc23",
-										["Name"] = "only for a second right after a drag",
-										["VariableName"] = "NumberParticles",
-										["Expression"] = "((((time()%13)) > 3.45 and ((time()%13)) < 4.35) and (1 - clamp(owner_velocity_length()/50, 0, 1)) > 0.5) and 1 or 0",
-									},
-									["children"] = {
-									},
-								},
-							},
-						},
-					},
-				},
-				[5] = {
-					["self"] = {
-						["ClassName"] = "group",
-						["UniqueID"] = "167e40f2a5c7abe0b76920848ec98b1f9390d4a0538109d90d3a6b5d3384f470",
-						["Name"] = "cigarette in his mouth (holdtype normal, crouching, no mask)",
-					},
-					["children"] = {
-						[1] = {
-							["self"] = {
-								["ClassName"] = "event",
-								["UniqueID"] = "de375f59ffdd280116ffac8f8e12b188beef8e5517cf2c00a3f2a937100571fe",
+								["UniqueID"] = "205e246da7f56ae228f8de4e82a053fd494b931d1c30ab566f7cef5ded8a1d01",
 								["Name"] = "only when holdtype is normal",
 								["Event"] = "holdtype",
 								["Arguments"] = "normal",
@@ -1609,164 +1724,8 @@
 						[2] = {
 							["self"] = {
 								["ClassName"] = "event",
-								["UniqueID"] = "3c6717ffd2102f041ce272be813b40be294a12b787cfc5f8a2fdb15080545101",
-								["Name"] = "only while crouching",
-								["Event"] = "is_crouching",
-								["Operator"] = "equal",
-								["Invert"] = true,
-							},
-							["children"] = {
-							},
-						},
-						[3] = {
-							["self"] = {
-								["ClassName"] = "event",
-								["UniqueID"] = "4dd29afda2c8b1ac34dc699e3cd67418758334fddc2fb2362cc6d55bf6b8cb77",
-								["Name"] = "hidden while the oxygen mask is on",
-								["Event"] = "command",
-								["Arguments"] = "mask@@0@@0",
-								["Operator"] = "equal",
-								["Invert"] = false,
-							},
-							["children"] = {
-							},
-						},
-						[4] = {
-							["self"] = {
-								["ClassName"] = "model2",
-								["UniqueID"] = "49280409b1306781225d142e88bd49c0617443a7b0732b1640de8b9197c62319",
-								["Name"] = "cigarette in mouth",
-								["Model"] = "https://raw.githubusercontent.com/Warmug/pac-oldman/main/props/cigarette.obj",
-								["Bone"] = "head",
-								["Material"] = "cigarette_paper",
-								["Position"] = Vector(0.596, -5.4038, -0.7185),
-								["Angles"] = Angle(14.885, -100.355, -95.304),
-							},
-							["children"] = {
-							},
-						},
-						[5] = {
-							["self"] = {
-								["ClassName"] = "sprite",
-								["UniqueID"] = "5ce31ac93cee202d09c6b2abd3db9550edfad4683ff949a15d87e0f3db4b1a4e",
-								["Name"] = "mouth ember glow",
-								["Bone"] = "head",
-								["Position"] = Vector(0.1009, -8.1133, -1.4506),
-								["SpritePath"] = "sprites/light_glow02_add",
-								["Color"] = Vector(255, 120, 40),
-								["Size"] = 0.6,
-								["Alpha"] = 0.9,
-							},
-							["children"] = {
-								[1] = {
-									["self"] = {
-										["ClassName"] = "proxy",
-										["UniqueID"] = "7a9bda3f0e0e323215638987213244e15f72793c5c4a1f9b03edb370c263ae7a",
-										["Name"] = "ember flickers and flares up on a drag",
-										["VariableName"] = "Size",
-										["Expression"] = "0.55 + 0.08*sin(time()*17) + 0.06*sin(time()*29) + 0.9*clamp(min(((time()%13)-1.0)/0.3, (2.4-(time()%13))/0.3), 0, 1)",
-									},
-									["children"] = {
-									},
-								},
-							},
-						},
-						[6] = {
-							["self"] = {
-								["ClassName"] = "particles",
-								["UniqueID"] = "b0f774a7aec370c04322eb6249953c5e94c84c4fe96dc7f426d15561637aee0f",
-								["Name"] = "mouth smoke from the tip",
-								["Bone"] = "head",
-								["Position"] = Vector(0.1009, -8.1133, -1.4506),
-								["Material"] = "particle/smokesprites_0001",
-								["StartSize"] = 0.3,
-								["EndSize"] = 4,
-								["DieTime"] = 2.6,
-								["FireDelay"] = 0.32,
-								["NumberParticles"] = 1,
-								["Velocity"] = 3,
-								["Spread"] = 0.4,
-								["Gravity"] = Vector(0, 0, 9),
-								["AirResistance"] = 4,
-								["StartAlpha"] = 38,
-								["EndAlpha"] = 0,
-								["Color1"] = Vector(205, 205, 210),
-								["Color2"] = Vector(170, 170, 178),
-								["Lighting"] = false,
-								["Collide"] = false,
-								["RandomRollSpeed"] = 1.5,
-								["DoubleSided"] = false,
-							},
-							["children"] = {
-							},
-						},
-						[7] = {
-							["self"] = {
-								["ClassName"] = "particles",
-								["UniqueID"] = "c7838d6f6e54b0f071b4f5a9fc630fd8d682bedad42eafe4b0d6fe3022203b98",
-								["Name"] = "mouth exhale",
-								["Bone"] = "head",
-								["Position"] = Vector(0.7819, -5.6002, 0.0171),
-								["Angles"] = Angle(0.027, -94.136, -89.894),
-								["Material"] = "particle/smokesprites_0001",
-								["StartSize"] = 0.6,
-								["EndSize"] = 4,
-								["DieTime"] = 1.5,
-								["FireDelay"] = 0.09,
-								["NumberParticles"] = 0,
-								["Velocity"] = 9,
-								["Spread"] = 0.25,
-								["Gravity"] = Vector(0, 0, 5),
-								["AirResistance"] = 10,
-								["StartAlpha"] = 42,
-								["EndAlpha"] = 0,
-								["Color1"] = Vector(210, 210, 215),
-								["Color2"] = Vector(180, 180, 185),
-								["Lighting"] = false,
-								["Collide"] = false,
-								["DoubleSided"] = false,
-							},
-							["children"] = {
-								[1] = {
-									["self"] = {
-										["ClassName"] = "proxy",
-										["UniqueID"] = "5c26c57be30167a9a45c78f33624bcec4faf08c57a6904897a26a51a01393cc8",
-										["Name"] = "only for a second right after a drag",
-										["VariableName"] = "NumberParticles",
-										["Expression"] = "((((time()%13)) > 3.45 and ((time()%13)) < 4.35) and (1 - clamp(owner_velocity_length()/50, 0, 1)) > 0.5) and 1 or 0",
-									},
-									["children"] = {
-									},
-								},
-							},
-						},
-					},
-				},
-				[6] = {
-					["self"] = {
-						["ClassName"] = "group",
-						["UniqueID"] = "c8d68c1a11e4205890cd42792bb42f7bd0deead287c14adf484344fbf4b1ceca",
-						["Name"] = "cigarette in his mouth (holdtype normal, sitting, no mask)",
-					},
-					["children"] = {
-						[1] = {
-							["self"] = {
-								["ClassName"] = "event",
-								["UniqueID"] = "51af6ae9a8ae7f39400b3e8157719dfb194307a1512702e2f08f960f73ec5368",
-								["Name"] = "only when holdtype is normal",
-								["Event"] = "holdtype",
-								["Arguments"] = "normal",
-								["Operator"] = "equal",
-								["Invert"] = true,
-							},
-							["children"] = {
-							},
-						},
-						[2] = {
-							["self"] = {
-								["ClassName"] = "event",
-								["UniqueID"] = "44a0feb46ca692b20152e2c47db1189156a9aafefe36ca1c963e0863c14fc44b",
-								["Name"] = "not while crouching (that copy has it)",
+								["UniqueID"] = "3561f88789f2c6d8bb573e49e468078bd12af41b40f84229617870ef3f09af90",
+								["Name"] = "not while crouching",
 								["Event"] = "is_crouching",
 								["Operator"] = "equal",
 								["Invert"] = false,
@@ -1777,7 +1736,7 @@
 						[3] = {
 							["self"] = {
 								["ClassName"] = "event",
-								["UniqueID"] = "8b7405a917ce1d371127fe29d99f99eaed57a0306384008da45651c09d10d514",
+								["UniqueID"] = "b5b6bf6e4fb4ce7570dbb37bed0c0860fdfa8389df1b0781a45ac5617e40ae17",
 								["Name"] = "only while sitting",
 								["Event"] = "is_sitting",
 								["Operator"] = "equal",
@@ -1789,10 +1748,10 @@
 						[4] = {
 							["self"] = {
 								["ClassName"] = "event",
-								["UniqueID"] = "5e6fec22e850f4e8b9fed67ccc25f33af1186f3b41c4653943e10b54770311c1",
-								["Name"] = "hidden while the oxygen mask is on",
+								["UniqueID"] = "a00b2df74a4556963ee9b52c4b7479d2adc9029b0381eb1a1c94b16281cefac1",
+								["Name"] = "not with the leg cast on (the next copy has it)",
 								["Event"] = "command",
-								["Arguments"] = "mask@@0@@0",
+								["Arguments"] = "cast@@0@@0",
 								["Operator"] = "equal",
 								["Invert"] = false,
 							},
@@ -1802,13 +1761,13 @@
 						[5] = {
 							["self"] = {
 								["ClassName"] = "model2",
-								["UniqueID"] = "91f18746491bf4650996fcf01a877a5bfd571b8a15d84a162af0d7fa76778e9e",
-								["Name"] = "cigarette in mouth",
+								["UniqueID"] = "1b5815fd40de48fe15285077b8a335316fc1acd49ecf07638a04bff94a67aff3",
+								["Name"] = "cigarette",
 								["Model"] = "https://raw.githubusercontent.com/Warmug/pac-oldman/main/props/cigarette.obj",
-								["Bone"] = "head",
+								["Bone"] = "left hand",
 								["Material"] = "cigarette_paper",
-								["Position"] = Vector(0.596, -5.4038, -0.7185),
-								["Angles"] = Angle(14.885, -100.355, -95.304),
+								["Position"] = Vector(4.785, -0.625, 0.763),
+								["Angles"] = Angle(-33.2, 55.54, -172.3),
 							},
 							["children"] = {
 							},
@@ -1816,10 +1775,10 @@
 						[6] = {
 							["self"] = {
 								["ClassName"] = "sprite",
-								["UniqueID"] = "7399f7daf3b7edc573a00715368d56923ca6edfe5943e22e4ea6ee3f0fe47ed2",
-								["Name"] = "mouth ember glow",
-								["Bone"] = "head",
-								["Position"] = Vector(0.1009, -8.1133, -1.4506),
+								["UniqueID"] = "d38369fed0a70d85fa05f501d9387a3d236d8ede2a1799140d8f0a9603a6cbe8",
+								["Name"] = "ember glow",
+								["Bone"] = "left hand",
+								["Position"] = Vector(6.1344, 1.3413, 2.3236),
 								["SpritePath"] = "sprites/light_glow02_add",
 								["Color"] = Vector(255, 120, 40),
 								["Size"] = 0.6,
@@ -1829,7 +1788,7 @@
 								[1] = {
 									["self"] = {
 										["ClassName"] = "proxy",
-										["UniqueID"] = "0b1a8838b937988f40d29b5346fe82b8c19710a844d0be4a5a13f62f7b4f3504",
+										["UniqueID"] = "298d97efde54f94f7994fcceb807ea18236def58eee54bce18e968fac8606a04",
 										["Name"] = "ember flickers and flares up on a drag",
 										["VariableName"] = "Size",
 										["Expression"] = "0.55 + 0.08*sin(time()*17) + 0.06*sin(time()*29) + 0.9*clamp(min(((time()%13)-1.0)/0.3, (2.4-(time()%13))/0.3), 0, 1)",
@@ -1842,10 +1801,10 @@
 						[7] = {
 							["self"] = {
 								["ClassName"] = "particles",
-								["UniqueID"] = "947ba0896fee915209f5d7cdc01a8173526ddd83b64a6468206e71ca742e8286",
-								["Name"] = "mouth smoke from the tip",
-								["Bone"] = "head",
-								["Position"] = Vector(0.1009, -8.1133, -1.4506),
+								["UniqueID"] = "0515496e9153f81e94e9295641b90db2e7807181d5fd08595f0668a87e9417be",
+								["Name"] = "smoke from the tip",
+								["Bone"] = "left hand",
+								["Position"] = Vector(6.1344, 1.3413, 2.3236),
 								["Material"] = "particle/smokesprites_0001",
 								["StartSize"] = 0.3,
 								["EndSize"] = 4,
@@ -1870,8 +1829,914 @@
 						},
 						[8] = {
 							["self"] = {
+								["ClassName"] = "bone3",
+								["UniqueID"] = "ae5fcb51ba23a9e061eb44229263ed37cc20bffdf043b5d2840287515d610ea0",
+								["Name"] = "cigarette hold: left finger 1",
+								["Bone"] = "left finger 1",
+								["Angles"] = Angle(0, -12, 0),
+							},
+							["children"] = {
+							},
+						},
+						[9] = {
+							["self"] = {
+								["ClassName"] = "bone3",
+								["UniqueID"] = "a2f615ceec76e947d8781b727ab9ba03358cffc08821c5be51c271d0da890f9e",
+								["Name"] = "cigarette hold: left finger 11",
+								["Bone"] = "left finger 11",
+								["Angles"] = Angle(0, -22, 0),
+							},
+							["children"] = {
+							},
+						},
+						[10] = {
+							["self"] = {
+								["ClassName"] = "bone3",
+								["UniqueID"] = "f15f083208276c333f0cf0353a6d087f1cf1fc70a1e5ef1f7ba74ac005c80da9",
+								["Name"] = "cigarette hold: left finger 12",
+								["Bone"] = "left finger 12",
+								["Angles"] = Angle(0, -12, 0),
+							},
+							["children"] = {
+							},
+						},
+						[11] = {
+							["self"] = {
+								["ClassName"] = "bone3",
+								["UniqueID"] = "5bac1bc7fc4f5c46548a05ddf48cb2fbb200baa80683ebc93830cc957620b7ca",
+								["Name"] = "cigarette hold: left finger 2",
+								["Bone"] = "left finger 2",
+								["Angles"] = Angle(0, -14, 0),
+							},
+							["children"] = {
+							},
+						},
+						[12] = {
+							["self"] = {
+								["ClassName"] = "bone3",
+								["UniqueID"] = "4d9735b573126eb6c25b26da7f59dd9866dbfd971599a580be2b0f7cd54eaeeb",
+								["Name"] = "cigarette hold: left finger 21",
+								["Bone"] = "left finger 21",
+								["Angles"] = Angle(0, -24, 0),
+							},
+							["children"] = {
+							},
+						},
+						[13] = {
+							["self"] = {
+								["ClassName"] = "bone3",
+								["UniqueID"] = "923976d2fdb0653658e7ee6b7d5c03e134026254956f2ee02b6ee50780032a9d",
+								["Name"] = "cigarette hold: left finger 22",
+								["Bone"] = "left finger 22",
+								["Angles"] = Angle(0, -12, 0),
+							},
+							["children"] = {
+							},
+						},
+						[14] = {
+							["self"] = {
+								["ClassName"] = "bone3",
+								["UniqueID"] = "4c907966469ce159a082278d7d39408d3faa71a56d488c010ac4545654667a01",
+								["Name"] = "cigarette hold: left finger 3",
+								["Bone"] = "left finger 3",
+								["Angles"] = Angle(0, -48, 0),
+							},
+							["children"] = {
+							},
+						},
+						[15] = {
+							["self"] = {
+								["ClassName"] = "bone3",
+								["UniqueID"] = "96af4faddf9dc044f9907e08a72babc651bc47491fd5b4d2e8d9987abdae65d8",
+								["Name"] = "cigarette hold: left finger 31",
+								["Bone"] = "left finger 31",
+								["Angles"] = Angle(0, -70, 0),
+							},
+							["children"] = {
+							},
+						},
+						[16] = {
+							["self"] = {
+								["ClassName"] = "bone3",
+								["UniqueID"] = "9cdb27e5296ee86fee6f9ca4e11e8021cae58c6acac6f499c33a2ffc2d94ceb1",
+								["Name"] = "cigarette hold: left finger 32",
+								["Bone"] = "left finger 32",
+								["Angles"] = Angle(0, -40, 0),
+							},
+							["children"] = {
+							},
+						},
+						[17] = {
+							["self"] = {
+								["ClassName"] = "bone3",
+								["UniqueID"] = "71f452e860b70dc59134142c2126df54d28d615716fc8c43174711e4ec9ba74d",
+								["Name"] = "cigarette hold: left finger 4",
+								["Bone"] = "left finger 4",
+								["Angles"] = Angle(0, -55, 0),
+							},
+							["children"] = {
+							},
+						},
+						[18] = {
+							["self"] = {
+								["ClassName"] = "bone3",
+								["UniqueID"] = "521829368ddd6452199f2642d9253783d436c26fda2088247ba02d0065fa7b5f",
+								["Name"] = "cigarette hold: left finger 41",
+								["Bone"] = "left finger 41",
+								["Angles"] = Angle(0, -72, 0),
+							},
+							["children"] = {
+							},
+						},
+						[19] = {
+							["self"] = {
+								["ClassName"] = "bone3",
+								["UniqueID"] = "da6ba7b3441279174b89421254502e8659787283aec759e7a386e44341c92cb7",
+								["Name"] = "cigarette hold: left finger 42",
+								["Bone"] = "left finger 42",
+								["Angles"] = Angle(0, -40, 0),
+							},
+							["children"] = {
+							},
+						},
+						[20] = {
+							["self"] = {
+								["ClassName"] = "bone3",
+								["UniqueID"] = "5d95f44e833bd997e8ce024cf34a33b95723b1dbea946c62fbcc9865a49cc9ab",
+								["Name"] = "cigarette hold: left finger 0",
+								["Bone"] = "left finger 0",
+								["Angles"] = Angle(0, 10, 0),
+							},
+							["children"] = {
+							},
+						},
+						[21] = {
+							["self"] = {
+								["ClassName"] = "bone3",
+								["UniqueID"] = "f0b6a9affbccd85ca528ebb0d50ccdca4abb0acef7b4df57e0b35377911ff35c",
+								["Name"] = "cigarette hold: left finger 01",
+								["Bone"] = "left finger 01",
+								["Angles"] = Angle(0, 15, 0),
+							},
+							["children"] = {
+							},
+						},
+						[22] = {
+							["self"] = {
+								["ClassName"] = "group",
+								["UniqueID"] = "e8ca0cd172414a49f7ed0def2d3646b7dd22ff4a7d930ee56b483948a54b2a3e",
+								["Name"] = "takes a drag every 13s (mask off)",
+							},
+							["children"] = {
+								[1] = {
+									["self"] = {
+										["ClassName"] = "event",
+										["UniqueID"] = "5418e176223fdf2ff60d7aa2ab5ac657ef0af25ab6a73acb9cc2703407a4a708",
+										["Name"] = "not while the oxygen mask is on",
+										["Event"] = "command",
+										["Arguments"] = "mask@@0@@0",
+										["Operator"] = "equal",
+										["Invert"] = false,
+									},
+									["children"] = {
+									},
+								},
+								[2] = {
+									["self"] = {
+										["ClassName"] = "bone3",
+										["UniqueID"] = "66d28565482b5b1e5df2773f33488a8a515ad941940baac20fa41fadf1305995",
+										["Name"] = "smoking arm: left upperarm",
+										["Bone"] = "left upperarm",
+										["Angles"] = Angle(-21.68, 4.55, -3.78),
+									},
+									["children"] = {
+										[1] = {
+											["self"] = {
+												["ClassName"] = "proxy",
+												["UniqueID"] = "95f3b0ae5190f3ba5d39bcae58ee3530f167f7ca4ba1d2e35c0e7b92722a61f9",
+												["Name"] = "take a drag every 13s while still",
+												["VariableName"] = "Angles",
+												["Expression"] = "-21.68 + (-22.91)*(clamp(min((time()%13)/1.0, (3.4-(time()%13))/1.0), 0, 1)*clamp(min((time()%13)/1.0, (3.4-(time()%13))/1.0), 0, 1)*(3-2*clamp(min((time()%13)/1.0, (3.4-(time()%13))/1.0), 0, 1)))*(1 - clamp(owner_velocity_length()/50, 0, 1)) + (-2.88)*4*(clamp(min((time()%13)/1.0, (3.4-(time()%13))/1.0), 0, 1)*clamp(min((time()%13)/1.0, (3.4-(time()%13))/1.0), 0, 1)*(3-2*clamp(min((time()%13)/1.0, (3.4-(time()%13))/1.0), 0, 1)))*(1 - clamp(owner_velocity_length()/50, 0, 1))*(1-(clamp(min((time()%13)/1.0, (3.4-(time()%13))/1.0), 0, 1)*clamp(min((time()%13)/1.0, (3.4-(time()%13))/1.0), 0, 1)*(3-2*clamp(min((time()%13)/1.0, (3.4-(time()%13))/1.0), 0, 1)))*(1 - clamp(owner_velocity_length()/50, 0, 1))), 4.55 + (-76.04)*(clamp(min((time()%13)/1.0, (3.4-(time()%13))/1.0), 0, 1)*clamp(min((time()%13)/1.0, (3.4-(time()%13))/1.0), 0, 1)*(3-2*clamp(min((time()%13)/1.0, (3.4-(time()%13))/1.0), 0, 1)))*(1 - clamp(owner_velocity_length()/50, 0, 1)) + (11.33)*4*(clamp(min((time()%13)/1.0, (3.4-(time()%13))/1.0), 0, 1)*clamp(min((time()%13)/1.0, (3.4-(time()%13))/1.0), 0, 1)*(3-2*clamp(min((time()%13)/1.0, (3.4-(time()%13))/1.0), 0, 1)))*(1 - clamp(owner_velocity_length()/50, 0, 1))*(1-(clamp(min((time()%13)/1.0, (3.4-(time()%13))/1.0), 0, 1)*clamp(min((time()%13)/1.0, (3.4-(time()%13))/1.0), 0, 1)*(3-2*clamp(min((time()%13)/1.0, (3.4-(time()%13))/1.0), 0, 1)))*(1 - clamp(owner_velocity_length()/50, 0, 1))), -3.78 + (11.54)*(clamp(min((time()%13)/1.0, (3.4-(time()%13))/1.0), 0, 1)*clamp(min((time()%13)/1.0, (3.4-(time()%13))/1.0), 0, 1)*(3-2*clamp(min((time()%13)/1.0, (3.4-(time()%13))/1.0), 0, 1)))*(1 - clamp(owner_velocity_length()/50, 0, 1)) + (3.62)*4*(clamp(min((time()%13)/1.0, (3.4-(time()%13))/1.0), 0, 1)*clamp(min((time()%13)/1.0, (3.4-(time()%13))/1.0), 0, 1)*(3-2*clamp(min((time()%13)/1.0, (3.4-(time()%13))/1.0), 0, 1)))*(1 - clamp(owner_velocity_length()/50, 0, 1))*(1-(clamp(min((time()%13)/1.0, (3.4-(time()%13))/1.0), 0, 1)*clamp(min((time()%13)/1.0, (3.4-(time()%13))/1.0), 0, 1)*(3-2*clamp(min((time()%13)/1.0, (3.4-(time()%13))/1.0), 0, 1)))*(1 - clamp(owner_velocity_length()/50, 0, 1)))",
+											},
+											["children"] = {
+											},
+										},
+									},
+								},
+								[3] = {
+									["self"] = {
+										["ClassName"] = "bone3",
+										["UniqueID"] = "1099a47fe6660e9e4891d8dfd3a563b6f3fe82986875c76cb9cec6a6ce695833",
+										["Name"] = "smoking arm: left forearm",
+										["Bone"] = "left forearm",
+										["Angles"] = Angle(0, -31.82, -13.32),
+									},
+									["children"] = {
+										[1] = {
+											["self"] = {
+												["ClassName"] = "proxy",
+												["UniqueID"] = "f8046e6fb5d9a577c2613aee64914e519ad493ca8175559475e9644134a596b8",
+												["Name"] = "take a drag every 13s while still",
+												["VariableName"] = "Angles",
+												["Expression"] = "0.00 + (0.00)*(clamp(min((time()%13)/1.0, (3.4-(time()%13))/1.0), 0, 1)*clamp(min((time()%13)/1.0, (3.4-(time()%13))/1.0), 0, 1)*(3-2*clamp(min((time()%13)/1.0, (3.4-(time()%13))/1.0), 0, 1)))*(1 - clamp(owner_velocity_length()/50, 0, 1)) + (0.00)*4*(clamp(min((time()%13)/1.0, (3.4-(time()%13))/1.0), 0, 1)*clamp(min((time()%13)/1.0, (3.4-(time()%13))/1.0), 0, 1)*(3-2*clamp(min((time()%13)/1.0, (3.4-(time()%13))/1.0), 0, 1)))*(1 - clamp(owner_velocity_length()/50, 0, 1))*(1-(clamp(min((time()%13)/1.0, (3.4-(time()%13))/1.0), 0, 1)*clamp(min((time()%13)/1.0, (3.4-(time()%13))/1.0), 0, 1)*(3-2*clamp(min((time()%13)/1.0, (3.4-(time()%13))/1.0), 0, 1)))*(1 - clamp(owner_velocity_length()/50, 0, 1))), -31.82 + (-17.01)*(clamp(min((time()%13)/1.0, (3.4-(time()%13))/1.0), 0, 1)*clamp(min((time()%13)/1.0, (3.4-(time()%13))/1.0), 0, 1)*(3-2*clamp(min((time()%13)/1.0, (3.4-(time()%13))/1.0), 0, 1)))*(1 - clamp(owner_velocity_length()/50, 0, 1)) + (0.42)*4*(clamp(min((time()%13)/1.0, (3.4-(time()%13))/1.0), 0, 1)*clamp(min((time()%13)/1.0, (3.4-(time()%13))/1.0), 0, 1)*(3-2*clamp(min((time()%13)/1.0, (3.4-(time()%13))/1.0), 0, 1)))*(1 - clamp(owner_velocity_length()/50, 0, 1))*(1-(clamp(min((time()%13)/1.0, (3.4-(time()%13))/1.0), 0, 1)*clamp(min((time()%13)/1.0, (3.4-(time()%13))/1.0), 0, 1)*(3-2*clamp(min((time()%13)/1.0, (3.4-(time()%13))/1.0), 0, 1)))*(1 - clamp(owner_velocity_length()/50, 0, 1))), -13.32 + (83.34)*(clamp(min((time()%13)/1.0, (3.4-(time()%13))/1.0), 0, 1)*clamp(min((time()%13)/1.0, (3.4-(time()%13))/1.0), 0, 1)*(3-2*clamp(min((time()%13)/1.0, (3.4-(time()%13))/1.0), 0, 1)))*(1 - clamp(owner_velocity_length()/50, 0, 1)) + (-0.27)*4*(clamp(min((time()%13)/1.0, (3.4-(time()%13))/1.0), 0, 1)*clamp(min((time()%13)/1.0, (3.4-(time()%13))/1.0), 0, 1)*(3-2*clamp(min((time()%13)/1.0, (3.4-(time()%13))/1.0), 0, 1)))*(1 - clamp(owner_velocity_length()/50, 0, 1))*(1-(clamp(min((time()%13)/1.0, (3.4-(time()%13))/1.0), 0, 1)*clamp(min((time()%13)/1.0, (3.4-(time()%13))/1.0), 0, 1)*(3-2*clamp(min((time()%13)/1.0, (3.4-(time()%13))/1.0), 0, 1)))*(1 - clamp(owner_velocity_length()/50, 0, 1)))",
+											},
+											["children"] = {
+											},
+										},
+									},
+								},
+								[4] = {
+									["self"] = {
+										["ClassName"] = "bone3",
+										["UniqueID"] = "aa46ab51eaeca66830ac6d9da730c459f859b2beb6111a24f2c4b63542cf66c1",
+										["Name"] = "smoking arm: left hand",
+										["Bone"] = "left hand",
+										["Angles"] = Angle(0.16, -19.83, 0.15),
+									},
+									["children"] = {
+										[1] = {
+											["self"] = {
+												["ClassName"] = "proxy",
+												["UniqueID"] = "acb5ecb04b269f41a2812675166deac672de2741df943e4a76f35efe1f6a86b7",
+												["Name"] = "take a drag every 13s while still",
+												["VariableName"] = "Angles",
+												["Expression"] = "0.16 + (-12.90)*(clamp(min((time()%13)/1.0, (3.4-(time()%13))/1.0), 0, 1)*clamp(min((time()%13)/1.0, (3.4-(time()%13))/1.0), 0, 1)*(3-2*clamp(min((time()%13)/1.0, (3.4-(time()%13))/1.0), 0, 1)))*(1 - clamp(owner_velocity_length()/50, 0, 1)) + (-6.60)*4*(clamp(min((time()%13)/1.0, (3.4-(time()%13))/1.0), 0, 1)*clamp(min((time()%13)/1.0, (3.4-(time()%13))/1.0), 0, 1)*(3-2*clamp(min((time()%13)/1.0, (3.4-(time()%13))/1.0), 0, 1)))*(1 - clamp(owner_velocity_length()/50, 0, 1))*(1-(clamp(min((time()%13)/1.0, (3.4-(time()%13))/1.0), 0, 1)*clamp(min((time()%13)/1.0, (3.4-(time()%13))/1.0), 0, 1)*(3-2*clamp(min((time()%13)/1.0, (3.4-(time()%13))/1.0), 0, 1)))*(1 - clamp(owner_velocity_length()/50, 0, 1))), -19.83 + (5.61)*(clamp(min((time()%13)/1.0, (3.4-(time()%13))/1.0), 0, 1)*clamp(min((time()%13)/1.0, (3.4-(time()%13))/1.0), 0, 1)*(3-2*clamp(min((time()%13)/1.0, (3.4-(time()%13))/1.0), 0, 1)))*(1 - clamp(owner_velocity_length()/50, 0, 1)) + (4.85)*4*(clamp(min((time()%13)/1.0, (3.4-(time()%13))/1.0), 0, 1)*clamp(min((time()%13)/1.0, (3.4-(time()%13))/1.0), 0, 1)*(3-2*clamp(min((time()%13)/1.0, (3.4-(time()%13))/1.0), 0, 1)))*(1 - clamp(owner_velocity_length()/50, 0, 1))*(1-(clamp(min((time()%13)/1.0, (3.4-(time()%13))/1.0), 0, 1)*clamp(min((time()%13)/1.0, (3.4-(time()%13))/1.0), 0, 1)*(3-2*clamp(min((time()%13)/1.0, (3.4-(time()%13))/1.0), 0, 1)))*(1 - clamp(owner_velocity_length()/50, 0, 1))), 0.15 + (10.52)*(clamp(min((time()%13)/1.0, (3.4-(time()%13))/1.0), 0, 1)*clamp(min((time()%13)/1.0, (3.4-(time()%13))/1.0), 0, 1)*(3-2*clamp(min((time()%13)/1.0, (3.4-(time()%13))/1.0), 0, 1)))*(1 - clamp(owner_velocity_length()/50, 0, 1)) + (-2.03)*4*(clamp(min((time()%13)/1.0, (3.4-(time()%13))/1.0), 0, 1)*clamp(min((time()%13)/1.0, (3.4-(time()%13))/1.0), 0, 1)*(3-2*clamp(min((time()%13)/1.0, (3.4-(time()%13))/1.0), 0, 1)))*(1 - clamp(owner_velocity_length()/50, 0, 1))*(1-(clamp(min((time()%13)/1.0, (3.4-(time()%13))/1.0), 0, 1)*clamp(min((time()%13)/1.0, (3.4-(time()%13))/1.0), 0, 1)*(3-2*clamp(min((time()%13)/1.0, (3.4-(time()%13))/1.0), 0, 1)))*(1 - clamp(owner_velocity_length()/50, 0, 1)))",
+											},
+											["children"] = {
+											},
+										},
+									},
+								},
+								[5] = {
+									["self"] = {
+										["ClassName"] = "particles",
+										["UniqueID"] = "71cd96e086dc3193641d98e129b12c1c0e87526dee4857b8118aac681e3fe9fd",
+										["Name"] = "exhaled smoke",
+										["Bone"] = "head",
+										["Position"] = Vector(0.7819, -5.6002, 0.0171),
+										["Angles"] = Angle(0.027, -94.136, -89.894),
+										["Material"] = "particle/smokesprites_0001",
+										["StartSize"] = 0.6,
+										["EndSize"] = 4,
+										["DieTime"] = 1.5,
+										["FireDelay"] = 0.09,
+										["NumberParticles"] = 0,
+										["Velocity"] = 9,
+										["Spread"] = 0.25,
+										["Gravity"] = Vector(0, 0, 5),
+										["AirResistance"] = 10,
+										["StartAlpha"] = 42,
+										["EndAlpha"] = 0,
+										["Color1"] = Vector(210, 210, 215),
+										["Color2"] = Vector(180, 180, 185),
+										["Lighting"] = false,
+										["Collide"] = false,
+										["DoubleSided"] = false,
+									},
+									["children"] = {
+										[1] = {
+											["self"] = {
+												["ClassName"] = "proxy",
+												["UniqueID"] = "9ce7217bd942306788782af0755c7de4d840e6b0603aa881661f2976006ca7de",
+												["Name"] = "only for a second right after a drag",
+												["VariableName"] = "NumberParticles",
+												["Expression"] = "((((time()%13)) > 3.45 and ((time()%13)) < 4.35) and (1 - clamp(owner_velocity_length()/50, 0, 1)) > 0.5) and 1 or 0",
+											},
+											["children"] = {
+											},
+										},
+									},
+								},
+							},
+						},
+						[23] = {
+							["self"] = {
+								["ClassName"] = "group",
+								["UniqueID"] = "4cf824eb8791cb8794f5ec6acaecdb797d9b7233bef7a9206c71c53c45fe9de1",
+								["Name"] = "just holds it (mask on)",
+							},
+							["children"] = {
+								[1] = {
+									["self"] = {
+										["ClassName"] = "event",
+										["UniqueID"] = "c36607f08d3e3e04bd27f743bd8c103b4669b62f45e63726dc79f65bc8d7fdf8",
+										["Name"] = "only while the oxygen mask is on",
+										["Event"] = "command",
+										["Arguments"] = "mask@@0@@0",
+										["Operator"] = "equal",
+										["Invert"] = true,
+									},
+									["children"] = {
+									},
+								},
+								[2] = {
+									["self"] = {
+										["ClassName"] = "bone3",
+										["UniqueID"] = "6f68ed940b601e0d2ccbde61871241bdfebe795b3a8be08a59270220a5631d8a",
+										["Name"] = "smoking arm: left upperarm",
+										["Bone"] = "left upperarm",
+										["Angles"] = Angle(-21.68, 4.55, -3.78),
+									},
+									["children"] = {
+									},
+								},
+								[3] = {
+									["self"] = {
+										["ClassName"] = "bone3",
+										["UniqueID"] = "7fad829ef05344b2264e2a5fe1a7097158ac527001d2b64fbc55efbc71662dc1",
+										["Name"] = "smoking arm: left forearm",
+										["Bone"] = "left forearm",
+										["Angles"] = Angle(0, -31.82, -13.32),
+									},
+									["children"] = {
+									},
+								},
+								[4] = {
+									["self"] = {
+										["ClassName"] = "bone3",
+										["UniqueID"] = "5220ee54e8b2f4b6e0ffdcd1359b545e233dc0a9d0a68a6ab0109323fd544968",
+										["Name"] = "smoking arm: left hand",
+										["Bone"] = "left hand",
+										["Angles"] = Angle(0.16, -19.83, 0.15),
+									},
+									["children"] = {
+									},
+								},
+							},
+						},
+					},
+				},
+				[5] = {
+					["self"] = {
+						["ClassName"] = "group",
+						["UniqueID"] = "bb9249fe793db439321a969a890bdb2fccc0302287d59c3136671bdbfc1cb7dc",
+						["Name"] = "cigarette in his fingers (holdtype normal, sitting, leg cast on)",
+					},
+					["children"] = {
+						[1] = {
+							["self"] = {
+								["ClassName"] = "event",
+								["UniqueID"] = "a189c6369d9e5a369c7db9bd8f9b3f2e2b03d0e2577e9f7fb530bb615e7cfa10",
+								["Name"] = "only when holdtype is normal",
+								["Event"] = "holdtype",
+								["Arguments"] = "normal",
+								["Operator"] = "equal",
+								["Invert"] = true,
+							},
+							["children"] = {
+							},
+						},
+						[2] = {
+							["self"] = {
+								["ClassName"] = "event",
+								["UniqueID"] = "1aba555351abcd45daf1512198d726f2ec731c58e61d6a43f8ea134f4c42fea3",
+								["Name"] = "not while crouching",
+								["Event"] = "is_crouching",
+								["Operator"] = "equal",
+								["Invert"] = false,
+							},
+							["children"] = {
+							},
+						},
+						[3] = {
+							["self"] = {
+								["ClassName"] = "event",
+								["UniqueID"] = "02eafa0c35bfeb3feb9206ad3a548f24e151242c628c73eb999ae517e5abc8d1",
+								["Name"] = "only while sitting",
+								["Event"] = "is_sitting",
+								["Operator"] = "equal",
+								["Invert"] = true,
+							},
+							["children"] = {
+							},
+						},
+						[4] = {
+							["self"] = {
+								["ClassName"] = "event",
+								["UniqueID"] = "44aeebec59f6eae4371704273367170c1a4bfbc3ad1016d9cc133d05c734428d",
+								["Name"] = "only with the leg cast on",
+								["Event"] = "command",
+								["Arguments"] = "cast@@0@@0",
+								["Operator"] = "equal",
+								["Invert"] = true,
+							},
+							["children"] = {
+							},
+						},
+						[5] = {
+							["self"] = {
+								["ClassName"] = "model2",
+								["UniqueID"] = "32da2c960f40d1beb4fe5750319f7b66f6f03b99d1143e6b545ba84565be980d",
+								["Name"] = "cigarette",
+								["Model"] = "https://raw.githubusercontent.com/Warmug/pac-oldman/main/props/cigarette.obj",
+								["Bone"] = "left hand",
+								["Material"] = "cigarette_paper",
+								["Position"] = Vector(4.785, -0.625, 0.763),
+								["Angles"] = Angle(-33.2, 55.54, -172.3),
+							},
+							["children"] = {
+							},
+						},
+						[6] = {
+							["self"] = {
+								["ClassName"] = "sprite",
+								["UniqueID"] = "b13c69061af0b1991ee2cd8ef6854608c3ec989c82acf2861c28b1a0774daed6",
+								["Name"] = "ember glow",
+								["Bone"] = "left hand",
+								["Position"] = Vector(6.1344, 1.3413, 2.3236),
+								["SpritePath"] = "sprites/light_glow02_add",
+								["Color"] = Vector(255, 120, 40),
+								["Size"] = 0.6,
+								["Alpha"] = 0.9,
+							},
+							["children"] = {
+								[1] = {
+									["self"] = {
+										["ClassName"] = "proxy",
+										["UniqueID"] = "84e46b590ddec77ab69b509f8eedd703c8265da5b0ec03c15a070b70f6c9ab73",
+										["Name"] = "ember flickers and flares up on a drag",
+										["VariableName"] = "Size",
+										["Expression"] = "0.55 + 0.08*sin(time()*17) + 0.06*sin(time()*29) + 0.9*clamp(min(((time()%13)-1.0)/0.3, (2.4-(time()%13))/0.3), 0, 1)",
+									},
+									["children"] = {
+									},
+								},
+							},
+						},
+						[7] = {
+							["self"] = {
 								["ClassName"] = "particles",
-								["UniqueID"] = "8a9360fb08d26638ddf79a6b5b8314201cd5c13e80793e9bbd4317765131cc97",
+								["UniqueID"] = "1e16f420c177ccfe5a3368dfdf36ca0208a61dcea221b466a544db8a2b3bee0b",
+								["Name"] = "smoke from the tip",
+								["Bone"] = "left hand",
+								["Position"] = Vector(6.1344, 1.3413, 2.3236),
+								["Material"] = "particle/smokesprites_0001",
+								["StartSize"] = 0.3,
+								["EndSize"] = 4,
+								["DieTime"] = 2.6,
+								["FireDelay"] = 0.32,
+								["NumberParticles"] = 1,
+								["Velocity"] = 3,
+								["Spread"] = 0.4,
+								["Gravity"] = Vector(0, 0, 9),
+								["AirResistance"] = 4,
+								["StartAlpha"] = 38,
+								["EndAlpha"] = 0,
+								["Color1"] = Vector(205, 205, 210),
+								["Color2"] = Vector(170, 170, 178),
+								["Lighting"] = false,
+								["Collide"] = false,
+								["RandomRollSpeed"] = 1.5,
+								["DoubleSided"] = false,
+							},
+							["children"] = {
+							},
+						},
+						[8] = {
+							["self"] = {
+								["ClassName"] = "bone3",
+								["UniqueID"] = "1ce577fb154030d7748a67bee2f41d29adbcf7a430d447b96a31b0bd2ff99b63",
+								["Name"] = "cigarette hold: left finger 1",
+								["Bone"] = "left finger 1",
+								["Angles"] = Angle(0, -12, 0),
+							},
+							["children"] = {
+							},
+						},
+						[9] = {
+							["self"] = {
+								["ClassName"] = "bone3",
+								["UniqueID"] = "a2b37f56706aaa9cf70e5349b1ced11a12dc5e6a3d9a0c70364a90409e2c59b4",
+								["Name"] = "cigarette hold: left finger 11",
+								["Bone"] = "left finger 11",
+								["Angles"] = Angle(0, -22, 0),
+							},
+							["children"] = {
+							},
+						},
+						[10] = {
+							["self"] = {
+								["ClassName"] = "bone3",
+								["UniqueID"] = "4ee2d2601baf3c90e3f865b0d2dd9ab38eab09382ec3bdff0e138edc67c531fe",
+								["Name"] = "cigarette hold: left finger 12",
+								["Bone"] = "left finger 12",
+								["Angles"] = Angle(0, -12, 0),
+							},
+							["children"] = {
+							},
+						},
+						[11] = {
+							["self"] = {
+								["ClassName"] = "bone3",
+								["UniqueID"] = "bd9fa9d87e4f41253f4d34b514322a130ab3afe3d14f042b6800be1b4f794c25",
+								["Name"] = "cigarette hold: left finger 2",
+								["Bone"] = "left finger 2",
+								["Angles"] = Angle(0, -14, 0),
+							},
+							["children"] = {
+							},
+						},
+						[12] = {
+							["self"] = {
+								["ClassName"] = "bone3",
+								["UniqueID"] = "aa34a9f733511fccb34292827225bffba2158f484c05a524ef416e0fc94ef068",
+								["Name"] = "cigarette hold: left finger 21",
+								["Bone"] = "left finger 21",
+								["Angles"] = Angle(0, -24, 0),
+							},
+							["children"] = {
+							},
+						},
+						[13] = {
+							["self"] = {
+								["ClassName"] = "bone3",
+								["UniqueID"] = "d85f95f0d746b31cfe7cb9e74bddf203f4987c6f74622f0a3e57283277b20df1",
+								["Name"] = "cigarette hold: left finger 22",
+								["Bone"] = "left finger 22",
+								["Angles"] = Angle(0, -12, 0),
+							},
+							["children"] = {
+							},
+						},
+						[14] = {
+							["self"] = {
+								["ClassName"] = "bone3",
+								["UniqueID"] = "a67b81de7d77d474ad52a3ad65945ae8946bd5cf6349fa64ab0fc8a59827bc36",
+								["Name"] = "cigarette hold: left finger 3",
+								["Bone"] = "left finger 3",
+								["Angles"] = Angle(0, -48, 0),
+							},
+							["children"] = {
+							},
+						},
+						[15] = {
+							["self"] = {
+								["ClassName"] = "bone3",
+								["UniqueID"] = "6ec292172112e13804cc19164f075c3e8e2f57c9ef04858d1d0c75efa50ffd2f",
+								["Name"] = "cigarette hold: left finger 31",
+								["Bone"] = "left finger 31",
+								["Angles"] = Angle(0, -70, 0),
+							},
+							["children"] = {
+							},
+						},
+						[16] = {
+							["self"] = {
+								["ClassName"] = "bone3",
+								["UniqueID"] = "8e6ba9b5eb00ce1d85ab40c87fe4188a9c30260a0260020eb1ac783c383f41df",
+								["Name"] = "cigarette hold: left finger 32",
+								["Bone"] = "left finger 32",
+								["Angles"] = Angle(0, -40, 0),
+							},
+							["children"] = {
+							},
+						},
+						[17] = {
+							["self"] = {
+								["ClassName"] = "bone3",
+								["UniqueID"] = "a372ae6d74330e2d87cc1035a018430c1b188147710092175f420dc997ad3e50",
+								["Name"] = "cigarette hold: left finger 4",
+								["Bone"] = "left finger 4",
+								["Angles"] = Angle(0, -55, 0),
+							},
+							["children"] = {
+							},
+						},
+						[18] = {
+							["self"] = {
+								["ClassName"] = "bone3",
+								["UniqueID"] = "f9d905036f916dfe5d58fb0855ac08559a5d4d405853e268abc093e693e04597",
+								["Name"] = "cigarette hold: left finger 41",
+								["Bone"] = "left finger 41",
+								["Angles"] = Angle(0, -72, 0),
+							},
+							["children"] = {
+							},
+						},
+						[19] = {
+							["self"] = {
+								["ClassName"] = "bone3",
+								["UniqueID"] = "ab6d490b5b97b2ad64c7037eb67b2797074c4fb1bb5ec7bdb9a6faa3e86bff60",
+								["Name"] = "cigarette hold: left finger 42",
+								["Bone"] = "left finger 42",
+								["Angles"] = Angle(0, -40, 0),
+							},
+							["children"] = {
+							},
+						},
+						[20] = {
+							["self"] = {
+								["ClassName"] = "bone3",
+								["UniqueID"] = "85290fce69179b7efb094df2565a9a2ce95a2901ef44cd136ddcf3883102d06f",
+								["Name"] = "cigarette hold: left finger 0",
+								["Bone"] = "left finger 0",
+								["Angles"] = Angle(0, 10, 0),
+							},
+							["children"] = {
+							},
+						},
+						[21] = {
+							["self"] = {
+								["ClassName"] = "bone3",
+								["UniqueID"] = "2476f7e3ac59315c6d9f2c5ecd0ddff419c101adbf94eb5234c755ba5599c9c8",
+								["Name"] = "cigarette hold: left finger 01",
+								["Bone"] = "left finger 01",
+								["Angles"] = Angle(0, 15, 0),
+							},
+							["children"] = {
+							},
+						},
+						[22] = {
+							["self"] = {
+								["ClassName"] = "group",
+								["UniqueID"] = "5cbba366cda799bb86d271b0c160a6ef61fe165dfa55903ae8fa99340f1ff8bd",
+								["Name"] = "takes a drag every 13s (mask off)",
+							},
+							["children"] = {
+								[1] = {
+									["self"] = {
+										["ClassName"] = "event",
+										["UniqueID"] = "71f8bebffaba622486eeb135d5530dc40019a82508ca46f28f2498b71e550744",
+										["Name"] = "not while the oxygen mask is on",
+										["Event"] = "command",
+										["Arguments"] = "mask@@0@@0",
+										["Operator"] = "equal",
+										["Invert"] = false,
+									},
+									["children"] = {
+									},
+								},
+								[2] = {
+									["self"] = {
+										["ClassName"] = "bone3",
+										["UniqueID"] = "069da69444cde4da136a586f53ec5c807556e024b02cbb0a742a9c2490cf9600",
+										["Name"] = "smoking arm: left upperarm",
+										["Bone"] = "left upperarm",
+										["Angles"] = Angle(-59.63, -43.77, 40.18),
+									},
+									["children"] = {
+										[1] = {
+											["self"] = {
+												["ClassName"] = "proxy",
+												["UniqueID"] = "a225816305fcfcee99ced6dc062c9cc20a61f131cf5c9ba74810827554bf3987",
+												["Name"] = "take a drag every 13s while still",
+												["VariableName"] = "Angles",
+												["Expression"] = "-59.63 + (16.61)*(clamp(min((time()%13)/1.0, (3.4-(time()%13))/1.0), 0, 1)*clamp(min((time()%13)/1.0, (3.4-(time()%13))/1.0), 0, 1)*(3-2*clamp(min((time()%13)/1.0, (3.4-(time()%13))/1.0), 0, 1)))*(1 - clamp(owner_velocity_length()/50, 0, 1)) + (-0.10)*4*(clamp(min((time()%13)/1.0, (3.4-(time()%13))/1.0), 0, 1)*clamp(min((time()%13)/1.0, (3.4-(time()%13))/1.0), 0, 1)*(3-2*clamp(min((time()%13)/1.0, (3.4-(time()%13))/1.0), 0, 1)))*(1 - clamp(owner_velocity_length()/50, 0, 1))*(1-(clamp(min((time()%13)/1.0, (3.4-(time()%13))/1.0), 0, 1)*clamp(min((time()%13)/1.0, (3.4-(time()%13))/1.0), 0, 1)*(3-2*clamp(min((time()%13)/1.0, (3.4-(time()%13))/1.0), 0, 1)))*(1 - clamp(owner_velocity_length()/50, 0, 1))), -43.77 + (-39.84)*(clamp(min((time()%13)/1.0, (3.4-(time()%13))/1.0), 0, 1)*clamp(min((time()%13)/1.0, (3.4-(time()%13))/1.0), 0, 1)*(3-2*clamp(min((time()%13)/1.0, (3.4-(time()%13))/1.0), 0, 1)))*(1 - clamp(owner_velocity_length()/50, 0, 1)) + (16.36)*4*(clamp(min((time()%13)/1.0, (3.4-(time()%13))/1.0), 0, 1)*clamp(min((time()%13)/1.0, (3.4-(time()%13))/1.0), 0, 1)*(3-2*clamp(min((time()%13)/1.0, (3.4-(time()%13))/1.0), 0, 1)))*(1 - clamp(owner_velocity_length()/50, 0, 1))*(1-(clamp(min((time()%13)/1.0, (3.4-(time()%13))/1.0), 0, 1)*clamp(min((time()%13)/1.0, (3.4-(time()%13))/1.0), 0, 1)*(3-2*clamp(min((time()%13)/1.0, (3.4-(time()%13))/1.0), 0, 1)))*(1 - clamp(owner_velocity_length()/50, 0, 1))), 40.18 + (-35.94)*(clamp(min((time()%13)/1.0, (3.4-(time()%13))/1.0), 0, 1)*clamp(min((time()%13)/1.0, (3.4-(time()%13))/1.0), 0, 1)*(3-2*clamp(min((time()%13)/1.0, (3.4-(time()%13))/1.0), 0, 1)))*(1 - clamp(owner_velocity_length()/50, 0, 1)) + (4.46)*4*(clamp(min((time()%13)/1.0, (3.4-(time()%13))/1.0), 0, 1)*clamp(min((time()%13)/1.0, (3.4-(time()%13))/1.0), 0, 1)*(3-2*clamp(min((time()%13)/1.0, (3.4-(time()%13))/1.0), 0, 1)))*(1 - clamp(owner_velocity_length()/50, 0, 1))*(1-(clamp(min((time()%13)/1.0, (3.4-(time()%13))/1.0), 0, 1)*clamp(min((time()%13)/1.0, (3.4-(time()%13))/1.0), 0, 1)*(3-2*clamp(min((time()%13)/1.0, (3.4-(time()%13))/1.0), 0, 1)))*(1 - clamp(owner_velocity_length()/50, 0, 1)))",
+											},
+											["children"] = {
+											},
+										},
+									},
+								},
+								[3] = {
+									["self"] = {
+										["ClassName"] = "bone3",
+										["UniqueID"] = "0045ec04d7abc7da9315300dc33e459889fed7558b501e9465ea13fb439e6e9d",
+										["Name"] = "smoking arm: left forearm",
+										["Bone"] = "left forearm",
+										["Angles"] = Angle(0, -35.64, 24.74),
+									},
+									["children"] = {
+										[1] = {
+											["self"] = {
+												["ClassName"] = "proxy",
+												["UniqueID"] = "d0b7e3c40f81059c4b2fe9b07d03a9d448d51952cfef0eb778fbd998bec03eaa",
+												["Name"] = "take a drag every 13s while still",
+												["VariableName"] = "Angles",
+												["Expression"] = "0.00 + (0.00)*(clamp(min((time()%13)/1.0, (3.4-(time()%13))/1.0), 0, 1)*clamp(min((time()%13)/1.0, (3.4-(time()%13))/1.0), 0, 1)*(3-2*clamp(min((time()%13)/1.0, (3.4-(time()%13))/1.0), 0, 1)))*(1 - clamp(owner_velocity_length()/50, 0, 1)) + (0.00)*4*(clamp(min((time()%13)/1.0, (3.4-(time()%13))/1.0), 0, 1)*clamp(min((time()%13)/1.0, (3.4-(time()%13))/1.0), 0, 1)*(3-2*clamp(min((time()%13)/1.0, (3.4-(time()%13))/1.0), 0, 1)))*(1 - clamp(owner_velocity_length()/50, 0, 1))*(1-(clamp(min((time()%13)/1.0, (3.4-(time()%13))/1.0), 0, 1)*clamp(min((time()%13)/1.0, (3.4-(time()%13))/1.0), 0, 1)*(3-2*clamp(min((time()%13)/1.0, (3.4-(time()%13))/1.0), 0, 1)))*(1 - clamp(owner_velocity_length()/50, 0, 1))), -35.64 + (-11.71)*(clamp(min((time()%13)/1.0, (3.4-(time()%13))/1.0), 0, 1)*clamp(min((time()%13)/1.0, (3.4-(time()%13))/1.0), 0, 1)*(3-2*clamp(min((time()%13)/1.0, (3.4-(time()%13))/1.0), 0, 1)))*(1 - clamp(owner_velocity_length()/50, 0, 1)) + (3.95)*4*(clamp(min((time()%13)/1.0, (3.4-(time()%13))/1.0), 0, 1)*clamp(min((time()%13)/1.0, (3.4-(time()%13))/1.0), 0, 1)*(3-2*clamp(min((time()%13)/1.0, (3.4-(time()%13))/1.0), 0, 1)))*(1 - clamp(owner_velocity_length()/50, 0, 1))*(1-(clamp(min((time()%13)/1.0, (3.4-(time()%13))/1.0), 0, 1)*clamp(min((time()%13)/1.0, (3.4-(time()%13))/1.0), 0, 1)*(3-2*clamp(min((time()%13)/1.0, (3.4-(time()%13))/1.0), 0, 1)))*(1 - clamp(owner_velocity_length()/50, 0, 1))), 24.74 + (20.21)*(clamp(min((time()%13)/1.0, (3.4-(time()%13))/1.0), 0, 1)*clamp(min((time()%13)/1.0, (3.4-(time()%13))/1.0), 0, 1)*(3-2*clamp(min((time()%13)/1.0, (3.4-(time()%13))/1.0), 0, 1)))*(1 - clamp(owner_velocity_length()/50, 0, 1)) + (1.50)*4*(clamp(min((time()%13)/1.0, (3.4-(time()%13))/1.0), 0, 1)*clamp(min((time()%13)/1.0, (3.4-(time()%13))/1.0), 0, 1)*(3-2*clamp(min((time()%13)/1.0, (3.4-(time()%13))/1.0), 0, 1)))*(1 - clamp(owner_velocity_length()/50, 0, 1))*(1-(clamp(min((time()%13)/1.0, (3.4-(time()%13))/1.0), 0, 1)*clamp(min((time()%13)/1.0, (3.4-(time()%13))/1.0), 0, 1)*(3-2*clamp(min((time()%13)/1.0, (3.4-(time()%13))/1.0), 0, 1)))*(1 - clamp(owner_velocity_length()/50, 0, 1)))",
+											},
+											["children"] = {
+											},
+										},
+									},
+								},
+								[4] = {
+									["self"] = {
+										["ClassName"] = "bone3",
+										["UniqueID"] = "a7caf85cf42f8b0b8df1ce7e28852c312c295707fb2002b4758728440f32da09",
+										["Name"] = "smoking arm: left hand",
+										["Bone"] = "left hand",
+										["Angles"] = Angle(-58.34, 23.71, 21.42),
+									},
+									["children"] = {
+										[1] = {
+											["self"] = {
+												["ClassName"] = "proxy",
+												["UniqueID"] = "4219e3d15810ce00af6c05d70e9e93813c30ba6fd747aa27e3b990e31f9a4397",
+												["Name"] = "take a drag every 13s while still",
+												["VariableName"] = "Angles",
+												["Expression"] = "-58.34 + (13.25)*(clamp(min((time()%13)/1.0, (3.4-(time()%13))/1.0), 0, 1)*clamp(min((time()%13)/1.0, (3.4-(time()%13))/1.0), 0, 1)*(3-2*clamp(min((time()%13)/1.0, (3.4-(time()%13))/1.0), 0, 1)))*(1 - clamp(owner_velocity_length()/50, 0, 1)) + (-3.45)*4*(clamp(min((time()%13)/1.0, (3.4-(time()%13))/1.0), 0, 1)*clamp(min((time()%13)/1.0, (3.4-(time()%13))/1.0), 0, 1)*(3-2*clamp(min((time()%13)/1.0, (3.4-(time()%13))/1.0), 0, 1)))*(1 - clamp(owner_velocity_length()/50, 0, 1))*(1-(clamp(min((time()%13)/1.0, (3.4-(time()%13))/1.0), 0, 1)*clamp(min((time()%13)/1.0, (3.4-(time()%13))/1.0), 0, 1)*(3-2*clamp(min((time()%13)/1.0, (3.4-(time()%13))/1.0), 0, 1)))*(1 - clamp(owner_velocity_length()/50, 0, 1))), 23.71 + (-10.02)*(clamp(min((time()%13)/1.0, (3.4-(time()%13))/1.0), 0, 1)*clamp(min((time()%13)/1.0, (3.4-(time()%13))/1.0), 0, 1)*(3-2*clamp(min((time()%13)/1.0, (3.4-(time()%13))/1.0), 0, 1)))*(1 - clamp(owner_velocity_length()/50, 0, 1)) + (3.39)*4*(clamp(min((time()%13)/1.0, (3.4-(time()%13))/1.0), 0, 1)*clamp(min((time()%13)/1.0, (3.4-(time()%13))/1.0), 0, 1)*(3-2*clamp(min((time()%13)/1.0, (3.4-(time()%13))/1.0), 0, 1)))*(1 - clamp(owner_velocity_length()/50, 0, 1))*(1-(clamp(min((time()%13)/1.0, (3.4-(time()%13))/1.0), 0, 1)*clamp(min((time()%13)/1.0, (3.4-(time()%13))/1.0), 0, 1)*(3-2*clamp(min((time()%13)/1.0, (3.4-(time()%13))/1.0), 0, 1)))*(1 - clamp(owner_velocity_length()/50, 0, 1))), 21.42 + (-8.93)*(clamp(min((time()%13)/1.0, (3.4-(time()%13))/1.0), 0, 1)*clamp(min((time()%13)/1.0, (3.4-(time()%13))/1.0), 0, 1)*(3-2*clamp(min((time()%13)/1.0, (3.4-(time()%13))/1.0), 0, 1)))*(1 - clamp(owner_velocity_length()/50, 0, 1)) + (2.31)*4*(clamp(min((time()%13)/1.0, (3.4-(time()%13))/1.0), 0, 1)*clamp(min((time()%13)/1.0, (3.4-(time()%13))/1.0), 0, 1)*(3-2*clamp(min((time()%13)/1.0, (3.4-(time()%13))/1.0), 0, 1)))*(1 - clamp(owner_velocity_length()/50, 0, 1))*(1-(clamp(min((time()%13)/1.0, (3.4-(time()%13))/1.0), 0, 1)*clamp(min((time()%13)/1.0, (3.4-(time()%13))/1.0), 0, 1)*(3-2*clamp(min((time()%13)/1.0, (3.4-(time()%13))/1.0), 0, 1)))*(1 - clamp(owner_velocity_length()/50, 0, 1)))",
+											},
+											["children"] = {
+											},
+										},
+									},
+								},
+								[5] = {
+									["self"] = {
+										["ClassName"] = "particles",
+										["UniqueID"] = "fad217f04235a885ff272b3bd52c0a37a5d2c09734026f4d57e2af63a63ea52d",
+										["Name"] = "exhaled smoke",
+										["Bone"] = "head",
+										["Position"] = Vector(0.7819, -5.6002, 0.0171),
+										["Angles"] = Angle(0.027, -94.136, -89.894),
+										["Material"] = "particle/smokesprites_0001",
+										["StartSize"] = 0.6,
+										["EndSize"] = 4,
+										["DieTime"] = 1.5,
+										["FireDelay"] = 0.09,
+										["NumberParticles"] = 0,
+										["Velocity"] = 9,
+										["Spread"] = 0.25,
+										["Gravity"] = Vector(0, 0, 5),
+										["AirResistance"] = 10,
+										["StartAlpha"] = 42,
+										["EndAlpha"] = 0,
+										["Color1"] = Vector(210, 210, 215),
+										["Color2"] = Vector(180, 180, 185),
+										["Lighting"] = false,
+										["Collide"] = false,
+										["DoubleSided"] = false,
+									},
+									["children"] = {
+										[1] = {
+											["self"] = {
+												["ClassName"] = "proxy",
+												["UniqueID"] = "993bb99f8da201e02b32fb7503bbcffc9c3b6398fb8158a6cbac9bed1493a8a3",
+												["Name"] = "only for a second right after a drag",
+												["VariableName"] = "NumberParticles",
+												["Expression"] = "((((time()%13)) > 3.45 and ((time()%13)) < 4.35) and (1 - clamp(owner_velocity_length()/50, 0, 1)) > 0.5) and 1 or 0",
+											},
+											["children"] = {
+											},
+										},
+									},
+								},
+							},
+						},
+						[23] = {
+							["self"] = {
+								["ClassName"] = "group",
+								["UniqueID"] = "5294f6272b5f5da133c4636bfe1c5ca6226bf736b11e7bd4ea48f8654d279963",
+								["Name"] = "just holds it (mask on)",
+							},
+							["children"] = {
+								[1] = {
+									["self"] = {
+										["ClassName"] = "event",
+										["UniqueID"] = "197e4d228fed6a7878ff421fe272cd48feadd42b9f52a08bb2e1092c47d4562a",
+										["Name"] = "only while the oxygen mask is on",
+										["Event"] = "command",
+										["Arguments"] = "mask@@0@@0",
+										["Operator"] = "equal",
+										["Invert"] = true,
+									},
+									["children"] = {
+									},
+								},
+								[2] = {
+									["self"] = {
+										["ClassName"] = "bone3",
+										["UniqueID"] = "c2bd985b013e2b5aff0d48eafc5b2a8d445afa219cd882e6fbc66a12d2611e7e",
+										["Name"] = "smoking arm: left upperarm",
+										["Bone"] = "left upperarm",
+										["Angles"] = Angle(-59.63, -43.77, 40.18),
+									},
+									["children"] = {
+									},
+								},
+								[3] = {
+									["self"] = {
+										["ClassName"] = "bone3",
+										["UniqueID"] = "a581b53a4a140da6935f37030a768664b9179cdec2ae0d2381268d073973014f",
+										["Name"] = "smoking arm: left forearm",
+										["Bone"] = "left forearm",
+										["Angles"] = Angle(0, -35.64, 24.74),
+									},
+									["children"] = {
+									},
+								},
+								[4] = {
+									["self"] = {
+										["ClassName"] = "bone3",
+										["UniqueID"] = "dc76f12e329d887b7fddfa52a1a1e152b4264cfe1abea90cf85acaf40143a405",
+										["Name"] = "smoking arm: left hand",
+										["Bone"] = "left hand",
+										["Angles"] = Angle(-58.34, 23.71, 21.42),
+									},
+									["children"] = {
+									},
+								},
+							},
+						},
+					},
+				},
+				[6] = {
+					["self"] = {
+						["ClassName"] = "group",
+						["UniqueID"] = "ef845895aa7a87350af175760e10ae8510d8c6256cf9c4bcd651863c3b698ea4",
+						["Name"] = "cigarette in his mouth (any other holdtype, no mask)",
+					},
+					["children"] = {
+						[1] = {
+							["self"] = {
+								["ClassName"] = "event",
+								["UniqueID"] = "d174081a3a2652964ed697189f50d503383ec3dd86563564097acc04b51a7ce1",
+								["Name"] = "hidden while holdtype is normal",
+								["Event"] = "holdtype",
+								["Arguments"] = "normal",
+								["Operator"] = "equal",
+								["Invert"] = false,
+							},
+							["children"] = {
+							},
+						},
+						[2] = {
+							["self"] = {
+								["ClassName"] = "event",
+								["UniqueID"] = "cedaec061391c73366f5fc40221c48a6c38345cf337ddce1e988b32b6839155d",
+								["Name"] = "hidden while the oxygen mask is on",
+								["Event"] = "command",
+								["Arguments"] = "mask@@0@@0",
+								["Operator"] = "equal",
+								["Invert"] = false,
+							},
+							["children"] = {
+							},
+						},
+						[3] = {
+							["self"] = {
+								["ClassName"] = "model2",
+								["UniqueID"] = "aeeaceb6c70f9e66af65eb21496070331cb73792a6d6592c5e5f56eb3945c453",
+								["Name"] = "cigarette in mouth",
+								["Model"] = "https://raw.githubusercontent.com/Warmug/pac-oldman/main/props/cigarette.obj",
+								["Bone"] = "head",
+								["Material"] = "cigarette_paper",
+								["Position"] = Vector(0.596, -5.4038, -0.7185),
+								["Angles"] = Angle(14.885, -100.355, -95.304),
+							},
+							["children"] = {
+							},
+						},
+						[4] = {
+							["self"] = {
+								["ClassName"] = "sprite",
+								["UniqueID"] = "fb9bafa82c55eb4a89fe3f3d6064c0275fa6c29b9fb21b97d470ee0e0c48b0dd",
+								["Name"] = "mouth ember glow",
+								["Bone"] = "head",
+								["Position"] = Vector(0.1009, -8.1133, -1.4506),
+								["SpritePath"] = "sprites/light_glow02_add",
+								["Color"] = Vector(255, 120, 40),
+								["Size"] = 0.6,
+								["Alpha"] = 0.9,
+							},
+							["children"] = {
+								[1] = {
+									["self"] = {
+										["ClassName"] = "proxy",
+										["UniqueID"] = "58f87f850eb4896f9e0fe3d696a5c8f91ff252672833cb2e3af8a36f9ba5c9b1",
+										["Name"] = "ember flickers and flares up on a drag",
+										["VariableName"] = "Size",
+										["Expression"] = "0.55 + 0.08*sin(time()*17) + 0.06*sin(time()*29) + 0.9*clamp(min(((time()%13)-1.0)/0.3, (2.4-(time()%13))/0.3), 0, 1)",
+									},
+									["children"] = {
+									},
+								},
+							},
+						},
+						[5] = {
+							["self"] = {
+								["ClassName"] = "particles",
+								["UniqueID"] = "67321ffd9ceabcf045ef4b1ac71a645101404f6a69b9626a8f7a1684dd027d3c",
+								["Name"] = "mouth smoke from the tip",
+								["Bone"] = "head",
+								["Position"] = Vector(0.1009, -8.1133, -1.4506),
+								["Material"] = "particle/smokesprites_0001",
+								["StartSize"] = 0.3,
+								["EndSize"] = 4,
+								["DieTime"] = 2.6,
+								["FireDelay"] = 0.32,
+								["NumberParticles"] = 1,
+								["Velocity"] = 3,
+								["Spread"] = 0.4,
+								["Gravity"] = Vector(0, 0, 9),
+								["AirResistance"] = 4,
+								["StartAlpha"] = 38,
+								["EndAlpha"] = 0,
+								["Color1"] = Vector(205, 205, 210),
+								["Color2"] = Vector(170, 170, 178),
+								["Lighting"] = false,
+								["Collide"] = false,
+								["RandomRollSpeed"] = 1.5,
+								["DoubleSided"] = false,
+							},
+							["children"] = {
+							},
+						},
+						[6] = {
+							["self"] = {
+								["ClassName"] = "particles",
+								["UniqueID"] = "48a61a4739bb14160bde8a76b56088d7f0e82ea87412413c30e2130701aeacc0",
 								["Name"] = "mouth exhale",
 								["Bone"] = "head",
 								["Position"] = Vector(0.7819, -5.6002, 0.0171),
@@ -1898,7 +2763,163 @@
 								[1] = {
 									["self"] = {
 										["ClassName"] = "proxy",
-										["UniqueID"] = "3510814f61ece2c5394f9049bcd152ad337667e3532a9cf3381dbda5b371c0c3",
+										["UniqueID"] = "29c1238288362a1d8bd95ad22b6d1bc30bafb4c8be6efc60cce764e1d54adf84",
+										["Name"] = "only for a second right after a drag",
+										["VariableName"] = "NumberParticles",
+										["Expression"] = "((((time()%13)) > 3.45 and ((time()%13)) < 4.35) and (1 - clamp(owner_velocity_length()/50, 0, 1)) > 0.5) and 1 or 0",
+									},
+									["children"] = {
+									},
+								},
+							},
+						},
+					},
+				},
+				[7] = {
+					["self"] = {
+						["ClassName"] = "group",
+						["UniqueID"] = "5fd51ea95c2c4b53c527a6e21e41ca31ff05633630f55820703ed08869b71415",
+						["Name"] = "cigarette in his mouth (holdtype normal, crouching, no mask)",
+					},
+					["children"] = {
+						[1] = {
+							["self"] = {
+								["ClassName"] = "event",
+								["UniqueID"] = "270b921800eaba78e18ca5d0af69f740a86c60fd745f2b510a23af19046b9663",
+								["Name"] = "only when holdtype is normal",
+								["Event"] = "holdtype",
+								["Arguments"] = "normal",
+								["Operator"] = "equal",
+								["Invert"] = true,
+							},
+							["children"] = {
+							},
+						},
+						[2] = {
+							["self"] = {
+								["ClassName"] = "event",
+								["UniqueID"] = "660bb749c52e532db111cb378a08ad4c1ba217fffdfac95c3da210e05f60ed8f",
+								["Name"] = "only while crouching",
+								["Event"] = "is_crouching",
+								["Operator"] = "equal",
+								["Invert"] = true,
+							},
+							["children"] = {
+							},
+						},
+						[3] = {
+							["self"] = {
+								["ClassName"] = "event",
+								["UniqueID"] = "f88fc775366ce0df644fad8263263235d1d730ecd0b7d705474ab5643e55430e",
+								["Name"] = "hidden while the oxygen mask is on",
+								["Event"] = "command",
+								["Arguments"] = "mask@@0@@0",
+								["Operator"] = "equal",
+								["Invert"] = false,
+							},
+							["children"] = {
+							},
+						},
+						[4] = {
+							["self"] = {
+								["ClassName"] = "model2",
+								["UniqueID"] = "3b32c0ff703c0aa9fe6f737c3031d1c9f3fc221dd883f59bb11b7af0ca1b493a",
+								["Name"] = "cigarette in mouth",
+								["Model"] = "https://raw.githubusercontent.com/Warmug/pac-oldman/main/props/cigarette.obj",
+								["Bone"] = "head",
+								["Material"] = "cigarette_paper",
+								["Position"] = Vector(0.596, -5.4038, -0.7185),
+								["Angles"] = Angle(14.885, -100.355, -95.304),
+							},
+							["children"] = {
+							},
+						},
+						[5] = {
+							["self"] = {
+								["ClassName"] = "sprite",
+								["UniqueID"] = "a2d6042b90a8f3eacb0ddd23770ddb4f7d52416b3ae768133b2c41038b910e11",
+								["Name"] = "mouth ember glow",
+								["Bone"] = "head",
+								["Position"] = Vector(0.1009, -8.1133, -1.4506),
+								["SpritePath"] = "sprites/light_glow02_add",
+								["Color"] = Vector(255, 120, 40),
+								["Size"] = 0.6,
+								["Alpha"] = 0.9,
+							},
+							["children"] = {
+								[1] = {
+									["self"] = {
+										["ClassName"] = "proxy",
+										["UniqueID"] = "b282bb05a315db4427675ffe54cea7241a731644a1348b47b94a296c75c160fa",
+										["Name"] = "ember flickers and flares up on a drag",
+										["VariableName"] = "Size",
+										["Expression"] = "0.55 + 0.08*sin(time()*17) + 0.06*sin(time()*29) + 0.9*clamp(min(((time()%13)-1.0)/0.3, (2.4-(time()%13))/0.3), 0, 1)",
+									},
+									["children"] = {
+									},
+								},
+							},
+						},
+						[6] = {
+							["self"] = {
+								["ClassName"] = "particles",
+								["UniqueID"] = "7878ad57008d54e810d8a7987e3a449b3f02f8792ef048c2833cca64ac5e3bab",
+								["Name"] = "mouth smoke from the tip",
+								["Bone"] = "head",
+								["Position"] = Vector(0.1009, -8.1133, -1.4506),
+								["Material"] = "particle/smokesprites_0001",
+								["StartSize"] = 0.3,
+								["EndSize"] = 4,
+								["DieTime"] = 2.6,
+								["FireDelay"] = 0.32,
+								["NumberParticles"] = 1,
+								["Velocity"] = 3,
+								["Spread"] = 0.4,
+								["Gravity"] = Vector(0, 0, 9),
+								["AirResistance"] = 4,
+								["StartAlpha"] = 38,
+								["EndAlpha"] = 0,
+								["Color1"] = Vector(205, 205, 210),
+								["Color2"] = Vector(170, 170, 178),
+								["Lighting"] = false,
+								["Collide"] = false,
+								["RandomRollSpeed"] = 1.5,
+								["DoubleSided"] = false,
+							},
+							["children"] = {
+							},
+						},
+						[7] = {
+							["self"] = {
+								["ClassName"] = "particles",
+								["UniqueID"] = "470beac531ce5c657e5f03c540010cd18fb0f1808499b97b3f6424ad066d36f7",
+								["Name"] = "mouth exhale",
+								["Bone"] = "head",
+								["Position"] = Vector(0.7819, -5.6002, 0.0171),
+								["Angles"] = Angle(0.027, -94.136, -89.894),
+								["Material"] = "particle/smokesprites_0001",
+								["StartSize"] = 0.6,
+								["EndSize"] = 4,
+								["DieTime"] = 1.5,
+								["FireDelay"] = 0.09,
+								["NumberParticles"] = 0,
+								["Velocity"] = 9,
+								["Spread"] = 0.25,
+								["Gravity"] = Vector(0, 0, 5),
+								["AirResistance"] = 10,
+								["StartAlpha"] = 42,
+								["EndAlpha"] = 0,
+								["Color1"] = Vector(210, 210, 215),
+								["Color2"] = Vector(180, 180, 185),
+								["Lighting"] = false,
+								["Collide"] = false,
+								["DoubleSided"] = false,
+							},
+							["children"] = {
+								[1] = {
+									["self"] = {
+										["ClassName"] = "proxy",
+										["UniqueID"] = "f5cb6e292798f95c1b73a8810eeca23bb8630411c40606f32a0ddda8c0a5dfab",
 										["Name"] = "only for a second right after a drag",
 										["VariableName"] = "NumberParticles",
 										["Expression"] = "((((time()%13)) > 3.45 and ((time()%13)) < 4.35) and (1 - clamp(owner_velocity_length()/50, 0, 1)) > 0.5) and 1 or 0",
@@ -2051,6 +3072,75 @@
 						["Angles"] = Angle(0, 0, 0),
 					},
 					["children"] = {
+					},
+				},
+				[5] = {
+					["self"] = {
+						["ClassName"] = "group",
+						["UniqueID"] = "781112bddd8fc833276a356989e869495a106145d6515497bacfbc1af8a4716c",
+						["Name"] = "sitting: left hand rests on top of the cast",
+					},
+					["children"] = {
+						[1] = {
+							["self"] = {
+								["ClassName"] = "event",
+								["UniqueID"] = "df330b6b49aa57a29960c8c84c0b801fb7f31baecd6ab91219045788c1e27054",
+								["Name"] = "only while sitting",
+								["Event"] = "is_sitting",
+								["Operator"] = "equal",
+								["Invert"] = true,
+							},
+							["children"] = {
+							},
+						},
+						[2] = {
+							["self"] = {
+								["ClassName"] = "event",
+								["UniqueID"] = "d7fb2d07070b69dea8779af641248ad6ee7650dbf477057424b0e2cb669da033",
+								["Name"] = "only when holdtype is normal",
+								["Event"] = "holdtype",
+								["Arguments"] = "normal",
+								["Operator"] = "equal",
+								["Invert"] = true,
+							},
+							["children"] = {
+							},
+						},
+						[3] = {
+							["self"] = {
+								["ClassName"] = "event",
+								["UniqueID"] = "fd2aaebddb46e45ada4f2f26171e2cf242bea19e14118614139f6c94aee0e3ad",
+								["Name"] = "not while smoking (the seated cigarette copy has it)",
+								["Event"] = "command",
+								["Arguments"] = "smoke@@0@@0",
+								["Operator"] = "equal",
+								["Invert"] = false,
+							},
+							["children"] = {
+							},
+						},
+						[4] = {
+							["self"] = {
+								["ClassName"] = "bone3",
+								["UniqueID"] = "fd868da2465f730cc3b090d0548b0506c5f3c7ef62edd65e48373ef47a504cfb",
+								["Name"] = "hand on the cast: more elbow bend",
+								["Bone"] = "left forearm",
+								["Angles"] = Angle(0, -19.95, 0),
+							},
+							["children"] = {
+							},
+						},
+						[5] = {
+							["self"] = {
+								["ClassName"] = "bone3",
+								["UniqueID"] = "583ea181ead982b4ccacf0b76f8d6eff2e4502f741ba23afebb137f826cfcb4b",
+								["Name"] = "hand on the cast: hand",
+								["Bone"] = "left hand",
+								["Angles"] = Angle(-0.55, -1.53, 0),
+							},
+							["children"] = {
+							},
+						},
 					},
 				},
 			},

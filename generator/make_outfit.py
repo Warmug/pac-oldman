@@ -125,29 +125,47 @@ def cane_group(fit):
         cane.props["Angles"] = Angle(*fit.cane_upright_ang)
         cane.props["AimPartUID"] = upright
         in_hand.add(upright)
-    for b, yaw in CANE_FINGERS.items():
-        in_hand.add(bone(f"cane grip: {b}", b, (0, yaw, 0)))
-    in_hand.add(bone("cane grip: right finger 0", "right finger 0", (0, 18, -10)),
-                bone("cane grip: right finger 01", "right finger 01", (0, 28, 0)),
-                bone("cane grip: right finger 02", "right finger 02", (0, 22, 0)))
-    for b, ang in fit.cane_arm.items():
-        in_hand.add(bone(f"cane grip: {b}", b, ang))
+    in_hand.add(sit_event("not while sitting (the seated copy holds it)", False))
+
+    def grip(target, arm):
+        for b, yaw in CANE_FINGERS.items():
+            target.add(bone(f"cane grip: {b}", b, (0, yaw, 0)))
+        target.add(bone("cane grip: right finger 0", "right finger 0", (0, 18, -10)),
+                   bone("cane grip: right finger 01", "right finger 01", (0, 28, 0)),
+                   bone("cane grip: right finger 02", "right finger 02", (0, 22, 0)))
+        for b, ang in arm.items():
+            target.add(bone(f"cane grip: {b}", b, ang))
+
+    grip(in_hand, fit.cane_arm)
+    groups = [in_hand]
+    if getattr(fit, "cane_arm_sit", None):
+        # sitting: hand resting on top of the handle, the cane standing between his knees, tip on the
+        # floor between his feet (the seated arm angles put it there; no upright-aiming, it follows the hand)
+        seated = group(
+            "cane between his knees (holdtype normal, sitting)",
+            holdtype_event("only when holdtype is normal", PROP_HOLD, True),
+            sit_event("only while sitting", True),
+            model("cane", url("props/cane.obj"), "right hand", "cane_wood", *fit.cane_hand_sit, **scale),
+        )
+        grip(seated, fit.cane_arm_sit)
+        groups.append(seated)
 
     on_belt = group(
-        "cane hooked on his belt (any other holdtype)",
+        "cane hooked on his belt (any other holdtype, standing)",
         holdtype_event("hidden while holdtype is normal", PROP_HOLD, False),
+        sit_event("not while sitting (it would go through the seat)", False),
         model("cane on belt", url("props/cane.obj"), "pelvis", "cane_wood", *fit.cane_belt, **scale),
     )
+    groups.append(on_belt)
     # hidden while crouching: a full crouch puts his hands and hips so low that the cane goes
     # into the floor whether held or hooked on the belt
     return group(
         "cane  [pac_event cane]",
         command_event("toggle with: pac_event cane 2", "cane", True),
         crouch_event("hidden while crouching", False),
-        sit_event("hidden while sitting (the seated pose is not solved yet)", False),
         material_3d("cane_wood", basetexture=url("props/cane.jpg"), bumpmap=url("props/flat_n.png"),
                     phong=True, phongboost=2.5, phongexponent=30, phongfresnelranges=Vector(0.3, 0.7, 1)),
-        in_hand, on_belt,
+        *groups,
     )
 
 
@@ -165,8 +183,11 @@ _S = f"clamp(min({_T}/1.0, (3.4-{_T})/1.0), 0, 1)"
 DRAG = f"({_S}*{_S}*(3-2*{_S}))*{STILL}"
 
 
-def drag_expression(base, delta):
-    return ", ".join(f"{b:.2f} + ({d:.2f})*{DRAG}" for b, d in zip(base, delta))
+def drag_expression(base, delta, bow=None):
+    """hold + drag * s, plus bow * 4s(1-s) when given: a detour mid-way that is zero at both ends."""
+    if bow is None or not any(bow):
+        return ", ".join(f"{b:.2f} + ({d:.2f})*{DRAG}" for b, d in zip(base, delta))
+    return ", ".join(f"{b:.2f} + ({d:.2f})*{DRAG} + ({w:.2f})*4*{DRAG}*(1-{DRAG})" for b, d, w in zip(base, delta, bow))
 
 
 # exhale: one short puff right after each drag (the drag lets go at 3.4 s into the cycle)
@@ -199,27 +220,44 @@ def exhale_puff(name, pos, ang):
 
 
 def cig_group(fit):
-    in_hand = group(
-        "cigarette in his fingers (holdtype normal, standing)",
-        holdtype_event("only when holdtype is normal", PROP_HOLD, True),
-        crouch_event("not while crouching (it goes in his mouth)", False),
-        sit_event("not while sitting (it goes in his mouth)", False),
-        model("cigarette", url("props/cigarette.obj"), "left hand", "cigarette_paper", *fit.cig_hand),
-        *smoke_bits("left hand", fit.cig_hand_tip, ""),
-    )
-    for b, ang in CIG_FINGERS.items():
-        in_hand.add(bone(f"cigarette hold: {b}", b, ang))
+    def in_fingers(name, arm, *events):
+        """The cigarette in his left fingers: a drag every 13 s with the mask off, just held with it on."""
+        g = group(name, holdtype_event("only when holdtype is normal", PROP_HOLD, True), *events,
+                  model("cigarette", url("props/cigarette.obj"), "left hand", "cigarette_paper", *fit.cig_hand),
+                  *smoke_bits("left hand", fit.cig_hand_tip, ""))
+        for b, ang in CIG_FINGERS.items():
+            g.add(bone(f"cigarette hold: {b}", b, ang))
+        drag = group("takes a drag every 13s (mask off)",
+                     command_event("not while the oxygen mask is on", "mask", False))
+        hold = group("just holds it (mask on)",
+                     command_event("only while the oxygen mask is on", "mask", True))
+        for b, (base, delta, *bow) in arm.items():
+            drag.add(bone(f"smoking arm: {b}", b, base, None,
+                          proxy("take a drag every 13s while still", "Angles",
+                                drag_expression(base, delta, bow[0] if bow else None))))
+            hold.add(bone(f"smoking arm: {b}", b, base))
+        drag.add(exhale_puff("exhaled smoke", fit.mouth, fit.exhale_angles))
+        return g.add(drag, hold)
 
-    drag = group("takes a drag every 13s (mask off)",
-                 command_event("not while the oxygen mask is on", "mask", False))
-    hold = group("just holds it (mask on)",
-                 command_event("only while the oxygen mask is on", "mask", True))
-    for b, (base, delta) in fit.cig_arm.items():
-        drag.add(bone(f"smoking arm: {b}", b, base, None,
-                      proxy("take a drag every 13s while standing still", "Angles", drag_expression(base, delta))))
-        hold.add(bone(f"smoking arm: {b}", b, base))
-    drag.add(exhale_puff("exhaled smoke", fit.mouth, fit.exhale_angles))
-    in_hand.add(drag, hold)
+    in_hand = in_fingers("cigarette in his fingers (holdtype normal, standing)", fit.cig_arm,
+                         crouch_event("not while crouching (it goes in his mouth)", False),
+                         sit_event("not while sitting (the seated copy has it)", False))
+    seated = []
+    if getattr(fit, "cig_arm_sit", None):
+        # the same drag solved on the seated animation (his forearm passes over his thighs there),
+        # its way up bowed around the cane and his right fist
+        cast_copy = getattr(fit, "cig_arm_sit_cast", None)
+        seated.append(in_fingers("cigarette in his fingers (holdtype normal, sitting)", fit.cig_arm_sit,
+                                 crouch_event("not while crouching", False),
+                                 sit_event("only while sitting", True),
+                                 *([command_event("not with the leg cast on (the next copy has it)", "cast", False)]
+                                   if cast_copy else [])))
+        if cast_copy:
+            # with the leg cast on, the resting hand sits on top of the plaster instead of in it
+            seated.append(in_fingers("cigarette in his fingers (holdtype normal, sitting, leg cast on)", cast_copy,
+                                     crouch_event("not while crouching", False),
+                                     sit_event("only while sitting", True),
+                                     command_event("only with the leg cast on", "cast", True)))
 
     def mouth_copy(name, *events):
         """The cigarette between his lips, with its tip smoke and a puff after each drag."""
@@ -229,21 +267,17 @@ def cig_group(fit):
                      *smoke_bits("head", fit.cig_mouth_tip, "mouth "),
                      exhale_puff("mouth exhale", fit.mouth, fit.exhale_angles))
 
-    # pac events only AND together, so "other holdtype OR crouching OR sitting" is three copies
+    # pac events only AND together, so "other holdtype OR crouching" is two copies
     in_mouth = mouth_copy("cigarette in his mouth (any other holdtype, no mask)",
                           holdtype_event("hidden while holdtype is normal", PROP_HOLD, False))
     in_mouth_crouching = mouth_copy("cigarette in his mouth (holdtype normal, crouching, no mask)",
                                     holdtype_event("only when holdtype is normal", PROP_HOLD, True),
                                     crouch_event("only while crouching", True))
-    in_mouth_sitting = mouth_copy("cigarette in his mouth (holdtype normal, sitting, no mask)",
-                                  holdtype_event("only when holdtype is normal", PROP_HOLD, True),
-                                  crouch_event("not while crouching (that copy has it)", False),
-                                  sit_event("only while sitting", True))
     return group(
         "cigarette  [pac_event smoke]",
         command_event("toggle with: pac_event smoke 2", "smoke", True),
         material_3d("cigarette_paper", basetexture=url("props/cigarette.jpg")),
-        in_hand, in_mouth, in_mouth_crouching, in_mouth_sitting,
+        in_hand, *seated, in_mouth, in_mouth_crouching,
     )
 
 
@@ -273,7 +307,7 @@ def cast_group(fit):
     bones = getattr(fit, "cast_bones", None)
     if not bones:
         return None
-    return group(
+    g = group(
         "leg cast  [pac_event cast]",
         command_event("toggle with: pac_event cast 2", "cast", True),
         material_3d("cast_plaster", basetexture=url("props/cast_plaster.jpg"), bumpmap=url("props/cast_plaster_n.png"),
@@ -281,6 +315,18 @@ def cast_group(fit):
         model("plaster: thigh", url("props/cast_thigh.obj"), bones["thigh"], "cast_plaster"),
         model("plaster: knee and shin", url("props/cast_shin.obj"), bones["shin"], "cast_plaster"),
     )
+    lift = getattr(fit, "cast_lift_sit", None)
+    if lift:
+        # sitting, the animation rests his left hand on that thigh: a bit more elbow bend (same axis as
+        # the arm-hang's elbow part, so the order pac applies them in doesn't matter) and a turn of the
+        # hand set it on top of the plaster. With the cigarette in that hand its own seated copy does this.
+        g.add(group("sitting: left hand rests on top of the cast",
+                    sit_event("only while sitting", True),
+                    holdtype_event("only when holdtype is normal", PROP_HOLD, True),
+                    command_event("not while smoking (the seated cigarette copy has it)", "smoke", False),
+                    bone("hand on the cast: more elbow bend", "left forearm", lift["left forearm"]),
+                    bone("hand on the cast: hand", "left hand", lift["left hand"])))
+    return g
 
 
 # --- oxygen -------------------------------------------------------------------------
